@@ -95,7 +95,7 @@ export default class Component {
 		customEvent.stop = () => isCanceled = true;
 
 
-		if (restParam.length > 1) {
+		if (restParam.length >= 1) {
 			arg = arg.concat(restParam);
 		}
 

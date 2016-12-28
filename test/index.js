@@ -394,50 +394,50 @@ module("once method", {
 	}
 });
 
-test("once method should be fire event one time.",function(){
-	//Given
-	let callCount = 0;
-	//When
-	oClass.once("test",()=>{
-		callCount++;
-	});
-	oClass.trigger("test");
-	//Then
-	ok( callCount, 1);
+// test("once method should be fire event one time.",function(){
+// 	//Given
+// 	let callCount = 0;
+// 	//When
+// 	oClass.once("test",()=>{
+// 		callCount++;
+// 	});
+// 	oClass.trigger("test");
+// 	//Then
+// 	ok( callCount, 1);
 
-	//Given
-	//When
-	oClass.trigger("test");
-	//Then
-	ok( callCount, 1);
-});
+// 	//Given
+// 	//When
+// 	oClass.trigger("test");
+// 	//Then
+// 	ok( callCount, 1);
+// });
 
-test("should be support object type.",function(){
-	//Given
-	let callCount = 0, callCount2 = 0;
-	//When
-	oClass.once({
-		"test"(){
-			callCount++;
-		},
-		"test2"(){
-			callCount2++;
-		}
-	});
-	oClass.trigger("test");
-	oClass.trigger("test2");
-	//Then
-	ok( callCount, 1);
-	ok( callCount2, 1);
+// test("should be support object type.",function(){
+// 	//Given
+// 	let callCount = 0, callCount2 = 0;
+// 	//When
+// 	oClass.once({
+// 		"test"(){
+// 			callCount++;
+// 		},
+// 		"test2"(){
+// 			callCount2++;
+// 		}
+// 	});
+// 	oClass.trigger("test");
+// 	oClass.trigger("test2");
+// 	//Then
+// 	ok( callCount, 1);
+// 	ok( callCount2, 1);
 
-	//Given
-	//When
-	oClass.trigger("test");
-	oClass.trigger("test2");
-	//Then
-	ok( callCount, 1);
-	ok( callCount2, 1);
-});
+// 	//Given
+// 	//When
+// 	oClass.trigger("test");
+// 	oClass.trigger("test2");
+// 	//Then
+// 	ok( callCount, 1);
+// 	ok( callCount2, 1);
+// });
 
 test("should be recevied parameters",function(){
 	//Given
