@@ -1,9 +1,11 @@
 var webpack = require("webpack");
+var path = require('path');
 
 module.exports = {
   entry: {
     "eg.component": "./src/index.js",
     "eg.component.min": "./src/index.js",
+    "eg.component.test": "./test/index.js",
   },
   devtool: "source-map",
   output: {
@@ -15,7 +17,7 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.js$/,
+        test: [path.join(__dirname, 'src/'), path.join(__dirname, 'test/')],
         loader: "babel-loader",
         query: {
           presets: ['es2015']

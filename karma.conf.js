@@ -6,7 +6,7 @@ module.exports = function(config) {
 			// src files
 			"dist/eg.component.js",
 			// test files
-			"test/**/*.js"
+			"dist/eg.component.test.js"
 		],
 		browsers: ["PhantomJS"],
 		singleRun: true

@@ -4,37 +4,38 @@
 */
 
 
-export class Component {
+export default class Component {
 	constructor	(){
 		this.eventHandler = {};
 		this.options = {};
 	}
 
-	option(key, value) {
-		if (arguments.length >= 2) {
+	option(...args) {
+		if (args.length >= 2) {
+			const key = args[0];
+			const value = args[1];
 			this.options[key] = value;
 			return this;
 		}
 
+		const key = args[0];
 		if (typeof key === "string") {
 			return this.options[key];
 		}
 
-		if (arguments.length === 0) {
+		if (args.length === 0) {
 			return this.options;
 		}
 
-		for (var i in key) {
-			this.options[i] = key[i];
-		}
+		const options = key
+		this.options = options;
 
 		return this;
 	}
 
-	trigger(eventName, customEvent) {
-		customEvent = customEvent || {};
-		var handlerList = this.eventHandler[eventName] || [];
-		var hasHandlerList = handlerList.length > 0;
+	trigger(eventName, customEvent = {}, ...restParam) {
+		let handlerList = this.eventHandler[eventName] || [];
+		const hasHandlerList = handlerList.length > 0;
 
 		if (!hasHandlerList) {
 			return true;
@@ -45,22 +46,19 @@ export class Component {
 
 		customEvent.eventType = eventName;
 
-		var isCanceled = false;
-		var arg = [customEvent];
-		var i;
-		var len;
-		var handler;
+		let isCanceled = false;
+		let arg = [customEvent];
+		let i;
 
-		customEvent.stop = function() {
-			isCanceled = true;
-		};
+		customEvent.stop = () => isCanceled = true;
 
-		if ((len = arguments.length) > 2) {
-			arg = arg.concat(Array.prototype.slice.call(arguments, 2, len));
+
+		if (restParam.length > 1) {
+			arg = arg.concat(restParam);
 		}
 
-		for (i = 0; handler = handlerList[i]; i++) {
-			handler.apply(this, arg);
+		for (i in handlerList){
+			handlerList[i].apply(this, arg);
 		}
 
 		return !isCanceled;
@@ -73,15 +71,15 @@ export class Component {
 	on(eventName, handlerToAttach) {
 		if (typeof eventName === "object" &&
 		typeof handlerToAttach === "undefined") {
-			var eventHash = eventName;
-			var i;
-			for (i in eventHash) {
-				this.on(i, eventHash[i]);
+			let eventHash = eventName;
+			let name;
+			for (name in eventHash) {
+				this.on(name, eventHash[name]);
 			}
 			return this;
 		} else if (typeof eventName === "string" &&
 			typeof handlerToAttach === "function") {
-			var handlerList = this.eventHandler[eventName];
+			let handlerList = this.eventHandler[eventName];
 
 			if (typeof handlerList === "undefined") {
 				handlerList = this.eventHandler[eventName] = [];
@@ -95,7 +93,7 @@ export class Component {
 
 	off(eventName, handlerToDetach) {
 		// All event detach.
-		if (arguments.length === 0) {
+		if (typeof eventName === "undefined") {
 			this.eventHandler = {};
 			return this;
 		}
@@ -106,19 +104,20 @@ export class Component {
 				this.eventHandler[eventName] = undefined;
 				return this;
 			} else {
-				var eventHash = eventName;
-				for (var i in eventHash) {
-					this.off(i, eventHash[i]);
+				let eventHash = eventName;
+				let name;
+				for (name in eventHash) {
+					this.off(name, eventHash[name]);
 				}
 				return this;
 			}
 		}
 
 		// The handler of specific event detach.
-		var handlerList = this.eventHandler[eventName];
+		let handlerList = this.eventHandler[eventName];
 		if (handlerList) {
-			var k;
-			var handlerFunction;
+			let k;
+			let handlerFunction;
 			for (k = 0, handlerFunction; handlerFunction = handlerList[k]; k++) {
 				if (handlerFunction === handlerToDetach) {
 					handlerList = handlerList.splice(k, 1);
