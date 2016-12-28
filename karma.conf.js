@@ -3,8 +3,6 @@ module.exports = function(config) {
 		frameworks: ["qunit"],
 		files: [
 			// vendor files
-			// src files
-			"dist/eg.component.js",
 			// test files
 			"dist/eg.component.test.js"
 		],
