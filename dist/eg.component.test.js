@@ -78,14 +78,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
+"use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -107,7 +103,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *
  * @support {"ie": "7+", "ch" : "latest", "ff" : "latest",  "sf" : "latest", "edge" : "latest", "ios" : "7+", "an" : "2.1+ (except 3.x)"}
  */
-var Component = exports.Component = function () {
+var Component = function () {
 	function Component() {
 		_classCallCheck(this, Component);
 
@@ -386,6 +382,8 @@ var Component = exports.Component = function () {
 
 	return Component;
 }();
+
+module.exports = Component;
 
 /***/ },
 /* 1 */
@@ -4945,7 +4943,7 @@ module.exports = function(module) {
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-
+"use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
