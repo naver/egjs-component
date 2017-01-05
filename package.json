@@ -2,7 +2,7 @@
   "name": "eg.component",
   "version": "2.0.0-rc.1",
   "description": "A base class utility that manages events and options in modules.",
-  "main": "src/index.js",
+  "main": "dist/eg.component.js",
   "scripts": {
     "build": "node node_modules/webpack/bin/webpack.js",
     "dev-server": "node node_modules/webpack-dev-server/bin/webpack-dev-server.js",
