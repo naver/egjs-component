@@ -12,7 +12,7 @@
  *
  * @support {"ie": "7+", "ch" : "latest", "ff" : "latest",  "sf" : "latest", "edge" : "latest", "ios" : "7+", "an" : "2.1+ (except 3.x)"}
  */
-export default class Component {
+export class Component {
 	constructor	(){
 		this.eventHandler = {};
 		this.options = {};
