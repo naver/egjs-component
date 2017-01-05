@@ -10,7 +10,7 @@ module.exports = {
 	output: {
 		path: __dirname + "/dist",
 		filename: "[name].js",
-		library: ["eg", "component"],
+		library: ["eg", "Component"],
 		libraryTarget: "umd"
 	},
 	devServer: {
