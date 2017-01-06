@@ -7,7 +7,7 @@
     "build": "node node_modules/webpack/bin/webpack.js",
     "dev-server": "node node_modules/webpack-dev-server/bin/webpack-dev-server.js",
     "jsdoc": "node node_modules/jsdoc/jsdoc.js -c jsdoc.json",
-    "test": "webpack && node node_modules/karma/bin/karma start",
+    "test": "npm run build && node node_modules/karma/bin/karma start",
     "testee": "node node_modules/testee/bin/testee test/unit/index.html --browsers chrome"
   },
   "author": "NAVER corp",
