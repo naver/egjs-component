@@ -258,4 +258,4 @@ class Component {
 	}
 }
 
-export { Component };
+module.exports = Component;
