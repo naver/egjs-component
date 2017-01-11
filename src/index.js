@@ -14,8 +14,8 @@
  */
 class Component {
 	constructor	(){
-		this.eventHandler = {};
-		this.options = {};
+		this._eventHandler = {};
+		this._options = {};
 	}
 	/**
 	 * Sets options in a component or returns them.
@@ -25,11 +25,16 @@ class Component {
 	 * @param {Object} [value] The option value that corresponds to a given key <ko>키에 해당하는 옵션값</ko>
 	 * @return {eg.Component|Object} An instance, an option value, or an option object of a component itself.<br>- If both key and value are used to set an option, it returns an instance of a component itself.<br>- If only a key is specified for the parameter, it returns the option value corresponding to a given key.<br>- If nothing is specified, it returns an option object. <ko>컴포넌트 자신의 인스턴스나 옵션값, 옵션 객체.<br>- 키와 값으로 옵션을 설정하면 컴포넌트 자신의 인스턴스를 반환한다.<br>- 파라미터에 키만 설정하면 키에 해당하는 옵션값을 반환한다.<br>- 파라미터에 아무것도 설정하지 않으면 옵션 객체를 반환한다.</ko>
 	 * @example
-		var Some = eg.Class.extend(eg.Component);
-		var some = new Some({
+
+		class Some extends eg.Component{
+
+		}
+
+		const some = new Some({
 			"foo": 1,
-			"bar": 2,
+			"bar": 2
 		});
+
 		some.option("foo"); // return 1
 		some.option("foo",3); // return some instance
 		some.option(); // return options object.
@@ -43,21 +48,21 @@ class Component {
 		if (args.length >= 2) {
 			const key = args[0];
 			const value = args[1];
-			this.options[key] = value;
+			this._options[key] = value;
 			return this;
 		}
 
 		const key = args[0];
 		if (typeof key === "string") {
-			return this.options[key];
+			return this._options[key];
 		}
 
 		if (args.length === 0) {
-			return this.options;
+			return this._options;
 		}
 
 		const options = key
-		this.options = options;
+		this._options = options;
 
 		return this;
 	}
@@ -69,14 +74,14 @@ class Component {
 	 * @param {Object} customEvent Event data to be sent when triggering a custom event <ko>커스텀 이벤트가 발생할 때 전달할 데이터</ko>
 	 * @return {Boolean} Indicates whether the event has occurred. If the stop() method is called by a custom event handler, it will return false and prevent the event from occurring. <ko>이벤트 발생 여부. 커스텀 이벤트 핸들러에서 stop() 메서드를 호출하면 'false'를 반환하고 이벤트 발생을 중단한다.</ko>
 	 * @example
-		var Some = eg.Class.extend(eg.Component,{
-			"some": function(){
+	 	class Some extends eg.Component{
+			some(){
 				this.trigger("hi");// fire hi event.
 			}
-		});
+		}
 	 */
 	trigger(eventName, customEvent = {}, ...restParam) {
-		let handlerList = this.eventHandler[eventName] || [];
+		let handlerList = this._eventHandler[eventName] || [];
 		const hasHandlerList = handlerList.length > 0;
 
 		if (!hasHandlerList) {
@@ -113,14 +118,14 @@ class Component {
 	 * @param {Function} handlerToAttach The handler function of the event to be attached <ko>등록할 이벤트의 핸들러 함수</ko>
 	 * @return {eg.Component} An instance of a component itself<ko>컴포넌트 자신의 인스턴스</ko>
 	 * @example
-		var Some = eg.Class.extend(eg.Component,{
-			"hi": function(){
+	 	class Some extends eg.Component{
+			hi(){
 				alert("hi");
-			},
-			"thing": function(){
-				this.once("hi",this.hi);
 			}
-		});
+			thing(){
+				this.once("hi", this.hi);
+			}
+		}
 
 		var some = new Some();
 		some.thing();
@@ -157,14 +162,14 @@ class Component {
 	 * @param {String} eventName The name of the event to be attached <ko>등록 여부를 확인할 이벤트의 이름</ko>
 	 * @return {Boolean} Indicates whether the event is attached. <ko>이벤트 등록 여부</ko>
 	 * @example
-		var Some = eg.Class.extend(eg.Component,{
-			"some": function(){
+		class Some extends eg.Component{
+			some(){
 				this.hasOn("hi");// check hi event.
 			}
-		});
+		}
 	 */
 	hasOn(eventName) {
-		return !!this.eventHandler[eventName];
+		return !!this._eventHandler[eventName];
 	}
 
 	/**
@@ -175,12 +180,14 @@ class Component {
 	 * @param {Function} handlerToAttach The handler function of the event to be attached <ko>등록할 이벤트의 핸들러 함수</ko>
 	 * @return {eg.Component} An instance of a component itself<ko>컴포넌트 자신의 인스턴스</ko>
 	 * @example
-		var Some = eg.Class.extend(eg.Component,{
-			"hi": function(){},
-			"some": function(){
+	 	class Some extends eg.Component{
+	 		hi(){
+				console.log("hi");
+	 		}
+			some(){
 				this.on("hi",this.hi); //attach event
 			}
-		});
+		}
 	 */
 	on(eventName, handlerToAttach) {
 		if (typeof eventName === "object" &&
@@ -193,10 +200,10 @@ class Component {
 			return this;
 		} else if (typeof eventName === "string" &&
 			typeof handlerToAttach === "function") {
-			let handlerList = this.eventHandler[eventName];
+			let handlerList = this._eventHandler[eventName];
 
 			if (typeof handlerList === "undefined") {
-				handlerList = this.eventHandler[eventName] = [];
+				handlerList = this._eventHandler[eventName] = [];
 			}
 
 			handlerList.push(handlerToAttach);
@@ -212,24 +219,26 @@ class Component {
 	 * @param {Function} handlerToDetach The handler function of the event to be detached <ko>해제할 이벤트의 핸들러 함수</ko>
 	 * @return {eg.Component} An instance of a component itself <ko>컴포넌트 자신의 인스턴스</ko>
 	 * @example
-		var Some = eg.Class.extend(eg.Component,{
-			"hi": function(){},
-			"some": function(){
+	 	class Some extends eg.Component{
+	 		hi(){
+				console.log("hi");
+	 		}
+			some(){
 				this.off("hi",this.hi); //detach event
 			}
-		});
+		}
 	 */
 	off(eventName, handlerToDetach) {
 		// All event detach.
 		if (typeof eventName === "undefined") {
-			this.eventHandler = {};
+			this._eventHandler = {};
 			return this;
 		}
 
 		// All handler of specific event detach.
 		if (typeof handlerToDetach === "undefined") {
 			if (typeof eventName === "string") {
-				this.eventHandler[eventName] = undefined;
+				this._eventHandler[eventName] = undefined;
 				return this;
 			} else {
 				let eventHash = eventName;
@@ -242,7 +251,7 @@ class Component {
 		}
 
 		// The handler of specific event detach.
-		let handlerList = this.eventHandler[eventName];
+		let handlerList = this._eventHandler[eventName];
 		if (handlerList) {
 			let k;
 			let handlerFunction;
