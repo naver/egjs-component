@@ -46,6 +46,7 @@ egjs-component
   │   └─ component.min.js.map
   ├─ src/
   │   └─ index.js
+  │   └─ component.js
   ├─ doc/
   ├─ test/
   │   └─ index.js
