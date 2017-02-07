@@ -1,25 +1,25 @@
 {
-  "name": "eg.component",
+  "name": "@egjs/component",
   "version": "2.0.0-rc.1",
   "description": "A base class utility that manages events and options in modules.",
-  "main": "dist/eg.component.js",
+  "main": "dist/component.js",
   "scripts": {
-    "build": "node node_modules/webpack/bin/webpack.js",
-    "dev-server": "node node_modules/webpack-dev-server/bin/webpack-dev-server.js",
-    "jsdoc": "node node_modules/jsdoc/jsdoc.js -c jsdoc.json",
-    "test": "npm run build && node node_modules/karma/bin/karma start",
-    "testee": "node node_modules/testee/bin/testee test/unit/index.html --browsers chrome"
+    "build": "webpack",
+    "dev-server": "webpack-dev-server",
+    "jsdoc": "jsdoc -c jsdoc.json",
+    "test": "npm run build && karma start",
+    "testee": "testee test/unit/index.html --browsers chrome"
   },
   "author": "NAVER corp",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/naver/eg.component"
+    "url": "https://github.com/naver/egjs-component"
   },
   "bugs": {
-    "url": "https://github.com/naver/egjs/issues"
+    "url": "https://github.com/naver/egjs-component/issues"
   },
-  "homepage": "http://naver.github.io/eg.component",
+  "homepage": "http://naver.github.io/egjs/component",
   "devDependencies": {
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.8",

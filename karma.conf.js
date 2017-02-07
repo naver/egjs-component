@@ -4,7 +4,7 @@ module.exports = function(config) {
 		files: [
 			// vendor files
 			// test files
-			"dist/eg.component.test.js"
+			"dist/component.test.js"
 		],
 		browsers: ["PhantomJS"],
 		singleRun: true

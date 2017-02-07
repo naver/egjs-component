@@ -3,9 +3,9 @@ var path = require('path');
 
 module.exports = {
 	entry: {
-		"eg.component": "./src/index.js",
-		"eg.component.min": "./src/index.js",
-		"eg.component.test": "./test/index.js",
+		"component": "./src/index.js",
+		"component.min": "./src/index.js",
+		"component.test": "./test/index.js",
 	},
 	output: {
 		path: __dirname + "/dist",

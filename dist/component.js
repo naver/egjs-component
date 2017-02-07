@@ -73,15 +73,19 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -90,9 +94,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
-* Copyright (c) 2015 NAVER Corp.
-* egjs projects are licensed under the MIT license
-*/
+ * Copyright (c) 2015 NAVER Corp.
+ * egjs projects are licensed under the MIT license
+ */
 
 /**
  * A class used to manage events and options in a component
@@ -103,7 +107,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *
  * @support {"ie": "7+", "ch" : "latest", "ff" : "latest",  "sf" : "latest", "edge" : "latest", "ios" : "7+", "an" : "2.1+ (except 3.x)"}
  */
-var Component = function () {
+var Component = exports.Component = function () {
 	function Component() {
 		_classCallCheck(this, Component);
 
@@ -118,16 +122,16 @@ var Component = function () {
   * @param {Object} [value] The option value that corresponds to a given key <ko>키에 해당하는 옵션값</ko>
   * @return {eg.Component|Object} An instance, an option value, or an option object of a component itself.<br>- If both key and value are used to set an option, it returns an instance of a component itself.<br>- If only a key is specified for the parameter, it returns the option value corresponding to a given key.<br>- If nothing is specified, it returns an option object. <ko>컴포넌트 자신의 인스턴스나 옵션값, 옵션 객체.<br>- 키와 값으로 옵션을 설정하면 컴포넌트 자신의 인스턴스를 반환한다.<br>- 파라미터에 키만 설정하면 키에 해당하는 옵션값을 반환한다.<br>- 파라미터에 아무것도 설정하지 않으면 옵션 객체를 반환한다.</ko>
   * @example
- 		class Some extends eg.Component{
+ 	 class Some extends eg.Component{
  		}
- 		const some = new Some({
+ 	 const some = new Some({
  		"foo": 1,
  		"bar": 2
  	});
- 		some.option("foo"); // return 1
- 	some.option("foo",3); // return some instance
- 	some.option(); // return options object.
- 	some.option({
+ 	 some.option("foo"); // return 1
+  some.option("foo",3); // return some instance
+  some.option(); // return options object.
+  some.option({
  		"foo" : 10,
  		"bar" : 20,
  		"baz" : 30
@@ -167,7 +171,7 @@ var Component = function () {
    * @param {Object} customEvent Event data to be sent when triggering a custom event <ko>커스텀 이벤트가 발생할 때 전달할 데이터</ko>
    * @return {Boolean} Indicates whether the event has occurred. If the stop() method is called by a custom event handler, it will return false and prevent the event from occurring. <ko>이벤트 발생 여부. 커스텀 이벤트 핸들러에서 stop() 메서드를 호출하면 'false'를 반환하고 이벤트 발생을 중단한다.</ko>
    * @example
-   	class Some extends eg.Component{
+   class Some extends eg.Component{
   		some(){
   			this.trigger("hi");// fire hi event.
   		}
@@ -221,7 +225,7 @@ var Component = function () {
    * @param {Function} handlerToAttach The handler function of the event to be attached <ko>등록할 이벤트의 핸들러 함수</ko>
    * @return {eg.Component} An instance of a component itself<ko>컴포넌트 자신의 인스턴스</ko>
    * @example
-   	class Some extends eg.Component{
+   class Some extends eg.Component{
   		hi(){
   			alert("hi");
   		}
@@ -229,12 +233,12 @@ var Component = function () {
   			this.once("hi", this.hi);
   		}
   	}
-  		var some = new Some();
-  	some.thing();
-  	some.trigger("hi");
-  	// fire alert("hi");
-  	some.trigger("hi");
-  	// Nothing happens
+  	 var some = new Some();
+   some.thing();
+   some.trigger("hi");
+   // fire alert("hi");
+   some.trigger("hi");
+   // Nothing happens
    */
 
 	}, {
@@ -273,7 +277,7 @@ var Component = function () {
    * @param {String} eventName The name of the event to be attached <ko>등록 여부를 확인할 이벤트의 이름</ko>
    * @return {Boolean} Indicates whether the event is attached. <ko>이벤트 등록 여부</ko>
    * @example
-  	class Some extends eg.Component{
+   class Some extends eg.Component{
   		some(){
   			this.hasOn("hi");// check hi event.
   		}
@@ -294,7 +298,7 @@ var Component = function () {
    * @param {Function} handlerToAttach The handler function of the event to be attached <ko>등록할 이벤트의 핸들러 함수</ko>
    * @return {eg.Component} An instance of a component itself<ko>컴포넌트 자신의 인스턴스</ko>
    * @example
-   	class Some extends eg.Component{
+   class Some extends eg.Component{
    		hi(){
   			console.log("hi");
    		}
@@ -334,7 +338,7 @@ var Component = function () {
    * @param {Function} handlerToDetach The handler function of the event to be detached <ko>해제할 이벤트의 핸들러 함수</ko>
    * @return {eg.Component} An instance of a component itself <ko>컴포넌트 자신의 인스턴스</ko>
    * @example
-   	class Some extends eg.Component{
+   class Some extends eg.Component{
    		hi(){
   			console.log("hi");
    		}
@@ -388,9 +392,18 @@ var Component = function () {
 	return Component;
 }();
 
-module.exports = Component;
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
 
-/***/ }
+"use strict";
+
+
+var _component = __webpack_require__(0);
+
+module.exports = _component.Component;
+
+/***/ })
 /******/ ]);
 });
-//# sourceMappingURL=eg.component.js.map
+//# sourceMappingURL=component.js.map
