@@ -1,5 +1,5 @@
 {
-	"name": "eg.component",
+	"name": "egjs-component",
 	"version": "2.0.0-alpha.1",
 	"description": "A base class utility that manages events and options in modules.",
 	"authors": [
@@ -40,9 +40,9 @@
 		"iscroll": "~5.1.3",
 		"respond": "^1.4.2"
 	},
-	"main": "dist/eg.component.js",
+	"main": "dist/component.js",
 		"repository": {
-		"url": "https://github.com/naver/eg.visible",
+		"url": "https://github.com/naver/egjs-component",
 		"type": "git"
 	},
 	"author": "NAVER corp"
