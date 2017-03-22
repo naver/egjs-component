@@ -1,4 +1,4 @@
-#egjs-component
+# egjs-component
 
 ## requirement
 
