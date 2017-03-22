@@ -73,16 +73,18 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports) {
+/******/ ({
 
-throw new Error("Module build failed: ReferenceError: Unknown plugin \"add-module-exports\" specified in \"/Users/mixed/Sites/opensource/eg.component-naver/.babelrc\" at 0, attempted to resolve relative to \"/Users/mixed/Sites/opensource/eg.component-naver\"\n    at /Users/mixed/Sites/opensource/eg.component-naver/node_modules/babel-core/lib/transformation/file/options/option-manager.js:180:17\n    at Array.map (native)\n    at Function.normalisePlugins (/Users/mixed/Sites/opensource/eg.component-naver/node_modules/babel-core/lib/transformation/file/options/option-manager.js:158:20)\n    at OptionManager.mergeOptions (/Users/mixed/Sites/opensource/eg.component-naver/node_modules/babel-core/lib/transformation/file/options/option-manager.js:234:36)\n    at OptionManager.init (/Users/mixed/Sites/opensource/eg.component-naver/node_modules/babel-core/lib/transformation/file/options/option-manager.js:368:12)\n    at File.initOptions (/Users/mixed/Sites/opensource/eg.component-naver/node_modules/babel-core/lib/transformation/file/index.js:212:65)\n    at new File (/Users/mixed/Sites/opensource/eg.component-naver/node_modules/babel-core/lib/transformation/file/index.js:135:24)\n    at Pipeline.transform (/Users/mixed/Sites/opensource/eg.component-naver/node_modules/babel-core/lib/transformation/pipeline.js:46:16)\n    at transpile (/Users/mixed/Sites/opensource/eg.component-naver/node_modules/babel-loader/lib/index.js:46:20)\n    at Object.module.exports (/Users/mixed/Sites/opensource/eg.component-naver/node_modules/babel-loader/lib/index.js:163:20)");
+/***/ 2:
+/***/ function(module, exports) {
 
-/***/ })
-/******/ ]);
+throw new Error("Module build failed: SyntaxError: Unexpected token (75:29)\n\n\u001b[0m \u001b[90m 73 | \u001b[39m\u001b[36mvar\u001b[39m ctrl \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mController\u001b[39m()\u001b[33m;\u001b[39m\n \u001b[90m 74 | \u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 75 | \u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m-\u001b[39m\u001b[33m>\u001b[39m stop(\u001b[36min\u001b[39m beforeXXX event)\n \u001b[90m    | \u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 76 | \u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m>\u001b[39m behavior\n \u001b[90m 77 | \u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m-\u001b[39m\u001b[33m>\u001b[39m preventEvent(\u001b[36mif\u001b[39m called)\n \u001b[90m 78 | \u001b[39m\u001b[33m--\u001b[39m\u001b[33m--\u001b[39m\u001b[33m>\u001b[39m fire event\u001b[0m\n");
+
+/***/ }
+
+/******/ });
 });
-//# sourceMappingURL=component.js.map
+//# sourceMappingURL=component.temp.js.map

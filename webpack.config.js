@@ -5,7 +5,9 @@ module.exports = {
 	entry: {
 		"component": "./src/index.js",
 		"component.min": "./src/index.js",
-		"component.test": "./test/index.js",
+		"component.test": "./test/unit/component.spec.js"
+		// ,
+		// "component.temp": "./temp/index.js"
 	},
 	output: {
 		path: __dirname + "/dist",
