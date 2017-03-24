@@ -17,6 +17,7 @@ export class Component {
 		this._eventHandler = {};
 		this._options = {};
 	}
+
 	/**
 	 * Sets options in a component or returns them.
 	 * @ko 컴포넌트에 옵션을 설정하거나 옵션을 반환한다
