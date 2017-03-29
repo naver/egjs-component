@@ -1,3 +1,6 @@
+const webpackConfig = require("./webpack.config");
+webpackConfig.module.rules[0].options.plugins = ["add-module-exports"];
+
 module.exports = function(config) {
 	var karmaConfig = {
 		// 사용하는 프레임워크
@@ -13,19 +16,9 @@ module.exports = function(config) {
 
 		// webpack 설정
 		webpack: {
-			devtool: 'inline-source-map',
+			devtool: webpackConfig.module.devtool,
 			module: {
-				rules: [
-					{
-						test: /\.js$/,
-						exclude: /node_modules/,
-						loader: "babel-loader",
-						options: {
-							presets: ["es2015"],
-							plugins: ["add-module-exports"]
-						}
-					}
-				]
+				rules: [ webpackConfig.module.rules[0] ]
 			}
 		},
 		// in-memory로 하고 싶을 때 webpack-dev-middleware을 쓰는데 해당 옵션 설정
@@ -46,10 +39,10 @@ module.exports = function(config) {
 		browsers: ["PhantomJS"]
 	};
 
-  // chrome을 설정한 경우
-  if(config.chrome){
-    karmaConfig.browsers = ["Chrome"];
-  }
+	// chrome을 설정한 경우
+	if(config.chrome){
+		karmaConfig.browsers = ["Chrome"];
+	}
 
 	// coverage을 설정한 경우
 	if(config.coverage) {
@@ -57,7 +50,7 @@ module.exports = function(config) {
 			karmaConfig.reporters.push('coverage-istanbul');
 			// text랑 html로 리포트
 			karmaConfig.coverageIstanbulReporter = {
-	      reports: [ 'text-summary' , 'html'],
+	      		reports: [ 'text-summary' , 'html'],
 				dir: './coverage'
 			};
 			// coverage의 순서을 위로

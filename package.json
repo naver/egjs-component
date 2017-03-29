@@ -54,6 +54,7 @@
     "sinon": "^1.17.7",
     "testee": "^0.3.0",
     "webpack": "^2.2.0-rc.3",
+    "webpack-dev-middleware": "^1.10.1",
     "webpack-dev-server": "^2.2.0-rc.0"
   }
 }
