@@ -112,7 +112,7 @@ var Component = exports.Component = function () {
 		_classCallCheck(this, Component);
 
 		this._eventHandler = {};
-		this._options = {};
+		this.options = {};
 	}
 
 	/**
@@ -146,21 +146,21 @@ var Component = exports.Component = function () {
 			if (arguments.length >= 2) {
 				var _key = arguments.length <= 0 ? undefined : arguments[0];
 				var value = arguments.length <= 1 ? undefined : arguments[1];
-				this._options[_key] = value;
+				this.options[_key] = value;
 				return this;
 			}
 
 			var key = arguments.length <= 0 ? undefined : arguments[0];
 			if (typeof key === "string") {
-				return this._options[key];
+				return this.options[key];
 			}
 
 			if (arguments.length === 0) {
-				return this._options;
+				return this.options;
 			}
 
 			var options = key;
-			this._options = options;
+			this.options = options;
 
 			return this;
 		}
