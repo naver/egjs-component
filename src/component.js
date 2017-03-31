@@ -15,7 +15,7 @@
 export class Component {
 	constructor	(){
 		this._eventHandler = {};
-		this._options = {};
+		this.options = {};
 	}
 
 	/**
@@ -49,21 +49,21 @@ export class Component {
 		if (args.length >= 2) {
 			const key = args[0];
 			const value = args[1];
-			this._options[key] = value;
+			this.options[key] = value;
 			return this;
 		}
 
 		const key = args[0];
 		if (typeof key === "string") {
-			return this._options[key];
+			return this.options[key];
 		}
 
 		if (args.length === 0) {
-			return this._options;
+			return this.options;
 		}
 
 		const options = key
-		this._options = options;
+		this.options = options;
 
 		return this;
 	}
