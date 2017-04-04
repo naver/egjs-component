@@ -12,7 +12,7 @@ export class Component {
 	/**
 	 * @support {"ie": "7+", "ch" : "latest", "ff" : "latest",  "sf" : "latest", "edge" : "latest", "ios" : "7+", "an" : "2.1+ (except 3.x)"}
 	 */
-	constructor	(){
+	constructor(){
 		this._eventHandler = {};
 		this.options = {};
 	}
@@ -174,11 +174,11 @@ class Some extends eg.Component {
 	 * @return {eg.Component} An instance of a component itself<ko>컴포넌트 자신의 인스턴스</ko>
 	 * @example
 class Some extends eg.Component {
-hi() {
-  console.log("hi");
-}
-some() {
-  this.on("hi",this.hi); //attach event
+  hi() {
+    console.log("hi");
+  }
+  some() {
+    this.on("hi",this.hi); //attach event
   }
 }
 */
