@@ -10,7 +10,9 @@
     "lint": "eslint src",
     "test": "karma start",
     "test:chrome": "karma start --chrome",
-    "coverage": "karma start --coverage"
+    "coverage": "karma start --coverage",
+    "prepush": "npm run lint",
+    "commitmsg": "node config/validate-commit-msg.js"
   },
   "author": "NAVER corp",
   "license": "MIT",
