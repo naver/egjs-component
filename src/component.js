@@ -8,11 +8,11 @@
  * @ko 컴포넌트의 이벤트와 옵션을 관리할 수 있게 하는 클래스
  * @name eg.Component
  */
-export class Component {
+export default class Component {
 	/**
 	 * @support {"ie": "7+", "ch" : "latest", "ff" : "latest",  "sf" : "latest", "edge" : "latest", "ios" : "7+", "an" : "2.1+ (except 3.x)"}
 	 */
-	constructor(){
+	constructor() {
 		this._eventHandler = {};
 		this.options = {};
 	}
@@ -45,11 +45,13 @@ some.option({
 		if (args.length >= 2) {
 			const key = args[0];
 			const value = args[1];
+
 			this.options[key] = value;
 			return this;
 		}
 
 		const key = args[0];
+
 		if (typeof key === "string") {
 			return this.options[key];
 		}
@@ -58,7 +60,8 @@ some.option({
 			return this.options;
 		}
 
-		const options = key
+		const options = key;
+
 		this.options = options;
 
 		return this;
@@ -93,14 +96,14 @@ class Some extends eg.Component {
 		let arg = [customEvent];
 		let i;
 
-		customEvent.stop = () => isCanceled = true;
+		customEvent.stop = () => { isCanceled = true; };
 
 
 		if (restParam.length >= 1) {
 			arg = arg.concat(restParam);
 		}
 
-		for (i in handlerList){
+		for (i in handlerList) {
 			handlerList[i].apply(this, arg);
 		}
 
@@ -134,13 +137,15 @@ some.trigger("hi");
 			typeof handlerToAttach === "undefined") {
 			const eventHash = eventName;
 			let i;
+
 			for (i in eventHash) {
 				this.once(i, eventHash[i]);
 			}
 			return this;
 		} else if (typeof eventName === "string" &&
 			typeof handlerToAttach === "function") {
-			let self = this;
+			const self = this;
+
 			this.on(eventName, function listener(...arg) {
 				handlerToAttach.apply(self, arg);
 				self.off(eventName, listener);
@@ -185,8 +190,9 @@ class Some extends eg.Component {
 	on(eventName, handlerToAttach) {
 		if (typeof eventName === "object" &&
 			typeof handlerToAttach === "undefined") {
-			let eventHash = eventName;
+			const eventHash = eventName;
 			let name;
+
 			for (name in eventHash) {
 				this.on(name, eventHash[name]);
 			}
@@ -196,7 +202,8 @@ class Some extends eg.Component {
 			let handlerList = this._eventHandler[eventName];
 
 			if (typeof handlerList === "undefined") {
-				handlerList = this._eventHandler[eventName] = [];
+				this._eventHandler[eventName] = [];
+				handlerList = this._eventHandler[eventName];
 			}
 
 			handlerList.push(handlerToAttach);
@@ -233,8 +240,9 @@ class Some extends eg.Component {
 				this._eventHandler[eventName] = undefined;
 				return this;
 			} else {
-				let eventHash = eventName;
+				const eventHash = eventName;
 				let name;
+
 				for (name in eventHash) {
 					this.off(name, eventHash[name]);
 				}
@@ -244,10 +252,12 @@ class Some extends eg.Component {
 
 		// The handler of specific event detach.
 		let handlerList = this._eventHandler[eventName];
+
 		if (handlerList) {
 			let k;
 			let handlerFunction;
-			for (k = 0, handlerFunction; handlerFunction = handlerList[k]; k++) {
+
+			for (k = 0; (handlerFunction = handlerList[k]) !== undefined; k++) {
 				if (handlerFunction === handlerToDetach) {
 					handlerList = handlerList.splice(k, 1);
 					break;
