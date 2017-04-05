@@ -6,9 +6,9 @@
 /**
  * A class used to manage events and options in a component
  * @ko 컴포넌트의 이벤트와 옵션을 관리할 수 있게 하는 클래스
- * @name eg.Component
+ * @alais eg.Component
  */
-export default class Component {
+class Component {
 	/**
 	 * @support {"ie": "7+", "ch" : "latest", "ff" : "latest",  "sf" : "latest", "edge" : "latest", "ios" : "7+", "an" : "2.1+ (except 3.x)"}
 	 */
@@ -268,3 +268,5 @@ class Some extends eg.Component {
 		return this;
 	}
 }
+
+export default Component;
