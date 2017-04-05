@@ -23,7 +23,7 @@ Nothing.
 
 ### 1. Load component.js
 ```html
-<script src="../dist/infinitegrid.js"></script>
+<script src="../dist/component.js"></script>
 ```
 
 ### 2. Use eg.Component
