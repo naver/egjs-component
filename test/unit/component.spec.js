@@ -1,7 +1,7 @@
-import Component from '../../src/index.js';
+import Component from "../../src/Component";
 
-class TestClass extends Component{
-	constructor(option){
+class TestClass extends Component {
+	constructor(option) {
 		super();
 		this.option(option);
 	}
