@@ -1,12 +1,9 @@
-const webpackConfig = require("./webpack.config");
-webpackConfig.module.rules[0].options.plugins = ["add-module-exports"];
+const webpackConfig = require("./config/webpack");
 
-module.exports = function(config) {
+module.exports = function (config) {
 	var karmaConfig = {
-		// 사용하는 프레임워크
 		frameworks: ['mocha', 'chai', 'sinon'],
 
-		// 브라우저에서 로드할 js pattern등
 		files: [
 			'./node_modules/phantomjs-polyfill/bind-polyfill.js',
 			'./node_modules/phantomjs-polyfill-object-assign/object-assign-polyfill.js',
@@ -14,53 +11,43 @@ module.exports = function(config) {
 			'./test/**/*.spec.js'
 		],
 
-		// webpack 설정
 		webpack: {
 			devtool: webpackConfig.module.devtool,
 			module: {
-				rules: [ webpackConfig.module.rules[0] ]
+				rules: [webpackConfig.module.rules[0]]
 			}
 		},
-		// in-memory로 하고 싶을 때 webpack-dev-middleware을 쓰는데 해당 옵션 설정
 		webpackMiddleware: {
-			// 정보들 안보이게 함
 			noInfo: true
 		},
 
-		// karma을 실행할 때, 아래 패턴은 위에서 설정한 webpack설정.
 		preprocessors: {
 			'./test/**/*.spec.js': ['webpack']
 		},
 
-		// 리포트 타입(mocha)
 		reporters: ['mocha'],
 
-		// 브라우저 설정
 		browsers: ["PhantomJS"]
 	};
 
-	// chrome을 설정한 경우
-	if(config.chrome){
+	if (config.chrome) {
 		karmaConfig.browsers = ["Chrome"];
 	}
 
-	// coverage을 설정한 경우
-	if(config.coverage) {
-			karmaConfig.preprocessors['./test/**/*.spec.js'].push('sourcemap');
-			karmaConfig.reporters.push('coverage-istanbul');
-			// text랑 html로 리포트
-			karmaConfig.coverageIstanbulReporter = {
-	      		reports: [ 'text-summary' , 'html'],
-				dir: './coverage'
-			};
-			// coverage의 순서을 위로
-			karmaConfig.webpack.module.rules.unshift({
-				test: /\.js$/,
-				exclude: /(node_modules|test)/,
-				loader: 'istanbul-instrumenter-loader'
-			});
-			karmaConfig.singleRun = true;
+	if (config.coverage) {
+		karmaConfig.preprocessors['./test/**/*.spec.js'].push('sourcemap');
+		karmaConfig.reporters.push('coverage-istanbul');
+		karmaConfig.coverageIstanbulReporter = {
+			reports: ['text-summary', 'html'],
+			dir: './coverage'
+		};
+		karmaConfig.webpack.module.rules.unshift({
+			test: /\.js$/,
+			exclude: /(node_modules|test)/,
+			loader: 'istanbul-instrumenter-loader'
+		});
+		karmaConfig.singleRun = true;
 	}
 
 	config.set(karmaConfig);
-}
+};

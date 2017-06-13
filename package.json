@@ -5,20 +5,25 @@
   "main": "dist/component.js",
   "es2015": "src/Component.js",
   "scripts": {
-    "build": "webpack",
-    "dev-server": "webpack-dev-server",
-    "jsdoc": "rm -rf ./doc && jsdoc -c jsdoc.json",
-    "lint": "eslint src",
+    "start": "webpack-dev-server --env.mode server",
+    "build": "webpack --env.mode production --config webpack.config.js",
     "test": "karma start",
     "test:chrome": "karma start --chrome",
+    "lint": "eslint src",
+    "jsdoc": "rm -rf ./doc && jsdoc -c jsdoc.json",
     "coverage": "karma start --coverage",
     "prepush": "npm run lint",
     "commitmsg": "node config/validate-commit-msg.js",
-    "start-demo": "npm run prebuild-demo && jekyll serve -s demo",
-    "prebuild-demo": "cpx 'doc/**/*' demo/doc/ --clean && cpx 'dist/**/*' demo/dist --clean",
-    "build-demo": "jekyll build -s demo"
+    "demo:start": "npm run demo:prebuild && jekyll serve -s demo",
+    "demo:build": "jekyll build -s demo",
+    "demo:prebuild": "cpx 'doc/**/*' demo/doc/ --clean && cpx 'dist/**/*' demo/dist --clean"
   },
-  "author": "NAVER corp",
+  "author": {
+    "name": "NAVER Corp."
+  },
+  "namespace" : {
+    "eg": "eg"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",
