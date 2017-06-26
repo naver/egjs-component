@@ -2,6 +2,7 @@
 
 [![Issue Stats](http://issuestats.com/github/naver/egjs-component/badge/pr?style=flat)](http://issuestats.com/github/naver/egjs-component)
 [![Issue Stats](http://issuestats.com/github/naver/egjs-component/badge/issue?style=flat)](http://issuestats.com/github/naver/egjs-component)
+
 A class used to manage events and options in a component
 
 
