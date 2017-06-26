@@ -1,14 +1,46 @@
-# egjs-component
+# egjs-component [![npm version](https://badge.fury.io/js/%40egjs%2Fcomponent.svg)](https://badge.fury.io/js/%40egjs%2Fcomponent) [![Build Status](https://travis-ci.org/naver/egjs-component.svg?branch=master)](https://travis-ci.org/naver/egjs-component) 
+
+[![Issue Stats](http://issuestats.com/github/naver/egjs-component/badge/pr?style=flat)](http://issuestats.com/github/naver/egjs-component)
+[![Issue Stats](http://issuestats.com/github/naver/egjs-component/badge/issue?style=flat)](http://issuestats.com/github/naver/egjs-component)
 A class used to manage events and options in a component
+
 
 ## Documentation
 * API Documentation
-    - Latest: [http://naver.github.io/egjs/latest/doc/eg.Component.html](http://naver.github.io/egjs/latest/doc/eg.Component.html)
-    - Specific version: [http://naver.github.io/egjs/[VERSION]/doc/eg.Component.html](http://naver.github.io/egjs/[VERSION]/doc/eg.Component.html)
-* An advanced demo is available here: [http://naver.github.io/egjs/demo/component/](http://naver.github.io/egjs/demo/component/)
+    - Latest: [https://naver.github.io/egjs-component/release/latest/doc/](https://naver.github.io/egjs-component/release/latest/doc/)
+    - Specific version: [https://naver.github.io/egjs-component/release/[VERSION]/doc/](https://naver.github.io/egjs-component/release/[VERSION]/doc/)
+
+
+## Download and Installation
+
+Download dist files from repo directly or install it via npm. 
+
+### For development (Uncompressed)
+
+You can download the uncompressed files for development
+
+- Latest : https://naver.github.io/egjs-component/release/latest/dist/component.js
+- Specific version : https://naver.github.io/egjs-component/release/[VERSION]/dist/component.js
+
+### For production (Compressed)
+
+You can download the compressed files for production
+
+- Latest : https://naver.github.io/egjs-component/release/latest/dist/component.min.js
+- Specific version : https://naver.github.io/egjs-component/release/[VERSION]/dist/component.min.js
+
+
+### Installation with npm
+
+The following command shows how to install egjs-component using npm.
+
+```bash
+$ npm install @egjs/component
+```
+
 
 ## Supported Browsers
-The following table shows browsers supported by eg.InfiniteGrid
+The following are the supported browsers.
 
 |Internet Explorer|Chrome|Firefox|Safari|iOS|Android|
 |---|---|---|---|---|---|

@@ -1,6 +1,6 @@
 /*!
  * Copyright (c) 2017 NAVER Corp.
- * @egjs/component projects are licensed under the MIT license
+ * @egjs/component project is licensed under the MIT license
  * 
  * @egjs/component JavaScript library
  * http://naver.github.io/egjs/component

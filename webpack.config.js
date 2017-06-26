@@ -19,7 +19,7 @@ module.exports = function(env) {
 		});
 	}
 
-	if (env.mode === "production") {
+	if (env === "production") {
 		for (var p in config.entry) {
 			config.entry[p + ".min"] = config.entry[p];
 		}

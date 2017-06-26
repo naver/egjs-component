@@ -5,10 +5,12 @@ IE 7+ (possibly 9 also), latest of Chrome/FF/Safari, iOS 7+ and Android 2.3+ (ex
 
 #### Load files
 
-``` html
 
+``` html
 <!-- 1) Load egjs packaged file -->
-<script src="http://naver.github.io/egjs-component/dist/component.min.js"></script>
+{% for dist in site.data.egjs.dist %}
+<script src="//{{ site.data.egjs.github.user }}.github.io/{{ site.data.egjs.github.repo }}/{{ dist }}"></script>
+{% endfor %}
 ```
 
 #### Use Component(ES6)
