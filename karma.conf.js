@@ -5,8 +5,6 @@ module.exports = function (config) {
 		frameworks: ['mocha', 'chai', 'sinon'],
 
 		files: [
-			'./node_modules/phantomjs-polyfill/bind-polyfill.js',
-			'./node_modules/phantomjs-polyfill-object-assign/object-assign-polyfill.js',
 			'./node_modules/lite-fixture/index.js',
 			'./test/**/*.spec.js'
 		],
@@ -27,7 +25,7 @@ module.exports = function (config) {
 
 		reporters: ['mocha'],
 
-		browsers: ["PhantomJS"]
+		browsers: ["ChromeHeadless"]
 	};
 
 	if (config.chrome) {
