@@ -48,10 +48,6 @@ The following are the supported browsers.
 |7+|Latest|Latest|Latest|7+|2.1+(except 3.x)|
 
 
-
-## Dependency
-Nothing.
-
 ## How to Use
 
 ### 1. Load component.js
