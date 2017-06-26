@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>egjs-component</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=medium-dpi">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:400,700">
+    <link rel="stylesheet" href="./common/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./common/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./common/css/page.css">
+    <link rel="stylesheet" href="./common/css/monokai.css">
+</head>
+
+	<link rel="stylesheet" href="assets/css/demo.css">
+
+
+	<script src="release/latest/dist/component.min.js"></script>
+
+<script>
+	window.LIBLINK = [];
+	
+	window.LIBLINK.push(window.location.href.replace("/index.html", "/")
+            .replace("/gallery.html", "/") + "release/latest/dist/component.min.js");
+	
+</script>
+<body>
+<link rel="stylesheet" href="./common/css/gallery.css">
+<div>
+	<section id="docs" class="docs section demos">
+		<div class="container">
+			<div class="docs-inner">
+				
+				<h3 id="basic">Basic</h3>
+
+<div codepen="demo">
+  <div class="demo">
+    <div class="func">
+      <a id="btn_trigger" class="btn btn-cta-primary btn_trigger" href="#">Trigger 'foo' Event</a>&nbsp;&nbsp;
+      <a id="btn_attach" class="btn btn-cta-primary btn_attach" href="#">Attach 'foo' Event</a>&nbsp;&nbsp;
+      <a id="btn_detach" class="btn btn-cta-secondary btn_detach" href="#">Detach 'foo' Event</a>
+    </div>
+    <div class="desc" id="desc"></div>
+    <div class="desc" id="desc2"></div>
+  </div>
+</div>
+
+<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="c1">// es6 style</span>
+<span class="kr">class</span> <span class="nx">Some</span> <span class="kr">extends</span> <span class="nx">eg</span><span class="p">.</span><span class="nx">Component</span><span class="p">{</span>
+	<span class="nx">foo</span><span class="p">(){</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">"hi"</span><span class="p">);</span><span class="c1">// fire hi event.</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">some</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Some</span><span class="p">();</span>
+<span class="nx">some</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">"hi"</span><span class="p">,()</span><span class="o">=&gt;</span><span class="p">{</span>
+	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"fire hi event"</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre>
+</div>
+
+			</div>
+		</div>
+	</section>
+</div>
+<script src="./common/js/jquery-2.2.4.js"></script>
+<script src="./common/js/jquery-2.2.4.js"></script>
+<script src="./common/js/bootstrap.min.js"></script>
+
+	<script src="assets/js/demo.js"></script>
+
+<script>
+$("h3[id]").append(function() {
+	return "<a href='./index.html#" + this.id + "' target='_blank' class='more'>" +
+		'<span class="moreBtn">more</span></a>';
+});
+</script>
+</body>
+</html>
