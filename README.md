@@ -1,15 +1,12 @@
-# egjs-component [![npm version](https://badge.fury.io/js/%40egjs%2Fcomponent.svg)](https://badge.fury.io/js/%40egjs%2Fcomponent) [![Build Status](https://travis-ci.org/naver/egjs-component.svg?branch=master)](https://travis-ci.org/naver/egjs-component) 
+# egjs-component [![npm version](https://badge.fury.io/js/%40egjs%2Fcomponent.svg)](https://badge.fury.io/js/%40egjs%2Fcomponent) [![Build Status](https://travis-ci.org/naver/egjs-component.svg?branch=master)](https://travis-ci.org/naver/egjs-component) [![Coverage Status](https://coveralls.io/repos/github/naver/egjs-component/badge.svg?branch=master)](https://coveralls.io/github/naver/egjs-component?branch=master)
 
-[![Issue Stats](http://issuestats.com/github/naver/egjs-component/badge/pr?style=flat)](http://issuestats.com/github/naver/egjs-component)
-[![Issue Stats](http://issuestats.com/github/naver/egjs-component/badge/issue?style=flat)](http://issuestats.com/github/naver/egjs-component)
 
 A class used to manage events and options in a component
 
 
-## Documentation
-* API Documentation
-    - Latest: [https://naver.github.io/egjs-component/release/latest/doc/](https://naver.github.io/egjs-component/release/latest/doc/)
-    - Specific version: [https://naver.github.io/egjs-component/release/[VERSION]/doc/](https://naver.github.io/egjs-component/release/[VERSION]/doc/)
+## Documents
+- [Get Started and Demos](https://naver.github.io/egjs-component/)
+- [API documentation](https://naver.github.io/egjs-component/release/latest/doc/)
 
 
 ## Download and Installation
