@@ -2,11 +2,11 @@ const webpackConfig = require("./config/webpack");
 
 module.exports = function (config) {
 	var karmaConfig = {
-		frameworks: ['mocha', 'chai', 'sinon'],
+		frameworks: ["mocha", "chai", "sinon"],
 
 		files: [
-			'./node_modules/lite-fixture/index.js',
-			'./test/**/*.spec.js'
+			"./node_modules/lite-fixture/index.js",
+			"./test/**/*.spec.js"
 		],
 
 		webpack: {
@@ -20,10 +20,10 @@ module.exports = function (config) {
 		},
 
 		preprocessors: {
-			'./test/**/*.spec.js': ['webpack']
+			"./test/**/*.spec.js": ["webpack"]
 		},
 
-		reporters: ['mocha'],
+		reporters: ["mocha"],
 
 		browsers: ["ChromeHeadless"]
 	};
@@ -33,16 +33,16 @@ module.exports = function (config) {
 	}
 
 	if (config.coverage) {
-		karmaConfig.preprocessors['./test/**/*.spec.js'].push('sourcemap');
-		karmaConfig.reporters.push('coverage-istanbul');
+		karmaConfig.preprocessors["./test/**/*.spec.js"].push("sourcemap");
+		karmaConfig.reporters.push("coverage-istanbul");
 		karmaConfig.coverageIstanbulReporter = {
-			reports: ['text-summary', 'html'],
-			dir: './coverage'
+			reports: ["text-summary", "html", "lcovonly"],
+			dir: "./coverage"
 		};
 		karmaConfig.webpack.module.rules.unshift({
 			test: /\.js$/,
 			exclude: /(node_modules|test)/,
-			loader: 'istanbul-instrumenter-loader'
+			loader: "istanbul-instrumenter-loader"
 		});
 		karmaConfig.singleRun = true;
 	}

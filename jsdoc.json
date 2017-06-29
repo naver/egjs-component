@@ -25,9 +25,9 @@
 		"default": {
 			"outputSourceFiles" : true
 		},
-		"applicationName": "egjs",
+		"applicationName": "eg.Component",
 		"disqus": "egjs",
-		"googleAnalytics": "",
+		"googleAnalytics": "UA-70842526-14",
 		"openGraph": {
 			"title": "",
 			"type": "website",
@@ -37,12 +37,12 @@
 		},
 		"meta": {
 			"title": "egjs::component - API",
-			"description": "&#34;A module that checks if an element is visible in the base element or viewport.&#34;",
-			"keyword": "jQuery, UI Component, egjs, visible"
+			"description": "A base class utility that manages events and options in modules.",
+			"keyword": "UI Component, egjs"
 		},
 		"linenums": true,
 		"link": {
-			"canonical": "http://naver.github.io/egjs/latest/doc/"
+			"canonical": "http://naver.github.io/egjs-component/release/latest/doc/"
 		}
 	},
 	"markdown": {
