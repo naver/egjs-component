@@ -31,7 +31,9 @@ module.exports = {
 						]
 					],
 					"plugins": [
-						"add-module-exports"
+						"add-module-exports",
+						"transform-es3-property-literals",
+        		"transform-es3-member-expression-literals"
 					]
 				}
 			},

@@ -5,7 +5,7 @@
  * @egjs/component JavaScript library
  * http://naver.github.io/egjs/component
  * 
- * @version 2.0.0-rc.1
+ * @version 2.0.0-rc
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -389,7 +389,7 @@ var Component = function () {
 	return Component;
 }();
 
-exports.default = Component;
+exports["default"] = Component;
 module.exports = exports["default"];
 
 /***/ }),
@@ -403,10 +403,10 @@ var _Component = __webpack_require__(0);
 
 var _Component2 = _interopRequireDefault(_Component);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-_Component2.default.VERSION = "2.0.0-rc.1";
-module.exports = _Component2.default;
+_Component2["default"].VERSION = "2.0.0-rc";
+module.exports = _Component2["default"];
 
 /***/ })
 /******/ ]);
