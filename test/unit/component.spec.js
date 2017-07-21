@@ -3,7 +3,7 @@ import Component from "../../src/Component";
 class TestClass extends Component {
 	constructor(option) {
 		super();
-		this.option = option;
+		this.options = Object.assign({}, option);
 	}
 }
 
@@ -14,6 +14,13 @@ describe("Basic test", function() {
 
     beforeEach(() => {
     	oClass = new TestClass();
+    });
+
+		it("should has options property", () => {
+	    //Given
+			//When
+			//Then
+			expect(oClass.options).to.be.eql({});
     });
 
     it("When custom event added by on(), return value must be instance itself", () => {
