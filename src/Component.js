@@ -44,7 +44,7 @@ class Some extends eg.Component {
 
 		let isCanceled = false;
 		let arg = [customEvent];
-		let i;
+		let i = 0;
 
 		customEvent.stop = () => { isCanceled = true; };
 
@@ -53,7 +53,7 @@ class Some extends eg.Component {
 			arg = arg.concat(restParam);
 		}
 
-		for (i in handlerList) {
+		for (i = 0; handlerList[i]; i++) {
 			handlerList[i].apply(this, arg);
 		}
 

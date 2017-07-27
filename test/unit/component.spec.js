@@ -19,8 +19,9 @@ describe("Basic test", function() {
 		it("should has options property", () => {
 	    //Given
 			//When
+			const componntClass = new Component();
 			//Then
-			expect(oClass.options).to.be.eql({});
+			expect(componntClass.options).to.be.eql({});
     });
 
     it("When custom event added by on(), return value must be instance itself", () => {
@@ -257,8 +258,18 @@ describe("trigger method", function() {
 		//Then
 		expect(eventType).equal("eventType");
 		expect(stopType).equal("function");
-    });
-
+		});
+	
+		it("shouldn't call extended method when the Array is extends", () => {
+		//Given
+		Array.prototype.ExtendSomthing = sinon.spy();
+		oClass.on("eventType", function() {});
+		//When
+		oClass.trigger("eventType");
+		//Then
+		expect(Array.prototype.ExtendSomthing.called).to.be.false;
+		});
+		delete Array.prototype.ExtendSomthing;
 });
 
 describe("stop method", function() {
