@@ -16,7 +16,7 @@ describe("Basic test", function() {
     	oClass = new TestClass();
     });
 
-		it("should has options property", () => {
+		it("should have options property", () => {
 	    //Given
 			//When
 			const componntClass = new Component();
