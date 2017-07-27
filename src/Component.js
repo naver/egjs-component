@@ -16,56 +16,6 @@ class Component {
 		this._eventHandler = {};
 		this.options = {};
 	}
-
-	/**
-	 * Sets options in a component or returns them.
-	 * @ko 컴포넌트에 옵션을 설정하거나 옵션을 반환한다
-	 * @param {String} key The key of the option<ko>옵션의 키</ko>
-	 * @param {Object} [value] The option value that corresponds to a given key <ko>키에 해당하는 옵션값</ko>
-	 * @return {eg.Component|Object} An instance, an option value, or an option object of a component itself.<br>- If both key and value are used to set an option, it returns an instance of a component itself.<br>- If only a key is specified for the parameter, it returns the option value corresponding to a given key.<br>- If nothing is specified, it returns an option object. <ko>컴포넌트 자신의 인스턴스나 옵션값, 옵션 객체.<br>- 키와 값으로 옵션을 설정하면 컴포넌트 자신의 인스턴스를 반환한다.<br>- 파라미터에 키만 설정하면 키에 해당하는 옵션값을 반환한다.<br>- 파라미터에 아무것도 설정하지 않으면 옵션 객체를 반환한다.</ko>
-	 * @example
-class Some extends eg.Component {
-}
-
-const some = new Some({
-  "foo": 1,
-  "bar": 2
-});
-
-some.option("foo"); // return 1
-some.option("foo",3); // return some instance
-some.option(); // return options object.
-some.option({
-  "foo" : 10,
-  "bar" : 20,
-  "baz" : 30
-}); // return some instance.
-	 */
-	option(...args) {
-		if (args.length >= 2) {
-			const key = args[0];
-			const value = args[1];
-
-			this.options[key] = value;
-			return this;
-		}
-
-		const key = args[0];
-
-		if (typeof key === "string") {
-			return this.options[key];
-		}
-
-		if (args.length === 0) {
-			return this.options;
-		}
-
-		const options = key;
-
-		this.options = options;
-
-		return this;
-	}
 	/**
 	 * Triggers a custom event.
 	 * @ko 커스텀 이벤트를 발생시킨다
@@ -94,7 +44,7 @@ class Some extends eg.Component {
 
 		let isCanceled = false;
 		let arg = [customEvent];
-		let i;
+		let i = 0;
 
 		customEvent.stop = () => { isCanceled = true; };
 
@@ -103,7 +53,7 @@ class Some extends eg.Component {
 			arg = arg.concat(restParam);
 		}
 
-		for (i in handlerList) {
+		for (i = 0; handlerList[i]; i++) {
 			handlerList[i].apply(this, arg);
 		}
 
