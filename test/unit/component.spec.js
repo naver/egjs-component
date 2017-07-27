@@ -3,7 +3,7 @@ import Component from "../../src/Component";
 class TestClass extends Component {
 	constructor(option) {
 		super();
-		this.option(option);
+		this.options = Object.assign({}, option);
 	}
 }
 
@@ -14,6 +14,14 @@ describe("Basic test", function() {
 
     beforeEach(() => {
     	oClass = new TestClass();
+    });
+
+		it("should have options property", () => {
+	    //Given
+			//When
+			const componntClass = new Component();
+			//Then
+			expect(componntClass.options).to.be.eql({});
     });
 
     it("When custom event added by on(), return value must be instance itself", () => {
@@ -250,8 +258,18 @@ describe("trigger method", function() {
 		//Then
 		expect(eventType).equal("eventType");
 		expect(stopType).equal("function");
-    });
-
+		});
+	
+		it("shouldn't call extended method when the Array is extends", () => {
+		//Given
+		Array.prototype.ExtendSomthing = sinon.spy();
+		oClass.on("eventType", function() {});
+		//When
+		oClass.trigger("eventType");
+		//Then
+		expect(Array.prototype.ExtendSomthing.called).to.be.false;
+		});
+		delete Array.prototype.ExtendSomthing;
 });
 
 describe("stop method", function() {
@@ -305,74 +323,6 @@ describe("hasOn method", function() {
 		const result2 = oClass.hasOn("test2");
 		//Then
 		expect(result2).to.be.false;
-    });
-});
-
-describe("option method", function() {
-	var oClass;
-
-    beforeEach(() => {
-		oClass = new TestClass({
-			"foo": 1,
-			"bar": 2
-		});
-    });
-
-    it("Option method should be support 4 features.", () => {
-		//Given
-		//When
-		let result = oClass.option("foo");
-		//Then
-		expect(result).to.equal(1);
-
-		//Given
-		//When
-		result = oClass.option("foo",2);
-		//Then
-		expect(oClass.option("foo")).to.equal(2);
-		expect(result).to.be.an.instanceof(TestClass);
-
-		//Given
-		//When
-		result = oClass.option({
-			"foo": 3,
-			"bar": 4
-		});
-		//Then
-		expect(oClass.option("foo")).to.equal(3);
-		expect(oClass.option("bar")).to.equal(4);
-		expect(result).to.be.an.instanceof(TestClass);
-
-		//Given
-		//When
-		result = oClass.option();
-		//Then
-		expect(result).to.eql({
-			"foo": 3,
-			"bar": 4
-		});
-    });
-
-    it("The error should not occur without initialization of options property in SubClass construct of Component.", () => {
-		//Given
-		class MyClass extends Component{
-			constructor(option){
-				super();
-				this.option(option);
-			}
-		}
-		var result = true;
-
-		//When
-		try{
-			new MyClass({
-				"foo" : 1
-			});
-		}catch(e){
-			result = false;
-		}
-		//Then
-		expect(result).to.be.true;
     });
 });
 

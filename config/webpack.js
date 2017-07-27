@@ -1,3 +1,4 @@
+var webpack = require("webpack");
 var pkg = require("../package.json");
 var path = require("path");
 var StringReplacePlugin = require("string-replace-webpack-plugin");
@@ -50,5 +51,8 @@ module.exports = {
 			}
 		]
 	},
-	plugins: [new StringReplacePlugin()]
+	plugins: [
+		new StringReplacePlugin(),
+		new webpack.optimize.ModuleConcatenationPlugin()
+	]
 };
