@@ -5,7 +5,7 @@
  * @egjs/component JavaScript library
  * http://naver.github.io/egjs/component
  * 
- * @version 2.0.0-rc
+ * @version 2.0.0
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -52,9 +52,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -82,11 +79,27 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Component = __webpack_require__(1);
+
+var _Component2 = _interopRequireDefault(_Component);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+_Component2["default"].VERSION = "2.0.0";
+module.exports = _Component2["default"];
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -150,7 +163,7 @@ var Component = function () {
 
 		var isCanceled = false;
 		var arg = [customEvent];
-		var i = void 0;
+		var i = 0;
 
 		customEvent.stop = function () {
 			isCanceled = true;
@@ -164,7 +177,7 @@ var Component = function () {
 			arg = arg.concat(restParam);
 		}
 
-		for (i in handlerList) {
+		for (i = 0; handlerList[i]; i++) {
 			handlerList[i].apply(this, arg);
 		}
 
@@ -341,22 +354,6 @@ var Component = function () {
 
 exports["default"] = Component;
 module.exports = exports["default"];
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _Component = __webpack_require__(0);
-
-var _Component2 = _interopRequireDefault(_Component);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-_Component2["default"].VERSION = "2.0.0-rc";
-module.exports = _Component2["default"];
 
 /***/ })
 /******/ ]);
