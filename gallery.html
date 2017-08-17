@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>egjs-<%= componentname %></title>
+    <title>egjs-component</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=medium-dpi">
@@ -16,7 +16,7 @@
 	<link rel="stylesheet" href="assets/css/demo.css">
 
 
-	<script src="release/latest/dist/<%= componentname %><% if(packaged) { %>.pkgd<% } %>.min.js"></script>
+	<script src="release/latest/dist/component.min.js"></script>
 
 <script>
 	var homeUrl = window.location.href;
@@ -32,7 +32,7 @@
 	window.HOMELINK = homeUrl;
 	window.LIBLINK = [];
 	
-	window.LIBLINK.push(window.HOMELINK + "release/latest/dist/<%= componentname %><% if(packaged) { %>.pkgd<% } %>.min.js");
+	window.LIBLINK.push(window.HOMELINK + "release/latest/dist/component.min.js");
 	
 </script>
 <body>
@@ -42,13 +42,31 @@
 		<div class="container">
 			<div class="docs-inner">
 				
-				<h3 id="demo">Demo</h3>
+				<h3 id="basic">Basic</h3>
 
-<div class="demobox" codepen="demo">
-  
+<div codepen="demo">
+  <div class="demo">
+    <div class="func">
+      <a id="btn_trigger" class="btn btn-cta-primary btn_trigger" href="#">Trigger 'foo' Event</a>&nbsp;&nbsp;
+      <a id="btn_attach" class="btn btn-cta-primary btn_attach" href="#">Attach 'foo' Event</a>&nbsp;&nbsp;
+      <a id="btn_detach" class="btn btn-cta-secondary btn_detach" href="#">Detach 'foo' Event</a>
+    </div>
+    <div class="desc" id="desc"></div>
+    <div class="desc" id="desc2"></div>
+  </div>
 </div>
 
-<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="nx">something</span> <span class="nx">codes</span>
+<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="c1">// es6 style</span>
+<span class="kr">class</span> <span class="nx">Some</span> <span class="kr">extends</span> <span class="nx">eg</span><span class="p">.</span><span class="nx">Component</span><span class="p">{</span>
+	<span class="nx">foo</span><span class="p">(){</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">"hi"</span><span class="p">);</span><span class="c1">// fire hi event.</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">some</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Some</span><span class="p">();</span>
+<span class="nx">some</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">"hi"</span><span class="p">,()</span><span class="o">=&gt;</span><span class="p">{</span>
+	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"fire hi event"</span><span class="p">);</span>
+<span class="p">});</span>
 </code></pre>
 </div>
 

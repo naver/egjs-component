@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>egjs-<%= componentname %></title>
+    <title>egjs-component</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=medium-dpi">
@@ -16,7 +16,7 @@
 	<link rel="stylesheet" href="assets/css/demo.css">
 
 
-	<script src="release/latest/dist/<%= componentname %><% if(packaged) { %>.pkgd<% } %>.min.js"></script>
+	<script src="release/latest/dist/component.min.js"></script>
 
 <script>
 	var homeUrl = window.location.href;
@@ -32,7 +32,7 @@
 	window.HOMELINK = homeUrl;
 	window.LIBLINK = [];
 	
-	window.LIBLINK.push(window.HOMELINK + "release/latest/dist/<%= componentname %><% if(packaged) { %>.pkgd<% } %>.min.js");
+	window.LIBLINK.push(window.HOMELINK + "release/latest/dist/component.min.js");
 	
 </script>
 <body>
@@ -57,12 +57,12 @@
     
 <section id="promo" class="promo section">
     <div class="container">
-        <div class="hero-image" style="background-image: url(//naver.github.io/egjs/img/<%= ComponentName %>.png)">
+        <div class="hero-image" style="background-image: url(//naver.github.io/egjs/img/Component.png)">
         </div>
         <h2 class="title">
-            <span class="highlight"><%= ComponentName %></span><a href="https://github.com/naver/egjs-<%= componentname %>/releases/tag/2.0.0"><span class="version">v2.0.0</span></a>
+            <span class="highlight">Component</span><a href="https://github.com/naver/egjs-component/releases/tag/2.0.0"><span class="version">v2.0.0</span></a>
         </h2>
-        <p class="intro"><%= description %><br/>
+        <p class="intro">A class used to manage events and options in a component.<br/>
             <span class="hashtag">#eventemitter #options</span>
         </p>
     </div>
@@ -74,8 +74,8 @@
 					<p class="text-center">
 						<a href="#getting-started">Getting Started </a>/ 
 						<a href="#demos"> Demos </a>/
-						<a target="_blank" href="//naver.github.io/egjs-<%= componentname %>/release/latest/doc/"> Documentation </a>/ 
-						<a target="_blank" href="//github.com/naver/egjs-<%= componentname %>"> Source </a>
+						<a target="_blank" href="//naver.github.io/egjs-component/release/latest/doc/"> Documentation </a>/ 
+						<a target="_blank" href="//github.com/naver/egjs-component"> Source </a>
 					</p>
 				</div>
 			</div>
@@ -86,38 +86,52 @@
 				<h2 class="title text-center">Getting Started</h2>
 				
 				<h3 id="browser-support">Browser support</h3>
-<p>IE 9+, latest of Chrome/FF/Safari, iOS 7+ and Android 2.3+ (except 3.x)</p>
+<p>IE 7+ (possibly 9 also), latest of Chrome/FF/Safari, iOS 7+ and Android 2.3+ (except 3.x)</p>
 
 <h3 id="quick-steps-to-use">Quick steps to use:</h3>
 
-<h4 id="set-up-your-html">Set up your HTML</h4>
+<h4 id="load-files">Load files</h4>
 
-<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;div&gt;</span>
-</code></pre>
-</div>
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="c">&lt;!-- 1) Load egjs packaged file --&gt;</span>
 
-<h4 id="load-files-or-import-library">Load files or import library</h4>
-
-<h5 id="es5">ES5</h5>
-<div class="language-html highlighter-rouge"><pre class="highlight"><code>
-<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"//naver.github.io/egjs-&lt;%= componentname %&gt;/release/latest/dist/&lt;%= componentname %&gt;&lt;% if(packaged) { %&gt;.pkgd&lt;% } %&gt;.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"//naver.github.io/egjs-component/release/latest/dist/component.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
 
 </code></pre>
 </div>
 
-<h5 id="es6">ES6+</h5>
-<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="kr">import</span> <span class="o">&lt;%=</span> <span class="nx">ComponentName</span> <span class="o">%&gt;</span> <span class="nx">from</span> <span class="s2">"@egjs/&lt;%= componentname %&gt;"</span><span class="p">;</span>
+<h4 id="use-componentes6">Use Component(ES6)</h4>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// es6 style</span>
+<span class="kr">class</span> <span class="nx">Some</span> <span class="kr">extends</span> <span class="nx">eg</span><span class="p">.</span><span class="nx">Component</span><span class="p">{</span>
+	<span class="nx">foo</span><span class="p">(){</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">"hi"</span><span class="p">);</span><span class="c1">// fire hi event.</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">some</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Some</span><span class="p">();</span>
+<span class="nx">some</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">"hi"</span><span class="p">,()</span><span class="o">=&gt;</span><span class="p">{</span>
+	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"fire hi event"</span><span class="p">);</span>
+<span class="p">});</span>
 </code></pre>
 </div>
 
-<h3 id="initialize">Initialize</h3>
+<h4 id="use-componentes5">Use Component(ES5)</h4>
 
-<h4 id="es5-1">ES5</h4>
-<div class="language-javascript highlighter-rouge"><pre class="highlight"><code></code></pre>
-</div>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">//es5 style</span>
+<span class="kd">function</span> <span class="nx">Some</span><span class="p">(){</span>
+	
+<span class="p">}</span>
+<span class="nx">Some</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">eg</span><span class="p">.</span><span class="nx">Component</span><span class="p">();</span> <span class="c1">//extends</span>
+<span class="nx">Some</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">Some</span><span class="p">;</span>
+<span class="nx">Some</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">foo</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">"hi"</span><span class="p">);</span><span class="c1">// fire hi event.</span>
+<span class="p">}</span>
 
-<h4 id="es6-1">ES6+</h4>
-<div class="language-js highlighter-rouge"><pre class="highlight"><code></code></pre>
+<span class="kd">var</span> <span class="nx">some</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Some</span><span class="p">();</span>
+<span class="nx">some</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">"hi"</span><span class="p">,</span><span class="kd">function</span><span class="p">(){</span>
+	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"fire hi event"</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre>
 </div>
 
 			</div>
@@ -128,13 +142,31 @@
 			<div class="docs-inner">
 				<h2 class="title text-center">Demos</h2>
 				
-				<h3 id="demo">Demo</h3>
+				<h3 id="basic">Basic</h3>
 
-<div class="demobox" codepen="demo">
-  
+<div codepen="demo">
+  <div class="demo">
+    <div class="func">
+      <a id="btn_trigger" class="btn btn-cta-primary btn_trigger" href="#">Trigger 'foo' Event</a>&nbsp;&nbsp;
+      <a id="btn_attach" class="btn btn-cta-primary btn_attach" href="#">Attach 'foo' Event</a>&nbsp;&nbsp;
+      <a id="btn_detach" class="btn btn-cta-secondary btn_detach" href="#">Detach 'foo' Event</a>
+    </div>
+    <div class="desc" id="desc"></div>
+    <div class="desc" id="desc2"></div>
+  </div>
 </div>
 
-<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="nx">something</span> <span class="nx">codes</span>
+<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="c1">// es6 style</span>
+<span class="kr">class</span> <span class="nx">Some</span> <span class="kr">extends</span> <span class="nx">eg</span><span class="p">.</span><span class="nx">Component</span><span class="p">{</span>
+	<span class="nx">foo</span><span class="p">(){</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">"hi"</span><span class="p">);</span><span class="c1">// fire hi event.</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">some</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Some</span><span class="p">();</span>
+<span class="nx">some</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">"hi"</span><span class="p">,()</span><span class="o">=&gt;</span><span class="p">{</span>
+	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"fire hi event"</span><span class="p">);</span>
+<span class="p">});</span>
 </code></pre>
 </div>
 
@@ -165,7 +197,7 @@
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-      ga('create', '<%= GA %>', 'auto');
+      ga('create', 'UA-70842526-14', 'auto');
       ga('send', 'pageview');
     </script>
 
