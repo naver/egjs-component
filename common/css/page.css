@@ -48,16 +48,10 @@ a.btn:focus {
 a.btn-cta-primary,
 .btn-cta-primary {
   background: #333;
-  border: 1px solid #dff0d8;
   color: #fff;
   font-weight: 600;
 }
-a.btn-cta-primary:hover,
-.btn-cta-primary:hover {
-  background: rgb(60, 118, 61);
-  border: 1px solid #000;
-  color: #fff;
-}
+
 a.btn-cta-secondary,
 .btn-cta-secondary {
   background: #333;
@@ -65,12 +59,7 @@ a.btn-cta-secondary,
   color: #fff;
   font-weight: 600;
 }
-a.btn-cta-secondary:hover,
-.btn-cta-secondary:hover {
-  background: rgb(60, 118, 61);
-  border: 1px solid #000;
-  color: #fff;
-}
+
 .offset-header {
   padding-top: 90px;
 }
@@ -291,9 +280,7 @@ pre code {
   background-clip: padding-box;
   margin: 0 auto;
 }
-.docs .docs-inner a {
-  color: #2b2b2b;
-}
+
 .docs .block {
   margin-bottom: 60px;
 }
