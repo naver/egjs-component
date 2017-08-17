@@ -52,10 +52,13 @@ a.btn-cta-primary,
   font-weight: 600;
 }
 
+a.btn:hover {
+  color: #fff;
+}
+
 a.btn-cta-secondary,
 .btn-cta-secondary {
   background: #333;
-  border: 1px solid #dff0d8;
   color: #fff;
   font-weight: 600;
 }
