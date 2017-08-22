@@ -3,6 +3,7 @@
   "version": "2.0.0-snapshot",
   "description": "A base class utility that manages events and options in modules.",
   "main": "dist/component.js",
+  "types": "src/component.d.ts",
   "es2015": "src/Component.js",
   "scripts": {
     "start": "webpack-dev-server --open",
