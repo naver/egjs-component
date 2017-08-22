@@ -10,23 +10,25 @@ declare class Component {
   constructor(options?: { [key: string]: any });
   trigger(eventName: string, customEvent?: { [key: string]: any }): boolean;
   hasOn(eventName: string): boolean;
-  on(eventName: string, handlerToAttach: (event?: { [key: string]: any }) => any): Component;
-  on(events: { [key: string]: (event?: { [key: string]: any }) => any }): Component;
-  off(eventName: string, handlerToAttach: (event?: { [key: string]: any }) => any): Component;
+  on(eventName: string, handlerToAttach: (event: { [key: string]: any }) => any): Component;
+  on(events: { [key: string]: (event: { [key: string]: any }) => any }): Component;
+  off(eventName: string, handlerToAttach: (event: { [key: string]: any }) => any): Component;
   off(eventName: string): Component;
   off(): Component;
-  once(events: { [key: string]: (event?: { [key: string]: any }) => any }): Component;
-  once(eventName: string, handlerToAttach: (event?: { [key: string]: any }) => any): Component;
+  once(events: { [key: string]: (event: { [key: string]: any }) => any }): Component;
+  once(eventName: string, handlerToAttach: (event: { [key: string]: any }) => any): Component;
+  options:  { [key: string]: any };
 }
 
 declare module Component {
   function trigger(eventName: string, customEvent?: { [key: string]: any }): boolean;
   function hasOn(eventName: string): boolean;
-  function on(eventName: string, handlerToAttach: (event?: { [key: string]: any }) => any): Component;
-  function on(events: { [key: string]: (event?: { [key: string]: any }) => any }): Component;
-  function off(eventName: string, handlerToAttach: (event?: { [key: string]: any }) => any): Component;
+  function on(eventName: string, handlerToAttach: (event: { [key: string]: any }) => any): Component;
+  function on(events: { [key: string]: (event: { [key: string]: any }) => any }): Component;
+  function off(eventName: string, handlerToAttach: (event: { [key: string]: any }) => any): Component;
   function off(eventName: string): Component;
   function off(): Component;
-  function once(events: { [key: string]: (event?: { [key: string]: any }) => any }): Component;
-  function once(eventName: string, handlerToAttach: (event?: { [key: string]: any }) => any): Component;
+  function once(events: { [key: string]: (event: { [key: string]: any }) => any }): Component;
+  function once(eventName: string, handlerToAttach: (event: { [key: string]: any }) => any): Component;
+  let options: { [key: string]: any };
 }
