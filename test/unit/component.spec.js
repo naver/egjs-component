@@ -268,8 +268,9 @@ describe("trigger method", function() {
 		oClass.trigger("eventType");
 		//Then
 		expect(Array.prototype.ExtendSomthing.called).to.be.false;
+		delete Array.prototype.ExtendSomthing;
 	});
-	delete Array.prototype.ExtendSomthing;
+
 
 	it("The currentTarget should be included in event", () => {
 		//Given
