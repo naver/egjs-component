@@ -24,7 +24,7 @@
 		"coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
 		"prepush": "npm run lint",
 		"commitmsg": "node config/validate-commit-msg.js",
-    "changelog": "node ./config/changelog.js"
+		"changelog": "node ./config/changelog.js"
 	},
 	"author": {
 		"name": "NAVER Corp."
