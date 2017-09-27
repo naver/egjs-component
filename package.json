@@ -12,6 +12,7 @@
     "test:chrome": "karma start --chrome",
     "lint": "eslint src",
     "jsdoc": "rm -rf ./doc && jsdoc -c jsdoc.json",
+    "release": "node config/release.js",
     "coverage": "karma start --coverage",
     "demo:start": "npm run demo:prebuild-latest && npm run demo:updateVersion && jekyll serve --host=0.0.0.0 -s demo",
     "demo:build": "npm run demo:updateVersion && jekyll build -s demo",
@@ -77,6 +78,9 @@
     "webpack": "^3.5.5",
     "webpack-dev-server": "^2.7.1",
     "webpack-merge": "^4.1.0",
-    "write-file-webpack-plugin": "^4.1.0"
+    "write-file-webpack-plugin": "^4.1.0",
+    "chalk": "^2.1.0",
+    "fs-extra": "^4.0.1",
+    "sync-exec": "^0.6.2"
   }
 }
