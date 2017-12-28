@@ -53,7 +53,7 @@ some.on("hi", (e) => {
 			return true;
 		}
 
-		// If detach method call in handler in first time then handeler list calls.
+		// If detach method call in handler in first time then handler list calls.
 		handlerList = handlerList.concat();
 
 		customEvent.eventType = eventName;
