@@ -5,6 +5,7 @@ dist: trusty
 sudo: false
 install:
   - npm install
+sudo: required
 addons:
   chrome: stable
 cache:
