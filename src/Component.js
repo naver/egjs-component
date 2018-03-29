@@ -4,8 +4,8 @@
  */
 
 /**
- * A class used to manage events and options in a component
- * @ko 컴포넌트의 이벤트와 옵션을 관리할 수 있게 하는 클래스
+ * A class used to manage events in a component
+ * @ko 컴포넌트의 이벤트을 관리할 수 있게 하는 클래스
  * @alias eg.Component
  */
 class Component {
