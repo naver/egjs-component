@@ -6,7 +6,7 @@
 
 export as namespace eg;
 
-export = Component;
+
 declare class Component {
   constructor(options?: { [key: string]: any });
   trigger(eventName: string, customEvent?: { [key: string]: any }): boolean;
@@ -28,3 +28,5 @@ declare namespace Component {
   function once(eventName: string, handlerToAttach: (event: { [key: string]: any }) => any): Component;
   let options: { [key: string]: any };
 }
+
+export default Component;
