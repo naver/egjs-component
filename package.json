@@ -1,6 +1,6 @@
 {
 	"name": "@egjs/component",
-	"version": "2.1.0-snapshot",
+	"version": "2.1.1",
 	"description": "A base class utility that manages events and options in modules.",
 	"main": "dist/component.js",
 	"module": "dist/component.module.js",
