@@ -79,7 +79,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -355,11 +355,14 @@ exports["default"] = Component;
 module.exports = exports["default"];
 
 /***/ }),
-/* 1 */
+/* 1 */,
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
+
+exports.__esModule = true;
 
 var _Component = __webpack_require__(0);
 
@@ -369,9 +372,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 _Component2["default"].VERSION = "2.1.1";
 
-module.exports = _Component2["default"];
+exports["default"] = _Component2["default"];
+module.exports = exports["default"];
 
 /***/ })
 /******/ ]);
 });
-//# sourceMappingURL=component.js.map
+//# sourceMappingURL=component.module.js.map
