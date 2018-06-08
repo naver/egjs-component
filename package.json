@@ -41,7 +41,7 @@
 	"bugs": {
 		"url": "https://github.com/naver/egjs-component/issues"
 	},
-	"homepage": "http://naver.github.io/egjs/component",
+	"homepage": "https://naver.github.io/egjs-component",
 	"devDependencies": {
 		"@egjs/common-demo": "github:naver/egjs#common-demo",
 		"babel-core": "^6.26.0",
