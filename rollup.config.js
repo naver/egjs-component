@@ -1,5 +1,5 @@
 import babel from "rollup-plugin-babel";
-import {uglify} from "rollup-plugin-uglify";
+import { uglify } from "rollup-plugin-uglify";
 import replace from "rollup-plugin-replace";
 
 const version = require("./package.json").version;
@@ -31,7 +31,23 @@ const entries = [
 			file: "./dist/component.js",
 		},
 	}, {
-		plugins: [uglify({sourcemap: true})],
+		plugins: [
+			uglify({
+				sourcemap: true,
+				output: {
+					comments: (node, comment) => {
+						const text = comment.value;
+						const type = comment.type;
+
+						if (type === "comment2") {
+							// multiline comment
+							return /@version/.test(text);
+						}
+						return true;
+					},
+				},
+			}),
+		],
 		output: {
 			format: "umd",
 			name: "eg.Component",
