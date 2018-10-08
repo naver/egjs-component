@@ -1,0 +1,15 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "loose": true,
+        "modules": false
+      }
+    ]
+  ],
+  "plugins": [
+    "transform-es3-property-literals",
+    "transform-es3-member-expression-literals"
+  ]
+}

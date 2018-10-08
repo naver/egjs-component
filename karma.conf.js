@@ -42,7 +42,8 @@ module.exports = function (config) {
 		karmaConfig.webpack.module.rules.unshift({
 			test: /\.js$/,
 			exclude: /(node_modules|test)/,
-			loader: "istanbul-instrumenter-loader"
+			loader: "istanbul-instrumenter-loader",
+			options: { esModules: true },
 		});
 		karmaConfig.singleRun = true;
 	}

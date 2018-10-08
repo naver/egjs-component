@@ -26,14 +26,13 @@ module.exports = {
 				query: {
 					"presets": [
 						[
-							"es2015",
+							"@babel/preset-env",
 							{
-								"loose": true
+								"loose": true,
 							}
 						]
 					],
 					"plugins": [
-						"add-module-exports",
 						"transform-es3-property-literals",
         				"transform-es3-member-expression-literals"
 					]

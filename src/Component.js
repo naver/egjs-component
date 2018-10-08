@@ -3,6 +3,10 @@
  * egjs projects are licensed under the MIT license
  */
 
+
+function isUndefined(value) {
+	return typeof value === "undefined";
+}
 /**
  * A class used to manage events in a component
  * @ko 컴포넌트의 이벤트을 관리할 수 있게 하는 클래스
@@ -99,8 +103,7 @@ some.trigger("hi");
 // Nothing happens
 	 */
 	once(eventName, handlerToAttach) {
-		if (typeof eventName === "object" &&
-			typeof handlerToAttach === "undefined") {
+		if (typeof eventName === "object" && isUndefined(handlerToAttach)) {
 			const eventHash = eventName;
 			let i;
 
@@ -154,8 +157,7 @@ class Some extends eg.Component {
 }
 */
 	on(eventName, handlerToAttach) {
-		if (typeof eventName === "object" &&
-			typeof handlerToAttach === "undefined") {
+		if (typeof eventName === "object" && isUndefined(handlerToAttach)) {
 			const eventHash = eventName;
 			let name;
 
@@ -167,7 +169,7 @@ class Some extends eg.Component {
 			typeof handlerToAttach === "function") {
 			let handlerList = this._eventHandler[eventName];
 
-			if (typeof handlerList === "undefined") {
+			if (isUndefined(handlerList)) {
 				this._eventHandler[eventName] = [];
 				handlerList = this._eventHandler[eventName];
 			}
@@ -195,13 +197,13 @@ class Some extends eg.Component {
 	 */
 	off(eventName, handlerToDetach) {
 		// All event detach.
-		if (typeof eventName === "undefined") {
+		if (isUndefined(eventName)) {
 			this._eventHandler = {};
 			return this;
 		}
 
 		// All handler of specific event detach.
-		if (typeof handlerToDetach === "undefined") {
+		if (isUndefined(handlerToDetach)) {
 			if (typeof eventName === "string") {
 				this._eventHandler[eventName] = undefined;
 				return this;
