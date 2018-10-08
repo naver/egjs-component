@@ -14,6 +14,17 @@ function isUndefined(value) {
  */
 class Component {
 	/**
+ * Version info string
+ * @ko 버전정보 문자열
+ * @name VERSION
+ * @static
+ * @type {String}
+ * @example
+ * eg.Component.VERSION;  // ex) 2.0.0
+ * @memberof eg.Component
+ */
+	static VERSION = "#__VERSION__#";
+	/**
 	 * @support {"ie": "7+", "ch" : "latest", "ff" : "latest",  "sf" : "latest", "edge" : "latest", "ios" : "7+", "an" : "2.1+ (except 3.x)"}
 	 */
 	constructor() {

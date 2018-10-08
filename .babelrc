@@ -9,6 +9,13 @@
     ]
   ],
   "plugins": [
+    "no-side-effect-class-properties",
+    [
+      "@babel/plugin-proposal-class-properties",
+      {
+        "loose": true
+      }
+    ],
     "transform-es3-property-literals",
     "transform-es3-member-expression-literals"
   ]

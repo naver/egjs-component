@@ -5,8 +5,8 @@ var StringReplacePlugin = require("string-replace-webpack-plugin");
 
 module.exports = {
 	entry: {
-		"component": "./src/index.umd.js",
-		"component.module": "./src/index.js",
+		"component": "./src/Component.js",
+		"component.module": "./src/Component.js",
 	},
 	output: {
 		path: path.resolve(__dirname, "../dist"),

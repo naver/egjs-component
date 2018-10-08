@@ -1,12 +1,14 @@
 import babel from "rollup-plugin-babel";
 import {uglify} from "rollup-plugin-uglify";
+import replace from "rollup-plugin-replace";
 
+const version = require("./package.json").version;
 const banner = require("./config/banner");
 const merge = require("./config/merge");
 
 const defaultConfig = {
-	input: "src/index.js",
-	plugins: [babel()],
+	input: "src/Component.js",
+	plugins: [babel(), replace({"#__VERSION__#": version, delimiters: ["", ""]})],
 	output: {
 		banner,
 		format: "es",
