@@ -5,8 +5,7 @@
     ],
     "rulesDirectory": [
       "tslint-consistent-codestyle",
-      "tslint-eslint-rules",
-      "tslint-lines-between-class-members"
+      "tslint-eslint-rules"
     ],
     "rules": {
       "quotemark": [true, "double"],
@@ -26,7 +25,6 @@
       "no-bitwise": false,
       "max-line-length": false,
       "no-misused-new": false,
-      "lines-between-class-members": true,
       "interface-name": [true, "never-prefix"],
       "whitespace": [
         true,
@@ -54,7 +52,8 @@
     },
     "linterOptions": {
       "exclude": [
-        "node_modules/**/*"
+        "node_modules/**/*",
+        "test/types/**/*"
       ]
     }
   }
