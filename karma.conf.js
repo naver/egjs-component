@@ -1,50 +1,58 @@
-const webpackConfig = require("./config/webpack");
-
 module.exports = function (config) {
 	var karmaConfig = {
-		frameworks: ["mocha", "chai", "sinon"],
-
-		files: [
-			"./node_modules/lite-fixture/index.js",
-			"./test/**/*.spec.js"
-		],
-
-		webpack: {
-			devtool: webpackConfig.module.devtool,
-			module: {
-				rules: [webpackConfig.module.rules[0]]
-			}
-		},
-		webpackMiddleware: {
-			noInfo: true
-		},
-
-		preprocessors: {
-			"./test/**/*.spec.js": ["webpack"]
-		},
-
-		reporters: ["mocha"],
-
-		browsers: ["ChromeHeadless"]
+    frameworks: ["mocha", "chai", "sinon", "karma-typescript"],
+    mime: {
+      'text/x-typescript': ['ts','tsx']
+    },
+    client: {
+      mocha: {
+        opts: "./mocha.opts",
+      },
+    },
+    files: [
+      "./node_modules/hammer-simulator/index.js",
+      "./test/setup.js",
+      "./test/hammer-simulator.run.js",
+      "./src/**/*.ts",
+      "./test/**/*.ts",
+      "./test/unit/assets/*.css",
+    ],
+    preprocessors: {
+      "src/**/*.ts": ["karma-typescript"],
+      "test/**/*.ts": ["karma-typescript"],
+    },
+    karmaTypescriptConfig: {
+      tsconfig: "./tsconfig.test.json",
+      reports: {
+        html: {
+          "directory": "coverage",
+          "subdirectory": "./"
+        },
+        lcovonly: {
+          "directory": "coverage",
+          "filename": "lcov.info",
+          "subdirectory": "."
+        },
+      },
+      coverageOptions: {
+        instrumentation: true,
+        exclude: /test/i,
+      }
+    },
+    browsers: [],
+    customLaunchers: {
+      CustomChromeHeadless: {
+        base: "ChromeHeadless",
+        flags: ["--window-size=400,300", "--no-sandbox", "--disable-setuid-sandbox"],
+      },
+    },
+    reporters: ["mocha"],
 	};
 
-	if (config.chrome) {
-		karmaConfig.browsers = ["Chrome"];
-	}
+	karmaConfig.browsers.push(config.chrome ? "Chrome" : "CustomChromeHeadless");
 
 	if (config.coverage) {
-		karmaConfig.preprocessors["./test/**/*.spec.js"].push("sourcemap");
-		karmaConfig.reporters.push("coverage-istanbul");
-		karmaConfig.coverageIstanbulReporter = {
-			reports: ["text-summary", "html", "lcovonly"],
-			dir: "./coverage"
-		};
-		karmaConfig.webpack.module.rules.unshift({
-			test: /\.js$/,
-			exclude: /(node_modules|test)/,
-			loader: "istanbul-instrumenter-loader",
-			options: { esModules: true },
-		});
+		karmaConfig.reporters.push("karma-typescript");
 		karmaConfig.singleRun = true;
 	}
 
