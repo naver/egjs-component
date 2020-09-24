@@ -7,7 +7,7 @@ function isUndefined(value: any): boolean {
     return typeof value === "undefined";
 }
 
-interface DefaultParam<T extends EventMap> {
+interface DefaultProps<T extends EventMap> {
   eventType: string;
   stop: () => void;
   currentTarget: Component<T>;
@@ -42,16 +42,18 @@ type EventHash<T extends EventMap> = Partial<{ [K in EventKey<T>]: EventCallback
 
 type EventCallback<T extends EventMap, K extends EventKey<T>>
   = T[K] extends NoArguments
-    ? (event: DefaultParam<T>) => any
+    ? (event: DefaultProps<T>) => any
     : T[K] extends (evt: infer U, ...restParam: infer V) => any
-      ? (event: U & DefaultParam<T>, ...restParam: V) => any
-      : (event: T[K] & DefaultParam<T>) => any;
-type EventParam<T extends EventMap, K extends EventKey<T>>
-  = T[K] extends NoArguments
-    ? (event: DefaultParam<T>) => any
-    : T[K] extends EventWithRestParam
-      ? T[K]
-      : (event: T[K]) => any;
+      ? (event: U & DefaultProps<T>, ...restParam: V) => any
+      : (event: T[K] & DefaultProps<T>) => any;
+type FirstParam<T extends EventMap, K extends EventKey<T>>
+  = T[K] extends (evt: infer U, ...restParam: any[]) => any
+    ? U
+    : T[K];
+type RestParam<T extends EventMap, K extends EventKey<T>>
+  = T[K] extends (evt: NotFunction, ...restParam: infer U) => any
+    ? U
+    : void[]
 
 /**
  * A class used to manage events in a component
@@ -112,12 +114,15 @@ class Component<T extends EventMap> {
    * // If you want to more know event design. You can see article.
    * // https://github.com/naver/egjs-component/wiki/How-to-make-Component-event-design%3F
    */
-  public trigger<K extends EventKey<T>>(eventName: K, customEvent: Partial<T[K]> = {}, ...restParam): boolean {
+  public trigger<K extends EventKey<T>>(eventName: K, customEvent: FirstParam<T, K>, ...restParam: RestParam<T, K>): boolean {
     let handlerList = this._eventHandler[eventName] || [];
     const hasHandlerList = handlerList.length > 0;
 
     if (!hasHandlerList) {
       return true;
+    }
+    if (!customEvent) {
+      customEvent = {} as any;
     }
 
     // If detach method call in handler in first time then handler list calls.
@@ -130,7 +135,7 @@ class Component<T extends EventMap> {
     (customEvent as any).stop = () => { isCanceled = true; };
     (customEvent as any).currentTarget = this;
 
-    let arg = [customEvent];
+    let arg: any[] = [customEvent];
 
     if (restParam.length >= 1) {
       arg = arg.concat(restParam);
@@ -229,7 +234,7 @@ class Component<T extends EventMap> {
       const eventHash = eventName;
 
       for (const name in eventHash) {
-        this.on(name, eventHash[name] as EventCallback<T, K>);
+        this.on(name, eventHash[name] as any);
       }
 
       return this;
@@ -242,7 +247,7 @@ class Component<T extends EventMap> {
         handlerList = this._eventHandler[eventName];
       }
 
-      handlerList.push(handlerToAttach);
+      handlerList.push(handlerToAttach as EventCallback<T, EventKey<T>>);
     }
 
     return this;
@@ -264,10 +269,9 @@ class Component<T extends EventMap> {
    *   }
    * }
    */
-  public off<K extends EventKey<T>>(eventName: K, handlerToDetach: EventCallback<T, K>): this;
-  public off(eventHash: EventHash<T>): this;
-
-  public off<K extends EventKey<T>>(eventName: K | EventHash<T>, handlerToDetach?: EventCallback<T, K>): this {
+  public off(eventHash?: EventHash<T>): this;
+  public off<K extends EventKey<T>>(eventName: K, handlerToDetach?: EventCallback<T, K>): this;
+  public off<K extends EventKey<T>>(eventName?: K | EventHash<T>, handlerToDetach?: EventCallback<T, K>): this {
     // Detach all event handlers.
     if (isUndefined(eventName)) {
       this._eventHandler = {};
@@ -283,7 +287,7 @@ class Component<T extends EventMap> {
         const eventHash = eventName;
 
         for (const name in eventHash) {
-          this.off(name, eventHash[name] as EventCallback<T, K>);
+          this.off(name, eventHash[name] as any);
         }
         return this;
       }
