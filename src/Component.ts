@@ -71,7 +71,11 @@ class Component<T extends EventMap> {
    */
   public static VERSION: string = "#__VERSION__#";
 
-  private _eventHandler: {[keys: string]: Array<EventCallback<T, EventKey<T>>>};
+  /**
+   * @deprecated
+   */
+  public options: {[key: string]: any} = {};
+  private _eventHandler: {[keys: string]: EventCallback<T, EventKey<T>>[]};
 
   /**
    * @support {"ie": "7+", "ch" : "latest", "ff" : "latest",  "sf" : "latest", "edge" : "latest", "ios" : "7+", "an" : "2.1+ (except 3.x)"}
@@ -87,28 +91,27 @@ class Component<T extends EventMap> {
    * @param {Object} customEvent Event data to be sent when triggering a custom event <ko>커스텀 이벤트가 발생할 때 전달할 데이터</ko>
    * @return {Boolean} Indicates whether the event has occurred. If the stop() method is called by a custom event handler, it will return false and prevent the event from occurring. <a href="https://github.com/naver/egjs-component/wiki/How-to-make-Component-event-design%3F">Ref</a> <ko>이벤트 발생 여부. 커스텀 이벤트 핸들러에서 stop() 메서드를 호출하면 'false'를 반환하고 이벤트 발생을 중단한다. <a href="https://github.com/naver/egjs-component/wiki/How-to-make-Component-event-design%3F">참고</a></ko>
    * @example
-
-class Some extends eg.Component {
-  some(){
-    if(this.trigger("beforeHi")){ // When event call to stop return false.
-      this.trigger("hi");// fire hi event.
-    }
-  }
-}
-
-const some = new Some();
-some.on("beforeHi", (e) => {
-  if(condition){
-    e.stop(); // When event call to stop, `hi` event not call.
-  }
-});
-some.on("hi", (e) => {
-  // `currentTarget` is component instance.
-  console.log(some === e.currentTarget); // true
-});
-// If you want to more know event design. You can see article.
-// https://github.com/naver/egjs-component/wiki/How-to-make-Component-event-design%3F
-  */
+   * class Some extends eg.Component {
+   *   some(){
+   *     if(this.trigger("beforeHi")){ // When event call to stop return false.
+   *       this.trigger("hi");// fire hi event.
+   *     }
+   *   }
+   * }
+   *
+   * const some = new Some();
+   * some.on("beforeHi", (e) => {
+   *   if(condition){
+   *     e.stop(); // When event call to stop, `hi` event not call.
+   *   }
+   * });
+   * some.on("hi", (e) => {
+   *   // `currentTarget` is component instance.
+   *   console.log(some === e.currentTarget); // true
+   * });
+   * // If you want to more know event design. You can see article.
+   * // https://github.com/naver/egjs-component/wiki/How-to-make-Component-event-design%3F
+   */
   public trigger<K extends EventKey<T>>(eventName: K, customEvent: Partial<T[K]> = {}, ...restParam): boolean {
     let handlerList = this._eventHandler[eventName] || [];
     const hasHandlerList = handlerList.length > 0;
@@ -121,14 +124,13 @@ some.on("hi", (e) => {
     handlerList = handlerList.concat();
 
     let isCanceled = false;
-    const event = {
-      eventType: eventName,
-      stop: () => { isCanceled = true; },
-      currentTarget: this,
-      ...customEvent,
-    }
 
-    let arg = [event];
+    // This should be done like this to pass previous tests
+    (customEvent as any).eventType = eventName;
+    (customEvent as any).stop = () => { isCanceled = true; };
+    (customEvent as any).currentTarget = this;
+
+    let arg = [customEvent];
 
     if (restParam.length >= 1) {
       arg = arg.concat(restParam);
@@ -148,29 +150,30 @@ some.on("hi", (e) => {
    * @param {Function} handlerToAttach The handler function of the event to be attached <ko>등록할 이벤트의 핸들러 함수</ko>
    * @return {eg.Component} An instance of a component itself<ko>컴포넌트 자신의 인스턴스</ko>
    * @example
-class Some extends eg.Component {
-hi() {
-  alert("hi");
-}
-thing() {
-  this.once("hi", this.hi);
-}
-}
-
-var some = new Some();
-some.thing();
-some.trigger("hi");
-// fire alert("hi");
-some.trigger("hi");
-// Nothing happens
-  */
+   * class Some extends eg.Component {
+   * hi() {
+   *   alert("hi");
+   * }
+   * thing() {
+   *   this.once("hi", this.hi);
+   * }
+   * }
+   *
+   * var some = new Some();
+   * some.thing();
+   * some.trigger("hi");
+   * // fire alert("hi");
+   * some.trigger("hi");
+   * // Nothing happens
+   */
   public once<K extends EventKey<T>>(eventName: K, handlerToAttach: EventCallback<T, K>): this;
   public once(eventHash: EventHash<T>): this;
+
   public once<K extends EventKey<T>>(eventName: K | EventHash<T>, handlerToAttach?: EventCallback<T, K>): this {
     if (typeof eventName === "object" && isUndefined(handlerToAttach)) {
       const eventHash = eventName;
 
-      for (let key in eventHash) {
+      for (const key in eventHash) {
         this.once((key as K), eventHash[key] as EventCallback<T, K>);
       }
       return this;
@@ -192,12 +195,12 @@ some.trigger("hi");
    * @param {String} eventName The name of the event to be attached <ko>등록 여부를 확인할 이벤트의 이름</ko>
    * @return {Boolean} Indicates whether the event is attached. <ko>이벤트 등록 여부</ko>
    * @example
-class Some extends eg.Component {
-  some() {
-    this.hasOn("hi");// check hi event.
-  }
-}
-  */
+   * class Some extends eg.Component {
+   *   some() {
+   *     this.hasOn("hi");// check hi event.
+   *   }
+   * }
+   */
   public hasOn<K extends EventKey<T>>(eventName: K): boolean {
     return !!this._eventHandler[eventName];
   }
@@ -209,22 +212,23 @@ class Some extends eg.Component {
    * @param {Function} handlerToAttach The handler function of the event to be attached <ko>등록할 이벤트의 핸들러 함수</ko>
    * @return {eg.Component} An instance of a component itself<ko>컴포넌트 자신의 인스턴스</ko>
    * @example
-class Some extends eg.Component {
-  hi() {
-    console.log("hi");
-  }
-  some() {
-    this.on("hi",this.hi); //attach event
-  }
-}
-  */
+   * class Some extends eg.Component {
+   *   hi() {
+   *     console.log("hi");
+   *   }
+   *   some() {
+   *     this.on("hi",this.hi); //attach event
+   *   }
+   * }
+   */
   public on<K extends EventKey<T>>(eventName: K, handlerToAttach: EventCallback<T, K>): this;
   public on(eventHash: EventHash<T>): this;
+
   public on<K extends EventKey<T>>(eventName: K | EventHash<T>, handlerToAttach?: EventCallback<T, K>): this {
     if (typeof eventName === "object" && isUndefined(handlerToAttach)) {
       const eventHash = eventName;
 
-      for (let name in eventHash) {
+      for (const name in eventHash) {
         this.on(name, eventHash[name] as EventCallback<T, K>);
       }
 
@@ -251,17 +255,18 @@ class Some extends eg.Component {
    * @param {Function} handlerToDetach The handler function of the event to be detached <ko>해제할 이벤트의 핸들러 함수</ko>
    * @return {eg.Component} An instance of a component itself <ko>컴포넌트 자신의 인스턴스</ko>
    * @example
-class Some extends eg.Component {
-  hi() {
-    console.log("hi");
-  }
-  some() {
-    this.off("hi",this.hi); //detach event
-  }
-}
-  */
+   * class Some extends eg.Component {
+   *   hi() {
+   *     console.log("hi");
+   *   }
+   *   some() {
+   *     this.off("hi",this.hi); //detach event
+   *   }
+   * }
+   */
   public off<K extends EventKey<T>>(eventName: K, handlerToDetach: EventCallback<T, K>): this;
   public off(eventHash: EventHash<T>): this;
+
   public off<K extends EventKey<T>>(eventName: K | EventHash<T>, handlerToDetach?: EventCallback<T, K>): this {
     // Detach all event handlers.
     if (isUndefined(eventName)) {
@@ -277,7 +282,7 @@ class Some extends eg.Component {
       } else {
         const eventHash = eventName;
 
-        for (let name in eventHash) {
+        for (const name in eventHash) {
           this.off(name, eventHash[name] as EventCallback<T, K>);
         }
         return this;
@@ -285,16 +290,16 @@ class Some extends eg.Component {
     }
 
     // Detach single event handler
-    let handlerList = this._eventHandler[eventName as K];
+    const handlerList = this._eventHandler[eventName as K];
 
     if (handlerList) {
-      let handlerFunction: EventCallback<T, EventKey<T>>;
-
-      for (let k = 0; (handlerFunction = handlerList[k]) !== undefined; k++) {
+      let idx = 0;
+      for (const handlerFunction of handlerList) {
         if (handlerFunction === handlerToDetach) {
-          handlerList = handlerList.splice(k, 1);
+          handlerList.splice(idx, 1);
           break;
         }
+        idx++;
       }
     }
 

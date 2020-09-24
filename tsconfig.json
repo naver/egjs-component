@@ -11,15 +11,9 @@
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "baseUrl": ".",
-    "paths": {
-      "~/*": [
-        "src/*"
-      ]
-    },
   },
   "include": [
     "./src/**/*.ts",
-    "./test/**/*.ts",
   ],
   "exclude": [
     "node_modules"
