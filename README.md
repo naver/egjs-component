@@ -11,7 +11,7 @@ A class used to manage events and options in a component
 
 ## Download and Installation
 
-Download dist files from repo directly or install it via npm. 
+Download dist files from repo directly or install it via npm.
 
 ### For development (Uncompressed)
 
@@ -69,6 +69,36 @@ some.trigger("hi");
 // fire alert("hi");
 some.trigger("hi");
 // Nothing happens
+```
+
+### 3. Typescript Support
+You can use [Typescript Generics](https://www.typescriptlang.org/docs/handbook/generics.html) to define events that component can emit.
+```ts
+import Component from "@egjs/component";
+
+class SomeClass extends Component<{
+  event1: {
+    prop1: number;
+    prop2: string;
+  };
+  // You can also define like this if there're more than one arguments for a event
+  // First argument should be object type
+  event2: (arg0: {
+    prop1: number;
+    prop2: string;
+  }, arg1: string, arg2: boolean) => void;
+}> {
+  thing() {
+    this.on("event1", e => {
+      // These properties will be available for typescript-enabled environment
+      e.prop1; // number
+      e.prop2; // string
+      e.currentTarget; // SomeClass
+      e.eventType; // string("event1")
+      e.stop; // () => void
+    });
+  }
+}
 ```
 
 ## Bug Report
