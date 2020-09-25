@@ -7,12 +7,15 @@ function isUndefined(value: any): boolean {
     return typeof value === "undefined";
 }
 
-interface DefaultProps<T extends EventMap> {
+interface DefaultProps<T> {
   eventType: string;
   stop: () => void;
-  currentTarget: Component<T>;
+  currentTarget: T;
 }
 
+type EventNoParamKey<T extends EventMap, K extends EventKey<T>> = T[K] extends NoArguments
+  ? K
+  : never;
 type NotFunction = { [k: string]: unknown } & ({ bind?: never } | { call?: never });
 type NoArguments = undefined | null | void | never;
 type EventWithRestParam = ((evt: NotFunction, ...restParam: any[]) => any);
@@ -34,22 +37,24 @@ type EventWithRestParam = ((evt: NotFunction, ...restParam: any[]) => any);
  *   }, arg1: string, arg2: boolean) => boolean;
  * }>
  */
-type EventDefinition = NotFunction | EventWithRestParam;
+type EventDefinition = NotFunction | NoArguments | EventWithRestParam;
 
 type EventMap = Record<string, EventDefinition>;
 type EventKey<T extends EventMap> = string & keyof T;
-type EventHash<T extends EventMap> = Partial<{ [K in EventKey<T>]: EventCallback<T, K> }>;
+type EventHash<T extends EventMap, S> = Partial<{ [K in EventKey<T>]: EventCallback<T, K, S> }>;
 
-type EventCallback<T extends EventMap, K extends EventKey<T>>
+type EventCallback<T extends EventMap, K extends EventKey<T>, S>
   = T[K] extends NoArguments
-    ? (event: DefaultProps<T>) => any
+    ? (event: DefaultProps<S>) => any
     : T[K] extends (evt: infer U, ...restParam: infer V) => any
-      ? (event: U & DefaultProps<T>, ...restParam: V) => any
-      : (event: T[K] & DefaultProps<T>) => any;
+      ? (event: U & DefaultProps<S>, ...restParam: V) => any
+      : (event: T[K] & DefaultProps<S>) => any;
 type FirstParam<T extends EventMap, K extends EventKey<T>>
-  = T[K] extends (evt: infer U, ...restParam: any[]) => any
-    ? U
-    : T[K];
+  = T[K] extends NoArguments
+    ? void
+    : T[K] extends (evt: infer U, ...restParam: any[]) => any
+      ? U
+      : T[K];
 type RestParam<T extends EventMap, K extends EventKey<T>>
   = T[K] extends (evt: NotFunction, ...restParam: infer U) => any
     ? U
@@ -60,7 +65,7 @@ type RestParam<T extends EventMap, K extends EventKey<T>>
  * @ko 컴포넌트의 이벤트을 관리할 수 있게 하는 클래스
  * @alias eg.Component
  */
-class Component<T extends EventMap> {
+class Component<T extends EventMap = {}> {
   /**
    * Version info string
    * @ko 버전정보 문자열
@@ -77,7 +82,7 @@ class Component<T extends EventMap> {
    * @deprecated
    */
   public options: {[key: string]: any} = {};
-  private _eventHandler: {[keys: string]: EventCallback<T, EventKey<T>>[]};
+  private _eventHandler: {[keys: string]: EventCallback<T, EventKey<T>, Component<T>>[]};
 
   /**
    * @support {"ie": "7+", "ch" : "latest", "ff" : "latest",  "sf" : "latest", "edge" : "latest", "ios" : "7+", "an" : "2.1+ (except 3.x)"}
@@ -114,7 +119,9 @@ class Component<T extends EventMap> {
    * // If you want to more know event design. You can see article.
    * // https://github.com/naver/egjs-component/wiki/How-to-make-Component-event-design%3F
    */
-  public trigger<K extends EventKey<T>>(eventName: K, customEvent: FirstParam<T, K>, ...restParam: RestParam<T, K>): boolean {
+  public trigger<K extends EventKey<T>>(eventName: EventNoParamKey<T, K>): boolean;
+  public trigger<K extends EventKey<T>>(eventName: K, customEvent: FirstParam<T, K>, ...restParam: RestParam<T, K>): boolean;
+  public trigger<K extends EventKey<T>>(eventName: K, customEvent?: FirstParam<T, K>, ...restParam: any[]): boolean {
     let handlerList = this._eventHandler[eventName] || [];
     const hasHandlerList = handlerList.length > 0;
 
@@ -171,15 +178,14 @@ class Component<T extends EventMap> {
    * some.trigger("hi");
    * // Nothing happens
    */
-  public once<K extends EventKey<T>>(eventName: K, handlerToAttach: EventCallback<T, K>): this;
-  public once(eventHash: EventHash<T>): this;
-
-  public once<K extends EventKey<T>>(eventName: K | EventHash<T>, handlerToAttach?: EventCallback<T, K>): this {
+  public once<K extends EventKey<T>>(eventName: K, handlerToAttach: EventCallback<T, K, this>): this;
+  public once(eventHash: EventHash<T, this>): this;
+  public once<K extends EventKey<T>>(eventName: K | EventHash<T, this>, handlerToAttach?: EventCallback<T, K, this>): this {
     if (typeof eventName === "object" && isUndefined(handlerToAttach)) {
       const eventHash = eventName;
 
       for (const key in eventHash) {
-        this.once((key as K), eventHash[key] as EventCallback<T, K>);
+        this.once((key as K), eventHash[key] as EventCallback<T, K, this>);
       }
       return this;
     } else if (typeof eventName === "string" && typeof handlerToAttach === "function") {
@@ -226,10 +232,9 @@ class Component<T extends EventMap> {
    *   }
    * }
    */
-  public on<K extends EventKey<T>>(eventName: K, handlerToAttach: EventCallback<T, K>): this;
-  public on(eventHash: EventHash<T>): this;
-
-  public on<K extends EventKey<T>>(eventName: K | EventHash<T>, handlerToAttach?: EventCallback<T, K>): this {
+  public on<K extends EventKey<T>>(eventName: K, handlerToAttach: EventCallback<T, K, this>): this;
+  public on(eventHash: EventHash<T, this>): this;
+  public on<K extends EventKey<T>>(eventName: K | EventHash<T, this>, handlerToAttach?: EventCallback<T, K, this>): this {
     if (typeof eventName === "object" && isUndefined(handlerToAttach)) {
       const eventHash = eventName;
 
@@ -247,7 +252,7 @@ class Component<T extends EventMap> {
         handlerList = this._eventHandler[eventName];
       }
 
-      handlerList.push(handlerToAttach as EventCallback<T, EventKey<T>>);
+      handlerList.push(handlerToAttach as EventCallback<T, EventKey<T>, this>);
     }
 
     return this;
@@ -269,9 +274,9 @@ class Component<T extends EventMap> {
    *   }
    * }
    */
-  public off(eventHash?: EventHash<T>): this;
-  public off<K extends EventKey<T>>(eventName: K, handlerToDetach?: EventCallback<T, K>): this;
-  public off<K extends EventKey<T>>(eventName?: K | EventHash<T>, handlerToDetach?: EventCallback<T, K>): this {
+  public off(eventHash?: EventHash<T, this>): this;
+  public off<K extends EventKey<T>>(eventName: K, handlerToDetach?: EventCallback<T, K, this>): this;
+  public off<K extends EventKey<T>>(eventName?: K | EventHash<T, this>, handlerToDetach?: EventCallback<T, K, this>): this {
     // Detach all event handlers.
     if (isUndefined(eventName)) {
       this._eventHandler = {};

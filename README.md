@@ -76,7 +76,7 @@ You can use [Typescript Generics](https://www.typescriptlang.org/docs/handbook/g
 ```ts
 import Component from "@egjs/component";
 
-class SomeClass extends Component<{
+type ComponentEvent = {
   event1: {
     prop1: number;
     prop2: string;
@@ -87,7 +87,12 @@ class SomeClass extends Component<{
     prop1: number;
     prop2: string;
   }, arg1: string, arg2: boolean) => void;
-}> {
+  // If there're no event props
+  event3: void;
+}
+
+// tslint:disable-next-line max-classes-per-file
+class SomeClass extends Component<ComponentEvent> {
   thing() {
     this.on("event1", e => {
       // These properties will be available for typescript-enabled environment

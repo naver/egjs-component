@@ -12,7 +12,10 @@ class TestClass extends Component<{
   evt3: (arg0: {
     c: boolean;
   }) => any;
-}> {};
+  evt4: void;
+}> {
+  testMethod() {}
+};
 
 const component = new TestClass();
 
@@ -36,6 +39,10 @@ test("Correct event definitions", () => {
     evt3: (arg0: {
       c: boolean;
     }) => any;
+    evt4: void;
+    evt5: null;
+    evt6: undefined;
+    evt7: never;
   }> {};
 });
 
@@ -48,6 +55,9 @@ test("Correct trigger() usage", () => {
 
   // $ExpectType boolean
   component.trigger("evt3", { c : true });
+
+  // $ExpectType boolean
+  component.trigger("evt4");
 });
 
 test("Correct on, once usage", () => {
@@ -126,6 +136,9 @@ test("Default props check", () => {
 
     // $ExpectType TestClass
     component[method]("evt1", e => {
+      // $ExpectType TestClass
+      e.currentTarget
+
       // $ExpectType string
       e.eventType
 
@@ -138,6 +151,9 @@ test("Default props check", () => {
 
     // $ExpectType TestClass
     component[method]("evt2", (arg0, arg1) => {
+      // $ExpectType TestClass
+      arg0.currentTarget
+
       // $ExpectType string
       arg0.eventType
 
@@ -150,6 +166,9 @@ test("Default props check", () => {
 
     // $ExpectType TestClass
     component[method]("evt3", e => {
+      // $ExpectType TestClass
+      e.currentTarget
+
       // $ExpectType string
       e.eventType
 
@@ -157,6 +176,12 @@ test("Default props check", () => {
       e.stop
 
       return false;
+    });
+
+    // $ExpectType TestClass
+    component[method]("evt4", e => {
+      // $ExpectType TestClass
+      e.currentTarget
     });
   });
 });
@@ -200,6 +225,12 @@ test("Wrong trigger() usage", () => {
 
   // $ExpectError
   component.trigger("evt3", { c: true }, 123);
+
+  // $ExpectError
+  component.trigger("evt4", { a : 1 });
+
+  // $ExpectError
+  component.trigger("evt4", 1);
 });
 
 test("Wrong on, once usage", () => {
