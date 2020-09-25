@@ -6,6 +6,7 @@
     "void-return": false,
     "no-unnecessary-generics": false,
     "semicolon": false,
-    "no-relative-import-in-test": false
+    "no-relative-import-in-test": false,
+    "invalid-void": false
   }
 }
