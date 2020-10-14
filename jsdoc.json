@@ -4,8 +4,8 @@
 		"dictionaries": ["jsdoc","closure"]
 	},
 	"source": {
-		"include": ["src/component.js","README.md"],
-		"includePattern": ".+\\.js(doc|x)?$",
+		"include": ["src","README.md"],
+		"includePattern": ".+\\.(j|t)s(doc|x)?$",
 		"excludePattern": "(^|\\/|\\\\)_"
 	},
 	"opts": {
