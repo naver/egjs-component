@@ -210,4 +210,4 @@ demo/release/
 CHANGELOG.md
 declaration/
 test/types/*.d.ts
-
+dist/
