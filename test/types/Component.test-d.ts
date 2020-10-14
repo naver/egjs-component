@@ -46,6 +46,13 @@ test("Correct event definitions", () => {
   }> {};
 });
 
+test("Can make component with no events", () => {
+  // $ExpectType SomeCorrectClass
+  class SomeCorrectClass extends Component {
+    // NOTHING
+  }
+});
+
 test("Correct trigger() usage", () => {
   // $ExpectType boolean
   component.trigger("evt1", { a : 1 });
