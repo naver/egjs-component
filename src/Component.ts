@@ -91,6 +91,8 @@ class Component<T extends EventMap = EventMap> {
     this._eventHandler = {};
   }
 
+  public trigger<K extends EventKey<T>>(eventName: EventNoParamKey<T, K>): boolean;
+  public trigger<K extends EventKey<T>>(eventName: K, customEvent: FirstParam<T, K>, ...restParam: RestParam<T, K>): boolean;
   /**
    * Triggers a custom event.
    * @ko 커스텀 이벤트를 발생시킨다
@@ -119,8 +121,6 @@ class Component<T extends EventMap = EventMap> {
    * // If you want to more know event design. You can see article.
    * // https://github.com/naver/egjs-component/wiki/How-to-make-Component-event-design%3F
    */
-  public trigger<K extends EventKey<T>>(eventName: EventNoParamKey<T, K>): boolean;
-  public trigger<K extends EventKey<T>>(eventName: K, customEvent: FirstParam<T, K>, ...restParam: RestParam<T, K>): boolean;
   public trigger<K extends EventKey<T>>(eventName: K, customEvent?: FirstParam<T, K>, ...restParam: any[]): boolean {
     let handlerList = this._eventHandler[eventName] || [];
     const hasHandlerList = handlerList.length > 0;
@@ -155,6 +155,8 @@ class Component<T extends EventMap = EventMap> {
     return !isCanceled;
   }
 
+  public once<K extends EventKey<T>>(eventName: K, handlerToAttach: EventCallback<T, K, this>): this;
+  public once(eventHash: EventHash<T, this>): this;
   /**
    * Executed event just one time.
    * @ko 이벤트가 한번만 실행된다.
@@ -178,8 +180,6 @@ class Component<T extends EventMap = EventMap> {
    * some.trigger("hi");
    * // Nothing happens
    */
-  public once<K extends EventKey<T>>(eventName: K, handlerToAttach: EventCallback<T, K, this>): this;
-  public once(eventHash: EventHash<T, this>): this;
   public once<K extends EventKey<T>>(eventName: K | EventHash<T, this>, handlerToAttach?: EventCallback<T, K, this>): this {
     if (typeof eventName === "object" && isUndefined(handlerToAttach)) {
       const eventHash = eventName;
@@ -216,6 +216,8 @@ class Component<T extends EventMap = EventMap> {
     return !!this._eventHandler[eventName];
   }
 
+  public on<K extends EventKey<T>>(eventName: K, handlerToAttach: EventCallback<T, K, this>): this;
+  public on(eventHash: EventHash<T, this>): this;
   /**
    * Attaches an event to a component.
    * @ko 컴포넌트에 이벤트를 등록한다.
@@ -232,8 +234,6 @@ class Component<T extends EventMap = EventMap> {
    *   }
    * }
    */
-  public on<K extends EventKey<T>>(eventName: K, handlerToAttach: EventCallback<T, K, this>): this;
-  public on(eventHash: EventHash<T, this>): this;
   public on<K extends EventKey<T>>(eventName: K | EventHash<T, this>, handlerToAttach?: EventCallback<T, K, this>): this {
     if (typeof eventName === "object" && isUndefined(handlerToAttach)) {
       const eventHash = eventName;
@@ -258,6 +258,8 @@ class Component<T extends EventMap = EventMap> {
     return this;
   }
 
+  public off(eventHash?: EventHash<T, this>): this;
+  public off<K extends EventKey<T>>(eventName: K, handlerToDetach?: EventCallback<T, K, this>): this;
   /**
    * Detaches an event from the component.
    * @ko 컴포넌트에 등록된 이벤트를 해제한다
@@ -274,8 +276,6 @@ class Component<T extends EventMap = EventMap> {
    *   }
    * }
    */
-  public off(eventHash?: EventHash<T, this>): this;
-  public off<K extends EventKey<T>>(eventName: K, handlerToDetach?: EventCallback<T, K, this>): this;
   public off<K extends EventKey<T>>(eventName?: K | EventHash<T, this>, handlerToDetach?: EventCallback<T, K, this>): this {
     // Detach all event handlers.
     if (isUndefined(eventName)) {
