@@ -217,6 +217,36 @@ test("Wrong event definitions", () => {
   }> {};
 });
 
+test("Should show error when calling method with not defined event name", () => {
+  class NotDefinedClass extends Component {};
+
+  // $ExpectError
+  new NotDefinedClass().trigger("a");
+
+  // $ExpectError
+  new NotDefinedClass().on("a", e => {});
+
+  // $ExpectError
+  new NotDefinedClass().once("a", e => {});
+
+  // $ExpectError
+  new NotDefinedClass().off("a", e => {});
+
+  class NotDefinedClass2 extends Component<{ b: { prop: number } }> {};
+
+  // $ExpectError
+  new NotDefinedClass2().trigger("a");
+
+  // $ExpectError
+  new NotDefinedClass2().on("a", e => {});
+
+  // $ExpectError
+  new NotDefinedClass2().once("a", e => {});
+
+  // $ExpectError
+  new NotDefinedClass2().off("a", e => {});
+});
+
 test("Wrong trigger() usage", () => {
   // $ExpectError
   component.trigger();
