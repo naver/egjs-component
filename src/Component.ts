@@ -67,7 +67,7 @@ type RestParam<T extends EventMap, K extends EventKey<T>>
  * @ko 컴포넌트의 이벤트을 관리할 수 있게 하는 클래스
  * @alias eg.Component
  */
-class Component<T extends EventMap = EventMap> {
+class Component<T extends EventMap = {}> {
   /**
    * Version info string
    * @ko 버전정보 문자열
