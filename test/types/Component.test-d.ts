@@ -46,11 +46,27 @@ test("Correct event definitions", () => {
   }> {};
 });
 
-test("Can make component with no events", () => {
+test("Can make component with no event definitions", () => {
   // $ExpectType SomeCorrectClass
   class SomeCorrectClass extends Component {
     // NOTHING
   }
+});
+
+test("Can make component with no event definitions and call methods of it", () => {
+  class SomeCorrectClass2 extends Component {};
+
+  // $ExpectType boolean
+  new SomeCorrectClass2().trigger("a");
+
+  // $ExpectType SomeCorrectClass2
+  new SomeCorrectClass2().on("a", e => {});
+
+  // $ExpectType SomeCorrectClass2
+  new SomeCorrectClass2().once("a", e => {});
+
+  // $ExpectType SomeCorrectClass2
+  new SomeCorrectClass2().off("a", e => {});
 });
 
 test("Correct trigger() usage", () => {
@@ -218,7 +234,7 @@ test("Wrong event definitions", () => {
 });
 
 test("Should show error when calling method with not defined event name", () => {
-  class NotDefinedClass extends Component {};
+  class NotDefinedClass extends Component<{ b: { prop: number } }> {};
 
   // $ExpectError
   new NotDefinedClass().trigger("a");
@@ -231,20 +247,6 @@ test("Should show error when calling method with not defined event name", () => 
 
   // $ExpectError
   new NotDefinedClass().off("a", e => {});
-
-  class NotDefinedClass2 extends Component<{ b: { prop: number } }> {};
-
-  // $ExpectError
-  new NotDefinedClass2().trigger("a");
-
-  // $ExpectError
-  new NotDefinedClass2().on("a", e => {});
-
-  // $ExpectError
-  new NotDefinedClass2().once("a", e => {});
-
-  // $ExpectError
-  new NotDefinedClass2().off("a", e => {});
 });
 
 test("Wrong trigger() usage", () => {

@@ -62,12 +62,16 @@ type RestParam<T extends EventMap, K extends EventKey<T>>
     ? U
     : void[]
 
+interface DefaultEventMap {
+  [key: string]: { [key: string]: any } | void;
+}
+
 /**
  * A class used to manage events in a component
  * @ko 컴포넌트의 이벤트을 관리할 수 있게 하는 클래스
  * @alias eg.Component
  */
-class Component<T extends EventMap = {}> {
+class Component<T extends EventMap = DefaultEventMap> {
   /**
    * Version info string
    * @ko 버전정보 문자열
