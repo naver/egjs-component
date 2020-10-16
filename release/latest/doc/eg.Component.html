@@ -84,8 +84,6 @@
     
         <li data-name="eg.Component.VERSION"><a href="eg.Component.html#.VERSION">VERSION</a></li>
     
-        <li data-name="eg.Component#options"><a href="eg.Component.html#options">options</a></li>
-    
     </ul>
     <ul class="typedefs itemMembers">
     
@@ -95,6 +93,14 @@
     <span class="subtitle">Methods</span>
     
         <li data-name="eg.Component#hasOn"><a href="eg.Component.html#hasOn">hasOn</a></li>
+    
+        <li data-name="eg.Component#off"><a href="eg.Component.html#off">off</a></li>
+    
+        <li data-name="eg.Component#on"><a href="eg.Component.html#on">on</a></li>
+    
+        <li data-name="eg.Component#once"><a href="eg.Component.html#once">once</a></li>
+    
+        <li data-name="eg.Component#trigger"><a href="eg.Component.html#trigger">trigger</a></li>
     
     </ul>
     <ul class="events itemMembers">
@@ -145,7 +151,7 @@
     
         
         <div class="tag-source">
-            <a href="-_Users_user_work_egjs-component_src_Component.ts.html">Component.ts</a>, <a href="-_Users_user_work_egjs-component_src_Component.ts.html#line68">line 68</a>
+            <a href="-_Users_user_work_egjs-component_src_Component.ts.html">Component.ts</a>, <a href="-_Users_user_work_egjs-component_src_Component.ts.html#line74">line 74</a>
         </div>
         
     </div>
@@ -288,7 +294,7 @@
 
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".VERSION"><span class="type-signature static">static</span>eg.Component.VERSION<span class="type-signature type string">String</span> </h4>
+        <h4 class="name" id=".VERSION"><span class="type-signature static">static</span>eg.Component.VERSION<span class="type-signature type $ts:string<file>/users/user/work/egjs-component/src/component.ts</file>">string</span> </h4>
     </div>
     
 </dt>
@@ -344,53 +350,6 @@
     
 </dd>
 
-        
-            
-
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="options">options<span class="type-signature type $ts:{[key: string]: any}<file>/users/user/work/egjs-component/src/component.ts</file>">{[key: string]: any}</span> </h4>
-    </div>
-    
-</dt>
-<dd>
-    
-    
-
-    
-<dl class="details">
-    
-
-    
-
-    
-
-    
-        <dt class="important tag-deprecated">Deprecated</dt><dd class="yes-def tag-deprecated"><ul class="dummy"><li>Yes</li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-
-    <!-- if data.codepen -->
-</dl>
-
-
-    
-</dd>
-
         </dl>
     
 
@@ -403,12 +362,12 @@
     <div class="nameContainer">
         <h4 class="name" id="hasOn">
             
-            hasOn<span class="signature">(eventName)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Boolean}</span>
+            hasOn<span class="signature">(eventName)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="-_Users_user_work_egjs-component_src_Component.ts.html">Component.ts</a>, <a href="-_Users_user_work_egjs-component_src_Component.ts.html#line215">line 215</a>
+            <a href="-_Users_user_work_egjs-component_src_Component.ts.html">Component.ts</a>, <a href="-_Users_user_work_egjs-component_src_Component.ts.html#line227">line 227</a>
         </div>
         
     </div>
@@ -448,7 +407,7 @@
         <!-- parameter type -->
         
         <div>Type: 
-<span class="param-type">String</span>
+<span class="param-type">string</span>
 
 </div>
         
@@ -496,7 +455,7 @@
             <td class="type">
             
                     	
-                        Boolean
+                        boolean
                         
                         
                     
@@ -521,11 +480,922 @@
         
 
     
-    <pre class="prettyprint"><code><p>class Some extends eg.Component {<br>
-some() {<br>
-this.hasOn(&quot;hi&quot;);// check hi event.<br>
-}<br>
-}</p></code></pre>
+    <pre class="prettyprint"><code><pre class="prettyprint source"><code>class Some extends eg.Component {
+  some() {
+    this.hasOn(&quot;hi&quot;);// check hi event.
+  }
+}
+</code></pre></code></pre>
+    
+
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    <!-- if data.codepen -->
+</dl>
+
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="off">
+            
+            off<span class="signature">(<span class="optional">eventName</span>, <span class="optional">handlerToDetach</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{this}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="-_Users_user_work_egjs-component_src_Component.ts.html">Component.ts</a>, <a href="-_Users_user_work_egjs-component_src_Component.ts.html#line295">line 295</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+	<div class="description en">
+		<p>Detaches an event from the component.</p>
+	</div>
+	
+	
+	<div class="description ko">
+		<p>컴포넌트에 등록된 이벤트를 해제한다</p>
+	</div>
+	
+
+    
+    
+    
+    
+    
+        
+
+<ul class="parameters">
+    
+    <li>
+        <!-- parameter name -->
+        <div>
+            <strong>eventName</strong>
+            
+
+            
+                
+                    <span class="optional">optional</span>
+                
+                
+                    
+                
+            
+        </div>
+        <!-- parameter type -->
+        
+        <div>Type: 
+<span class="param-type">string</span>
+|
+
+<span class="param-type">...</span>
+
+</div>
+        
+    
+        <!-- Description -->
+        <div>
+            
+            <div class="description en"><p>The name of the event to be detached </p></div>
+            <div class="description ko"><p>해제할 이벤트의 이름</p></div>
+            
+        </div>
+
+        <!-- Sub parameters -->
+        
+    </li>
+    
+    <li>
+        <!-- parameter name -->
+        <div>
+            <strong>handlerToDetach</strong>
+            
+
+            
+                
+                    <span class="optional">optional</span>
+                
+                
+                    
+                
+            
+        </div>
+        <!-- parameter type -->
+        
+        <div>Type: 
+<span class="param-type">function</span>
+|
+
+<span class="param-type">...</span>
+
+</div>
+        
+    
+        <!-- Description -->
+        <div>
+            
+            <div class="description en"><p>The handler function of the event to be detached </p></div>
+            <div class="description ko"><p>해제할 이벤트의 핸들러 함수</p></div>
+            
+        </div>
+
+        <!-- Sub parameters -->
+        
+    </li>
+    
+</ul>
+    
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                    	
+                        this
+                        
+                        
+                    
+            </td>
+            <td class="description last">
+                
+                <div class="en">An instance of a component itself </div>
+                <div class="ko"><p>컴포넌트 자신의 인스턴스</p></div>
+                
+
+                
+            </td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+        <h5>Example</h5>
+        
+
+    
+    <pre class="prettyprint"><code><pre class="prettyprint source"><code>class Some extends eg.Component {
+  hi() {
+    console.log(&quot;hi&quot;);
+  }
+  some() {
+    this.off(&quot;hi&quot;,this.hi); //detach event
+  }
+}
+</code></pre></code></pre>
+    
+
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    <!-- if data.codepen -->
+</dl>
+
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="on">
+            
+            on<span class="signature">(eventName, <span class="optional">handlerToAttach</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{this}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="-_Users_user_work_egjs-component_src_Component.ts.html">Component.ts</a>, <a href="-_Users_user_work_egjs-component_src_Component.ts.html#line251">line 251</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+	<div class="description en">
+		<p>Attaches an event to a component.</p>
+	</div>
+	
+	
+	<div class="description ko">
+		<p>컴포넌트에 이벤트를 등록한다.</p>
+	</div>
+	
+
+    
+    
+    
+    
+    
+        
+
+<ul class="parameters">
+    
+    <li>
+        <!-- parameter name -->
+        <div>
+            <strong>eventName</strong>
+            
+
+            
+                
+                
+                    
+                
+            
+        </div>
+        <!-- parameter type -->
+        
+        <div>Type: 
+<span class="param-type">string</span>
+|
+
+<span class="param-type">...</span>
+
+</div>
+        
+    
+        <!-- Description -->
+        <div>
+            
+            <div class="description en"><p>The name of the event to be attached </p></div>
+            <div class="description ko"><p>등록할 이벤트의 이름</p></div>
+            
+        </div>
+
+        <!-- Sub parameters -->
+        
+    </li>
+    
+    <li>
+        <!-- parameter name -->
+        <div>
+            <strong>handlerToAttach</strong>
+            
+
+            
+                
+                    <span class="optional">optional</span>
+                
+                
+                    
+                
+            
+        </div>
+        <!-- parameter type -->
+        
+        <div>Type: 
+<span class="param-type">function</span>
+|
+
+<span class="param-type">...</span>
+
+</div>
+        
+    
+        <!-- Description -->
+        <div>
+            
+            <div class="description en"><p>The handler function of the event to be attached </p></div>
+            <div class="description ko"><p>등록할 이벤트의 핸들러 함수</p></div>
+            
+        </div>
+
+        <!-- Sub parameters -->
+        
+    </li>
+    
+</ul>
+    
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                    	
+                        this
+                        
+                        
+                    
+            </td>
+            <td class="description last">
+                
+                <div class="en">An instance of a component itself</div>
+                <div class="ko"><p>컴포넌트 자신의 인스턴스</p></div>
+                
+
+                
+            </td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+        <h5>Example</h5>
+        
+
+    
+    <pre class="prettyprint"><code><pre class="prettyprint source"><code>class Some extends eg.Component {
+  hi() {
+    console.log(&quot;hi&quot;);
+  }
+  some() {
+    this.on(&quot;hi&quot;,this.hi); //attach event
+  }
+}
+</code></pre></code></pre>
+    
+
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    <!-- if data.codepen -->
+</dl>
+
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="once">
+            
+            once<span class="signature">(eventName, <span class="optional">handlerToAttach</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{this}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="-_Users_user_work_egjs-component_src_Component.ts.html">Component.ts</a>, <a href="-_Users_user_work_egjs-component_src_Component.ts.html#line193">line 193</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+	<div class="description en">
+		<p>Executed event just one time.</p>
+	</div>
+	
+	
+	<div class="description ko">
+		<p>이벤트가 한번만 실행된다.</p>
+	</div>
+	
+
+    
+    
+    
+    
+    
+        
+
+<ul class="parameters">
+    
+    <li>
+        <!-- parameter name -->
+        <div>
+            <strong>eventName</strong>
+            
+
+            
+                
+                
+                    
+                
+            
+        </div>
+        <!-- parameter type -->
+        
+        <div>Type: 
+<span class="param-type">string</span>
+|
+
+<span class="param-type">...</span>
+
+</div>
+        
+    
+        <!-- Description -->
+        <div>
+            
+            <div class="description en"><p>The name of the event to be attached </p></div>
+            <div class="description ko"><p>등록할 이벤트의 이름</p></div>
+            
+        </div>
+
+        <!-- Sub parameters -->
+        
+    </li>
+    
+    <li>
+        <!-- parameter name -->
+        <div>
+            <strong>handlerToAttach</strong>
+            
+
+            
+                
+                    <span class="optional">optional</span>
+                
+                
+                    
+                
+            
+        </div>
+        <!-- parameter type -->
+        
+        <div>Type: 
+<span class="param-type">function</span>
+|
+
+<span class="param-type">...</span>
+
+</div>
+        
+    
+        <!-- Description -->
+        <div>
+            
+            <div class="description en"><p>The handler function of the event to be attached </p></div>
+            <div class="description ko"><p>등록할 이벤트의 핸들러 함수</p></div>
+            
+        </div>
+
+        <!-- Sub parameters -->
+        
+    </li>
+    
+</ul>
+    
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                    	
+                        this
+                        
+                        
+                    
+            </td>
+            <td class="description last">
+                
+                <div class="en">An instance of a component itself</div>
+                <div class="ko"><p>컴포넌트 자신의 인스턴스</p></div>
+                
+
+                
+            </td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+        <h5>Example</h5>
+        
+
+    
+    <pre class="prettyprint"><code><pre class="prettyprint source"><code>class Some extends eg.Component {
+hi() {
+  alert(&quot;hi&quot;);
+}
+thing() {
+  this.once(&quot;hi&quot;, this.hi);
+}
+
+var some = new Some();
+some.thing();
+some.trigger(&quot;hi&quot;);
+// fire alert(&quot;hi&quot;);
+some.trigger(&quot;hi&quot;);
+// Nothing happens
+</code></pre></code></pre>
+    
+
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    <!-- if data.codepen -->
+</dl>
+
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="trigger">
+            
+            trigger<span class="signature">(eventName, <span class="optional">customEvent</span>, restParam)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="-_Users_user_work_egjs-component_src_Component.ts.html">Component.ts</a>, <a href="-_Users_user_work_egjs-component_src_Component.ts.html#line133">line 133</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+	<div class="description en">
+		<p>Triggers a custom event.</p>
+	</div>
+	
+	
+	<div class="description ko">
+		<p>커스텀 이벤트를 발생시킨다</p>
+	</div>
+	
+
+    
+    
+    
+    
+    
+        
+
+<ul class="parameters">
+    
+    <li>
+        <!-- parameter name -->
+        <div>
+            <strong>eventName</strong>
+            
+
+            
+                
+                
+                    
+                
+            
+        </div>
+        <!-- parameter type -->
+        
+        <div>Type: 
+<span class="param-type">string</span>
+|
+
+<span class="param-type">...</span>
+
+</div>
+        
+    
+        <!-- Description -->
+        <div>
+            
+            <div class="description en"><p>The name of the custom event to be triggered </p></div>
+            <div class="description ko"><p>발생할 커스텀 이벤트의 이름</p></div>
+            
+        </div>
+
+        <!-- Sub parameters -->
+        
+    </li>
+    
+    <li>
+        <!-- parameter name -->
+        <div>
+            <strong>customEvent</strong>
+            
+
+            
+                
+                    <span class="optional">optional</span>
+                
+                
+                    
+                
+            
+        </div>
+        <!-- parameter type -->
+        
+        <div>Type: 
+<span class="param-type">object</span>
+|
+
+<span class="param-type">...</span>
+
+</div>
+        
+    
+        <!-- Description -->
+        <div>
+            
+            <div class="description en"><p>Event data to be sent when triggering a custom event </p></div>
+            <div class="description ko"><p>커스텀 이벤트가 발생할 때 전달할 데이터</p></div>
+            
+        </div>
+
+        <!-- Sub parameters -->
+        
+    </li>
+    
+    <li>
+        <!-- parameter name -->
+        <div>
+            <strong>restParam</strong>
+            
+
+            
+                
+                
+                    
+                
+                    <span class="repeatable">repeatable</span>
+                
+            
+        </div>
+        <!-- parameter type -->
+        
+        <div>Type: 
+<span class="param-type">Array.&lt;any></span>
+|
+
+<span class="param-type">...</span>
+
+</div>
+        
+    
+        <!-- Description -->
+        <div>
+            
+            <div class="description en"><p>Additional parameters when triggering a custom event </p></div>
+            <div class="description ko"><p>커스텀 이벤트가 발생할 때 필요시 추가적으로 전달할 데이터</p></div>
+            
+        </div>
+
+        <!-- Sub parameters -->
+        
+    </li>
+    
+</ul>
+    
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                    	
+                        boolean
+                        
+                        
+                    
+            </td>
+            <td class="description last">
+                
+                <div class="en">Indicates whether the event has occurred. If the stop() method is called by a custom event handler, it will return false and prevent the event from occurring. <a href="https://github.com/naver/egjs-component/wiki/How-to-make-Component-event-design%3F">Ref</a> </div>
+                <div class="ko"><p>이벤트 발생 여부. 커스텀 이벤트 핸들러에서 stop() 메서드를 호출하면 'false'를 반환하고 이벤트 발생을 중단한다. <a href="https://github.com/naver/egjs-component/wiki/How-to-make-Component-event-design%3F">참고</a></p></div>
+                
+
+                
+            </td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+        <h5>Example</h5>
+        
+
+    
+    <pre class="prettyprint"><code><pre class="prettyprint source"><code>class Some extends eg.Component {
+  some(){
+    if(this.trigger(&quot;beforeHi&quot;)){ // When event call to stop return false.
+      this.trigger(&quot;hi&quot;);// fire hi event.
+    }
+  }
+}
+
+const some = new Some();
+some.on(&quot;beforeHi&quot;, (e) => {
+  if(condition){
+    e.stop(); // When event call to stop, `hi` event not call.
+  }
+});
+some.on(&quot;hi&quot;, (e) => {
+  // `currentTarget` is component instance.
+  console.log(some === e.currentTarget); // true
+});
+// If you want to more know event design. You can see article.
+// https://github.com/naver/egjs-component/wiki/How-to-make-Component-event-design%3F
+</code></pre></code></pre>
     
 
     
@@ -585,7 +1455,7 @@ this.hasOn(&quot;hi&quot;);// check hi event.<br>
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 0.3.8</a> on Wed Oct 14 2020 13:46:49 GMT+0900 (GMT+09:00)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 0.3.8</a> on Fri Oct 16 2020 12:32:04 GMT+0900 (GMT+09:00)
         </footer>
     </div>
 </div>
