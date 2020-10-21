@@ -1,4 +1,4 @@
-import Component from ".";
+import Component from "../../src/Component";
 
 const test = (testName: string, func: (...args: any[]) => any) => {}
 
@@ -13,6 +13,10 @@ class TestClass extends Component<{
     c: boolean;
   }) => any;
   evt4: void;
+  evt5: {
+    a: 1;
+    stop(): void;
+  }
 }> {
   testMethod() {}
 };
@@ -43,6 +47,10 @@ test("Correct event definitions", () => {
     evt5: null;
     evt6: undefined;
     evt7: never;
+    evt8: {
+      a: 1,
+      stop(): void,
+    }
   }> {};
 });
 
@@ -81,8 +89,29 @@ test("Correct trigger() usage", () => {
 
   // $ExpectType boolean
   component.trigger("evt4");
-});
 
+  // skip stop function
+  // $ExpectType boolean
+  component.trigger("evt5", {
+    a: 1,
+  });
+});
+test("Even if the event type is not set, there is no type error.", () => {
+  const defaultComponent = new Component();
+
+  // Any event passes.
+  defaultComponent.on("a", e => {
+    // $ExpectType any
+    e.a;
+    // $ExpectType any
+    e.b;
+  });
+
+  // Any parameters passes.
+  defaultComponent.trigger("a");
+  defaultComponent.trigger("a", { a: 1 });
+  defaultComponent.trigger("a", { a: 1 }, 1);
+});
 test("Correct on, once usage", () => {
   ["on", "once"].forEach((method: "on" | "once") => {
     // $ExpectType TestClass
