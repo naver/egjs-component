@@ -56,16 +56,22 @@ type EventCallback<T extends EventMap, K extends EventKey<T>, S>
   : (event: EventCallbackFirstParam<T[K], S>) => any;
 
 type EventTriggerFirstParam<T extends {}> = Pick<T, Exclude<keyof T, keyof DefaultProps<any>>> & Partial<DefaultProps<any>>;
-type EventTriggerPartialFunction<F, R extends any[]>
-  = F extends undefined
-  ? (firstParam?: EventTriggerFirstParam<F>, ...restParams: R) => any
-  : (firstParam: EventTriggerFirstParam<F>, ...restParams: R) => any
 
 
+type EventDiff<T, U> = T extends U ? never : T;
+type EventTriggerPartialFunction<T extends (...params: any[]) => any>
+  = T extends (firstParam: infer F, ...restParam: infer R) => any
+  ? (firstParam?: EventTriggerFirstParam<EventDiff<F, undefined>>, ...restParams: R) => any
+  : never;
+
+type EventTriggerRequiredFunction<T extends (...params: any[]) => any>
+  = T extends (firstParam: infer F, ...restParam: infer R) => any
+  ? (firstParam: EventTriggerFirstParam<F>, ...restParams: R) => any
+  : never;
 type EventTriggerFunction<T extends (...params: any[]) => any>
-  = T extends (firstParam: infer F, ...restParams: infer R) => any
-  ? EventTriggerPartialFunction<F, R>
-  : (firstParam?: { [key: string]: never }) => any;
+  = Parameters<T> extends Required<Parameters<T>> & [any]
+  ? EventTriggerRequiredFunction<T>
+  : EventTriggerPartialFunction<T>
 
 type EventTriggerNoFunction<T>
   = T extends NoArguments
@@ -77,8 +83,6 @@ type EventTriggerParams<T extends EventMap, K extends EventKey<T>>
   = Parameters<T[K] extends (...params: any[]) => any
     ? EventTriggerFunction<T[K]>
     : EventTriggerNoFunction<T[K]>>;
-
-
 
 interface DefaultEventMap {
   [key: string]: (firstParam?: { [key: string]: any }, ...restParams: any[]) => any;

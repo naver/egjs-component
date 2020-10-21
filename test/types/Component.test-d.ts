@@ -112,6 +112,7 @@ test("Even if the event type is not set, there is no type error.", () => {
 
   // Any parameters passes.
   defaultComponent.trigger("a");
+  defaultComponent.trigger("a", {});
   defaultComponent.trigger("a", { a: 1 });
   defaultComponent.trigger("a", { a: 1 }, 1);
 });
