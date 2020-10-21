@@ -90,6 +90,9 @@ test("Correct trigger() usage", () => {
   // $ExpectType boolean
   component.trigger("evt4");
 
+  // $ExpectType boolean
+  component.trigger("evt4", {});
+
   // skip stop function
   // $ExpectType boolean
   component.trigger("evt5", {

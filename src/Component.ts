@@ -42,12 +42,6 @@ type EventKey<T extends EventMap> = string & keyof T;
 type EventHash<T extends EventMap, S> = Partial<{ [K in EventKey<T>]: EventCallback<T, K, S> }>;
 
 
-// In the on and once methods, the defaultProps must be included in the first parameter.
-type EventCallback<T extends EventMap, K extends EventKey<T>, S>
-  = T[K] extends (...params: any[]) => any
-  ? EventCallbackFunction<T[K], S>
-  : (event: EventCallbackFirstParam<T[K], S>) => any;
-
 type EventCallbackFirstParam<P, S> = P extends NoArguments ? DefaultProps<S> : P & DefaultProps<S>;
 type EventCallbackFunction<T extends (...params: any[]) => any, S>
   = T extends (firstParam?: infer F, ...restParams: infer R) => any
@@ -55,19 +49,20 @@ type EventCallbackFunction<T extends (...params: any[]) => any, S>
   : (firstParam: DefaultProps<S>) => any;
 
 
+// In the on and once methods, the defaultProps must be included in the first parameter.
+type EventCallback<T extends EventMap, K extends EventKey<T>, S>
+  = T[K] extends (...params: any[]) => any
+  ? EventCallbackFunction<T[K], S>
+  : (event: EventCallbackFirstParam<T[K], S>) => any;
 
-// You don't need to include defaultProps in the trigger method's first parameter.
-type EventTriggerParams<T extends EventMap, K extends EventKey<T>>
-= Parameters<T[K] extends (...params: any[]) => any
-  ? EventTriggerFunction<T[K]>
-  : EventTriggerNoFunction<T[K]>>;
-
-type EventTriggerFirstParam<T> = (T extends {} ? Pick<T, Exclude<keyof T, keyof DefaultProps<any>>> : { [key: string]: never }) & Partial<DefaultProps<any>>;
+type EventTriggerFirstParam<T extends {}> = Pick<T, Exclude<keyof T, keyof DefaultProps<any>>> & Partial<DefaultProps<any>>;
 type EventTriggerPartialFunction<F, R extends any[]>
-  = Required<F> extends F
+  = F extends undefined
   ? (firstParam?: EventTriggerFirstParam<F>, ...restParams: R) => any
-  : (firstParam: EventTriggerFirstParam<F>, ...restParams: R) => any;
-type EventTriggerFunction<T extends (...params: any[]) => any>
+  : (firstParam: EventTriggerFirstParam<F>, ...restParams: R) => any
+
+
+  type EventTriggerFunction<T extends (...params: any[]) => any>
   = T extends (firstParam: infer F, ...restParams: infer R) => any
   ? EventTriggerPartialFunction<F, R>
   : (firstParam?: { [key: string]: never }) => any;
@@ -76,6 +71,13 @@ type EventTriggerNoFunction<T>
   = T extends NoArguments
   ? (firstParam?: { [key: string]: never }) => any
   : EventTriggerFunction<(fisrtParam: EventTriggerFirstParam<T>) => any>;
+
+// You don't need to include defaultProps in the trigger method's first parameter.
+type EventTriggerParams<T extends EventMap, K extends EventKey<T>>
+= Parameters<T[K] extends (...params: any[]) => any
+  ? EventTriggerFunction<T[K]>
+  : EventTriggerNoFunction<T[K]>>;
+
 
 
 interface DefaultEventMap {
