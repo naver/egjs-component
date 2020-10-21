@@ -62,7 +62,7 @@ type EventTriggerPartialFunction<F, R extends any[]>
   : (firstParam: EventTriggerFirstParam<F>, ...restParams: R) => any
 
 
-  type EventTriggerFunction<T extends (...params: any[]) => any>
+type EventTriggerFunction<T extends (...params: any[]) => any>
   = T extends (firstParam: infer F, ...restParams: infer R) => any
   ? EventTriggerPartialFunction<F, R>
   : (firstParam?: { [key: string]: never }) => any;
@@ -74,9 +74,9 @@ type EventTriggerNoFunction<T>
 
 // You don't need to include defaultProps in the trigger method's first parameter.
 type EventTriggerParams<T extends EventMap, K extends EventKey<T>>
-= Parameters<T[K] extends (...params: any[]) => any
-  ? EventTriggerFunction<T[K]>
-  : EventTriggerNoFunction<T[K]>>;
+  = Parameters<T[K] extends (...params: any[]) => any
+    ? EventTriggerFunction<T[K]>
+    : EventTriggerNoFunction<T[K]>>;
 
 
 
