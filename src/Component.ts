@@ -4,7 +4,7 @@
  */
 
 function isUndefined(value: any): boolean {
-    return typeof value === "undefined";
+  return typeof value === "undefined";
 }
 
 interface DefaultProps<T> {
@@ -12,10 +12,6 @@ interface DefaultProps<T> {
   stop: () => void;
   currentTarget: T;
 }
-
-type EventNoParamKey<T extends EventMap, K extends EventKey<T>> = T[K] extends NoArguments
-  ? K
-  : never;
 type NotFunction = { [k: string]: unknown } & ({ bind?: never } | { call?: never });
 type NoArguments = undefined | null | void | never;
 type EventWithRestParam = ((evt: NotFunction, ...restParam: any[]) => any);
@@ -45,25 +41,51 @@ type EventMap = Record<string, EventDefinition>;
 type EventKey<T extends EventMap> = string & keyof T;
 type EventHash<T extends EventMap, S> = Partial<{ [K in EventKey<T>]: EventCallback<T, K, S> }>;
 
+
+type EventCallbackFirstParam<P, S> = P extends NoArguments ? DefaultProps<S> : P & DefaultProps<S>;
+type EventCallbackFunction<T extends (...params: any[]) => any, S>
+  = T extends (firstParam?: infer F, ...restParams: infer R) => any
+  ? (firstParam: EventCallbackFirstParam<Required<F>, S>, ...restParams: R) => any
+  : (firstParam: DefaultProps<S>) => any;
+
+
+// In the on and once methods, the defaultProps must be included in the first parameter.
 type EventCallback<T extends EventMap, K extends EventKey<T>, S>
-  = T[K] extends NoArguments
-    ? (event: DefaultProps<S>) => any
-    : T[K] extends (evt: infer U, ...restParam: infer V) => any
-      ? (event: U & DefaultProps<S>, ...restParam: V) => any
-      : (event: T[K] & DefaultProps<S>) => any;
-type FirstParam<T extends EventMap, K extends EventKey<T>>
-  = T[K] extends NoArguments
-    ? void
-    : T[K] extends (evt: infer U, ...restParam: any[]) => any
-      ? U
-      : T[K];
-type RestParam<T extends EventMap, K extends EventKey<T>>
-  = T[K] extends (evt: NotFunction, ...restParam: infer U) => any
-    ? U
-    : void[]
+  = T[K] extends (...params: any[]) => any
+  ? EventCallbackFunction<T[K], S>
+  : (event: EventCallbackFirstParam<T[K], S>) => any;
+
+type EventTriggerFirstParam<T extends {}> = Pick<T, Exclude<keyof T, keyof DefaultProps<any>>> & Partial<DefaultProps<any>>;
+
+
+type EventDiff<T, U> = T extends U ? never : T;
+type EventTriggerPartialFunction<T extends (...params: any[]) => any>
+  = T extends (firstParam: infer F, ...restParam: infer R) => any
+  ? (firstParam?: EventTriggerFirstParam<EventDiff<F, undefined>>, ...restParams: R) => any
+  : never;
+
+type EventTriggerRequiredFunction<T extends (...params: any[]) => any>
+  = T extends (firstParam: infer F, ...restParam: infer R) => any
+  ? (firstParam: EventTriggerFirstParam<F>, ...restParams: R) => any
+  : never;
+type EventTriggerFunction<T extends (...params: any[]) => any>
+  = Parameters<T> extends Required<Parameters<T>> & [any]
+  ? EventTriggerRequiredFunction<T>
+  : EventTriggerPartialFunction<T>
+
+type EventTriggerNoFunction<T>
+  = T extends NoArguments
+  ? (firstParam?: { [key: string]: never }) => any
+  : EventTriggerFunction<(fisrtParam: EventTriggerFirstParam<T>) => any>;
+
+// You don't need to include defaultProps in the trigger method's first parameter.
+type EventTriggerParams<T extends EventMap, K extends EventKey<T>>
+  = Parameters<T[K] extends (...params: any[]) => any
+    ? EventTriggerFunction<T[K]>
+    : EventTriggerNoFunction<T[K]>>;
 
 interface DefaultEventMap {
-  [key: string]: { [key: string]: any } | void;
+  [key: string]: (firstParam?: { [key: string]: any }, ...restParams: any[]) => any;
 }
 
 /**
@@ -87,8 +109,8 @@ class Component<T extends EventMap = DefaultEventMap> {
    * @deprecated
    * @private
    */
-  public options: {[key: string]: any} = {};
-  private _eventHandler: {[keys: string]: EventCallback<T, EventKey<T>, Component<T>>[]};
+  public options: { [key: string]: any } = {};
+  private _eventHandler: { [keys: string]: EventCallback<T, EventKey<T>, Component<T>>[] };
 
   /**
    * @support {"ie": "7+", "ch" : "latest", "ff" : "latest",  "sf" : "latest", "edge" : "latest", "ios" : "7+", "an" : "2.1+ (except 3.x)"}
@@ -97,8 +119,7 @@ class Component<T extends EventMap = DefaultEventMap> {
     this._eventHandler = {};
   }
 
-  public trigger<K extends EventKey<T>>(eventName: EventNoParamKey<T, K>): boolean;
-  public trigger<K extends EventKey<T>>(eventName: K, customEvent: FirstParam<T, K>, ...restParam: RestParam<T, K>): boolean;
+  public trigger<K extends EventKey<T>>(eventName: K, ...params: EventTriggerParams<T, K>): boolean;
   /**
    * Triggers a custom event.
    * @ko 커스텀 이벤트를 발생시킨다
@@ -130,16 +151,15 @@ class Component<T extends EventMap = DefaultEventMap> {
    * // https://github.com/naver/egjs-component/wiki/How-to-make-Component-event-design%3F
    * ```
    */
-  public trigger<K extends EventKey<T>>(eventName: K, customEvent?: FirstParam<T, K>, ...restParam: any[]): boolean {
+  public trigger<K extends EventKey<T>>(eventName: K, ...params: any[]): boolean {
     let handlerList = this._eventHandler[eventName] || [];
     const hasHandlerList = handlerList.length > 0;
 
     if (!hasHandlerList) {
       return true;
     }
-    if (!customEvent) {
-      customEvent = {} as any;
-    }
+    const customEvent = params[0] || {};
+    const restParams = params.slice(1);
 
     // If detach method call in handler in first time then handler list calls.
     handlerList = handlerList.concat();
@@ -153,8 +173,8 @@ class Component<T extends EventMap = DefaultEventMap> {
 
     let arg: any[] = [customEvent];
 
-    if (restParam.length >= 1) {
-      arg = arg.concat(restParam);
+    if (restParams.length >= 1) {
+      arg = arg.concat(restParams);
     }
 
     handlerList.forEach(handler => {
