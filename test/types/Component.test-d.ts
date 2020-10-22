@@ -108,12 +108,22 @@ test("Even if the event type is not set, there is no type error.", () => {
     e.a;
     // $ExpectType any
     e.b;
+    // $ExpectType Component<DefaultEventMap>
+    e.currentTarget
+    // $ExpectType string
+    e.eventType
+    // $ExpectType () => void
+    e.stop
   });
 
   // Any parameters passes.
+  // $ExpectType boolean
   defaultComponent.trigger("a");
+  // $ExpectType boolean
   defaultComponent.trigger("a", {});
+  // $ExpectType boolean
   defaultComponent.trigger("a", { a: 1 });
+  // $ExpectType boolean
   defaultComponent.trigger("a", { a: 1 }, 1);
 });
 test("Correct on, once usage", () => {
