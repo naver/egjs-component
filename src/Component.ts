@@ -2,124 +2,38 @@
  * Copyright (c) 2015 NAVER Corp.
  * egjs projects are licensed under the MIT license
  */
-
-function isUndefined(value: any): boolean {
-  return typeof value === "undefined";
-}
-
-interface DefaultProps<T> {
-  eventType: string;
-  stop: () => void;
-  currentTarget: T;
-}
-type NotFunction = { [k: string]: unknown } & ({ bind?: never } | { call?: never });
-type NoArguments = undefined | null | void | never;
-type EventWithRestParam = ((evt: NotFunction, ...restParam: any[]) => any);
-
-/**
- * Types that can be used when attaching new event definition as generic on a class
- * @ko 클래스 타입 등록시 사용가능한 타입
- * @example
- * ```
- * new SomeClass<{
- *   // Using it as object
- *   evt0: {
- *     param0: number;
- *     param1: string
- *   };
- *   // Using it as function with other arguments
- *   evt1: (arg0: {
- *     param0: number;
- *     param1: string
- *   }, arg1: string, arg2: boolean) => boolean;
- * }>
- * ```
- */
-type EventDefinition = NotFunction | NoArguments | EventWithRestParam;
-
-type EventMap = Record<string, EventDefinition>;
-type EventKey<T extends EventMap> = string & keyof T;
-type EventHash<T extends EventMap, S> = Partial<{ [K in EventKey<T>]: EventCallback<T, K, S> }>;
-
-
-type EventCallbackFirstParam<P, S> = P extends NoArguments ? DefaultProps<S> : P & DefaultProps<S>;
-type EventCallbackFunction<T extends (...params: any[]) => any, S>
-  = T extends (firstParam?: infer F, ...restParams: infer R) => any
-  ? (firstParam: EventCallbackFirstParam<Required<F>, S>, ...restParams: R) => any
-  : (firstParam: DefaultProps<S>) => any;
-
-
-// In the on and once methods, the defaultProps must be included in the first parameter.
-type EventCallback<T extends EventMap, K extends EventKey<T>, S>
-  = T[K] extends (...params: any[]) => any
-  ? EventCallbackFunction<T[K], S>
-  : (event: EventCallbackFirstParam<T[K], S>) => any;
-
-type EventTriggerFirstParam<T extends {}> = Pick<T, Exclude<keyof T, keyof DefaultProps<any>>> & Partial<DefaultProps<any>>;
-
-
-type EventDiff<T, U> = T extends U ? never : T;
-type EventTriggerPartialFunction<T extends (...params: any[]) => any>
-  = T extends (firstParam: infer F, ...restParam: infer R) => any
-  ? (firstParam?: EventTriggerFirstParam<EventDiff<F, undefined>>, ...restParams: R) => any
-  : never;
-
-type EventTriggerRequiredFunction<T extends (...params: any[]) => any>
-  = T extends (firstParam: infer F, ...restParam: infer R) => any
-  ? (firstParam: EventTriggerFirstParam<F>, ...restParams: R) => any
-  : never;
-type EventTriggerFunction<T extends (...params: any[]) => any>
-  = Parameters<T> extends Required<Parameters<T>> & [any]
-  ? EventTriggerRequiredFunction<T>
-  : EventTriggerPartialFunction<T>
-
-type EventTriggerNoFunction<T>
-  = T extends NoArguments
-  ? (firstParam?: { [key: string]: never }) => any
-  : EventTriggerFunction<(fisrtParam: EventTriggerFirstParam<T>) => any>;
-
-// You don't need to include defaultProps in the trigger method's first parameter.
-type EventTriggerParams<T extends EventMap, K extends EventKey<T>>
-  = Parameters<T[K] extends (...params: any[]) => any
-    ? EventTriggerFunction<T[K]>
-    : EventTriggerNoFunction<T[K]>>;
-
-interface DefaultEventMap {
-  [key: string]: (firstParam?: { [key: string]: any }, ...restParams: any[]) => any;
-}
+import { isUndefined } from "./utils";
+import { EventCallback, EventHash, EventKey, EventMap, EventTriggerParams } from "./types";
+import ComponentEvent from "./ComponentEvent";
 
 /**
  * A class used to manage events in a component
  * @ko 컴포넌트의 이벤트을 관리할 수 있게 하는 클래스
  * @alias eg.Component
  */
-class Component<T extends EventMap = DefaultEventMap> {
+class Component<T extends EventMap> {
   /**
    * Version info string
    * @ko 버전정보 문자열
    * @name VERSION
    * @static
    * @example
-   * eg.Component.VERSION;  // ex) 2.0.0
+   * eg.Component.VERSION;  // ex) 3.0.0
    * @memberof eg.Component
    */
   public static VERSION: string = "#__VERSION__#";
 
-  /**
-   * @deprecated
-   * @private
-   */
-  public options: { [key: string]: any } = {};
-  private _eventHandler: { [keys: string]: EventCallback<T, EventKey<T>, Component<T>>[] };
+  private _eventHandler: { [keys: string]: Array<(...args: any[]) => any> };
 
   /**
    * @support {"ie": "7+", "ch" : "latest", "ff" : "latest",  "sf" : "latest", "edge" : "latest", "ios" : "7+", "an" : "2.1+ (except 3.x)"}
    */
-  constructor() {
+  public constructor() {
     this._eventHandler = {};
   }
 
-  public trigger<K extends EventKey<T>>(eventName: K, ...params: EventTriggerParams<T, K>): boolean;
+  public trigger<K extends EventKey<T>>(event: ComponentEvent<T[K], K>): this;
+  public trigger<K extends EventKey<T>>(eventName: K, ...params: EventTriggerParams<T, K>): this;
   /**
    * Triggers a custom event.
    * @ko 커스텀 이벤트를 발생시킨다
@@ -151,37 +65,29 @@ class Component<T extends EventMap = DefaultEventMap> {
    * // https://github.com/naver/egjs-component/wiki/How-to-make-Component-event-design%3F
    * ```
    */
-  public trigger<K extends EventKey<T>>(eventName: K, ...params: any[]): boolean {
-    let handlerList = this._eventHandler[eventName] || [];
-    const hasHandlerList = handlerList.length > 0;
+  public trigger<K extends EventKey<T>>(event: K | ComponentEvent<K, T[K]>, ...params: EventTriggerParams<T, K> | void[]): this {
+    const eventName = event instanceof ComponentEvent
+      ? event.eventType
+      : event;
 
-    if (!hasHandlerList) {
-      return true;
-    }
-    const customEvent = params[0] || {};
-    const restParams = params.slice(1);
+    const handlers = this._eventHandler[eventName] || [];
 
-    // If detach method call in handler in first time then handler list calls.
-    handlerList = handlerList.concat();
-
-    let isCanceled = false;
-
-    // This should be done like this to pass previous tests
-    (customEvent as any).eventType = eventName;
-    (customEvent as any).stop = () => { isCanceled = true; };
-    (customEvent as any).currentTarget = this;
-
-    let arg: any[] = [customEvent];
-
-    if (restParams.length >= 1) {
-      arg = arg.concat(restParams);
+    if (handlers.length <= 0) {
+      return this;
     }
 
-    handlerList.forEach(handler => {
-      handler.apply(this, arg);
-    });
+    if (event instanceof ComponentEvent) {
+      handlers.forEach((handler: (event: ComponentEvent<T[K], K, this>) => any) => {
+        handler(event);
+      });
+    } else {
+      handlers.forEach(handler => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        handler(...params);
+      });
+    }
 
-    return !isCanceled;
+    return this;
   }
 
   public once<K extends EventKey<T>>(eventName: K, handlerToAttach: EventCallback<T, K, this>): this;
@@ -220,9 +126,10 @@ class Component<T extends EventMap = DefaultEventMap> {
       return this;
     } else if (typeof eventName === "string" && typeof handlerToAttach === "function") {
       const listener: any = (...args: any[]) => {
-        handlerToAttach.apply(this, args);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        handlerToAttach(...args);
         this.off(eventName, listener);
-      }
+      };
 
       this.on(eventName, listener);
     }
