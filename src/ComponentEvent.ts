@@ -2,7 +2,6 @@
  * Copyright (c) 2015 NAVER Corp.
  * egjs projects are licensed under the MIT license
  */
-
 import { ComponentEventConstructor } from "./types";
 
 export class _ComponentEvent<PROPS extends Record<string, any>, TYPE extends string = string, THIS = any> {
