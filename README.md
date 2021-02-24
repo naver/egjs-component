@@ -73,37 +73,41 @@ some.trigger("hi");
 
 ### 3. Typescript Support
 You can use [Typescript Generics](https://www.typescriptlang.org/docs/handbook/generics.html) to define events that component can emit.
-```ts
-import Component from "@egjs/component";
 
-type ComponentEvent = {
+```ts
+import Component, { ComponentEvent, EventProps } from "@egjs/component";
+
+interface Events {
   event1: {
     prop1: number;
     prop2: string;
   };
   // You can also define like this if there're more than one arguments for a event
-  // First argument should be object type
-  event2: (arg0: {
-    prop1: number;
-    prop2: string;
-  }, arg1: string, arg2: boolean) => void;
+  event2: (arg0: number, arg1: string, arg2: boolean) => void;
   // If there're no event props
   event3: void;
+  // If you want additional properties like `currentTarget`, `eventType`, `stop`
+  // You can use EventProps
+  event4: EventProps<{ a: number; b: string }>;
 }
 
-// tslint:disable-next-line max-classes-per-file
-class SomeClass extends Component<ComponentEvent> {
+class SomeClass extends Component<Events> {
   thing() {
-    this.on("event1", e => {
+    this.on("event4", e => {
       // These properties will be available for typescript-enabled environment
-      e.prop1; // number
-      e.prop2; // string
-      e.currentTarget; // SomeClass
-      e.eventType; // string("event1")
-      e.stop; // () => void
+      e.a; // number
+      e.b; // string
+      e.currentTarget; // SomeClass(this)
+      e.eventType; // string("event4")
+      e.stop(); // () => void
+      e.isCanceled(); // Will return true when "stop()" is called.
     });
   }
 }
+
+// You can trigger ComponentEvent to trigger type of EventProps
+const component = new SomeClass();
+component.trigger(new ComponentEvent("event4", { a: 123, b: "abcd" }));
 ```
 
 ## Bug Report
