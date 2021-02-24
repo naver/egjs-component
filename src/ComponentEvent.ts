@@ -2,32 +2,38 @@
  * Copyright (c) 2015 NAVER Corp.
  * egjs projects are licensed under the MIT license
  */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-class ComponentEvent<PROPS, TYPE extends string = string, THIS = any> {
+
+import { ComponentEventConstructor } from "./types";
+
+export class _ComponentEvent<PROPS extends Record<string, any>, TYPE extends string = string, THIS = any> {
   public currentTarget: THIS;
 
-  private _isCanceled: boolean;
+  private _canceled: boolean;
 
   public constructor(
     public readonly eventType: TYPE,
     props: PROPS
   ) {
-    for (const key of Object.keys(props)) {
-      const value = props[key];
+    this._canceled = false;
 
-      this[key] = value;
+    if (!props) return;
+
+    for (const key of Object.keys(props as Record<string, any>)) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      this[key] = props[key];
     }
-
-    this._isCanceled = false;
   }
 
   public stop() {
-    this._isCanceled = true;
+    this._canceled = true;
   }
 
   public isCanceled() {
-    return this._isCanceled;
+    return this._canceled;
   }
 }
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const ComponentEvent = _ComponentEvent as ComponentEventConstructor;
 
 export default ComponentEvent;
