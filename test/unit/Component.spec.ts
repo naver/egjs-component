@@ -1,33 +1,36 @@
-import Component from "../../src/Component";
 import sinon from "sinon";
 import { expect } from "chai";
+
+import Component from "../../src/Component";
+import ComponentEvent from "../../src/ComponentEvent";
+import { EventProps } from "../../src/types";
 
 class TestClass extends Component<any> {
   public options: any;
 
-	constructor(option?: any) {
-		super();
-		this.options = Object.assign({}, option);
-	}
+  public constructor(option?: any) {
+    super();
+    this.options = Object.assign({}, option);
+  }
 }
 
-function noop() {
+const noop = () => {
   // DO NOTHING
-}
+};
 
 describe("Basic test", () => {
-	let oClass;
+  let oClass;
 
   beforeEach(() => {
     oClass = new TestClass();
   });
 
-  it("should have options property", () => {
+  it("should not have options property", () => {
     // Given
     // When
     const componntClass = new Component();
     // Then
-    expect(componntClass.options).to.be.eql({});
+    expect((componntClass as any).options).to.be.undefined;
   });
 
   it("When custom event added by on(), return value must be instance itself", () => {
@@ -61,7 +64,7 @@ describe("Basic test", () => {
 
   it("Add event handler by invalid type", () => {
     // Given
-    function getPropertyCount(obj) {
+    const getPropertyCount = (obj: Record<string, any>) => {
       let count = 0;
       for (const prop in obj) {
         if (Object.prototype.hasOwnProperty.call(window, prop)) {
@@ -72,7 +75,8 @@ describe("Basic test", () => {
         }
       }
       return count;
-    }
+    };
+
     // When
     const returnVal1 = oClass.on("test_string");
     const returnVal2 = oClass.on(123);
@@ -99,7 +103,7 @@ describe("Basic test", () => {
 });
 
 describe("on method", () => {
-	let oClass;
+  let oClass;
 
   beforeEach(() => {
     oClass = new TestClass();
@@ -142,7 +146,7 @@ describe("on method", () => {
 });
 
 describe("off method", () => {
-	let oClass;
+  let oClass;
 
   beforeEach(() => {
     oClass = new TestClass();
@@ -167,9 +171,9 @@ describe("off method", () => {
     // Then
     expect(oClass2._eventHandler.test1.length).equal(1);
     expect(oClass2).equal(oClass);
-    });
+  });
 
-    it("Remove all event handlers for same.", () => {
+  it("Remove all event handlers for same.", () => {
     // Given
     let allOffTestCount = 0;
     oClass.on("allOffTest", oCustomEvent => {
@@ -213,7 +217,7 @@ describe("off method", () => {
 });
 
 describe("trigger method", () => {
-	let oClass;
+  let oClass;
 
   beforeEach(() => {
     oClass = new TestClass();
@@ -224,14 +228,14 @@ describe("trigger method", () => {
     // When
     let returnVal = oClass.trigger("noevent");
     // Then
-    expect(returnVal).to.be.true;
+    expect(returnVal).to.equal(oClass);
 
     // Given
     oClass.on("test", noop);
     // When
     returnVal = oClass.trigger("test");
     // Then
-    expect(returnVal).to.be.true;
+    expect(returnVal).to.equal(oClass);
   });
 
   it("Test for run trigger method", () => {
@@ -251,78 +255,44 @@ describe("trigger method", () => {
     expect(param).to.eql([ 1, 2, 3 ]);
   });
 
-  it("Check custom event", () => {
-		// Given
-    let eventType;
-    let stopType;
-		oClass.on("eventType", oCustomEvent => {
-			eventType = oCustomEvent.eventType;
-			stopType = typeof oCustomEvent.stop;
-		});
-		// When
-		oClass.trigger("eventType");
-		// Then
-		expect(eventType).equal("eventType");
-		expect(stopType).equal("function");
-	});
+  it("shouldn't call extended method when the Array is extends", () => {
+    // Given
+    (Array.prototype as any).ExtendSomthing = sinon.spy();
+    oClass.on("eventType", noop);
+    // When
+    oClass.trigger("eventType");
+    // Then
+    expect((Array.prototype as any).ExtendSomthing.called).to.be.false;
+    delete (Array.prototype as any).ExtendSomthing;
+  });
 
-	it("shouldn't call extended method when the Array is extends", () => {
-		// Given
-		(Array.prototype as any).ExtendSomthing = sinon.spy();
-		oClass.on("eventType", noop);
-		// When
-		oClass.trigger("eventType");
-		// Then
-		expect((Array.prototype as any).ExtendSomthing.called).to.be.false;
-		delete (Array.prototype as any).ExtendSomthing;
-	});
+  it("should insert property 'currentTarget' in event if event type is ComponentEvent", () => {
+    // Given
+    const component = new Component<{ test: EventProps<{ a: number; b: number }> }>();
 
-	it("The currentTarget should be included in event", () => {
-		// Given
-		let instance;
-		oClass.on("eventType", ({currentTarget}) => {
-			instance = currentTarget;
-		});
-		// When
-		oClass.trigger("eventType");
-		// Then
-		expect(oClass).equal(instance);
-	});
+    // When
+    const spy = sinon.spy();
+    component.on("test", spy);
+    component.trigger(new ComponentEvent("test", { a: 1, b: 5 }));
+
+    // Then
+    expect(spy.calledOnce).to.be.true;
+    expect(spy.firstCall.args[0].currentTarget).to.equal(component);
+    expect(spy.firstCall.args[0].a).to.equal(1);
+    expect(spy.firstCall.args[0].b).to.equal(5);
+  });
 });
 
 describe("stop method", () => {
-	let oClass;
+  let oClass;
 
   beforeEach(() => {
     oClass = new TestClass();
   });
-
-  it("Basic test", () => {
-    // Given
-    oClass.on("test",  oCustomEvent => {
-      oCustomEvent.stop();
-    });
-    // When
-    const result = oClass.trigger("test");
-    // Then
-    expect(result).to.be.false;
-  });
-
-  it("Test for multiple event handler", () => {
-    // Given
-    oClass.on("test", (oCustomEvent) => {
-      oCustomEvent.stop();
-    });
-    oClass.on("test", noop);
-    // When
-    const result = oClass.trigger("test");
-    // Then
-    expect(result).to.be.false;
-  });
 });
 
 describe("hasOn method", () => {
-	let oClass;
+  let oClass;
 
   beforeEach(() => {
     oClass = new TestClass();
@@ -344,7 +314,7 @@ describe("hasOn method", () => {
 });
 
 describe("once method", () => {
-	let oClass;
+  let oClass;
 
   beforeEach(() => {
     oClass = new TestClass({
@@ -377,10 +347,10 @@ describe("once method", () => {
     let callCount2 = 0;
     // When
     oClass.once({
-      "test"() {
+      "test": () => {
         callCount++;
       },
-      "test2"() {
+      "test2": () => {
         callCount2++;
       }
     });
@@ -417,7 +387,7 @@ describe("once method", () => {
 
     // Then
     expect(a.a).to.equal(e.a);
-    expect(e.stop ).to.be.a("function");
+    expect(e.a).to.equal(1);
     expect(b).to.equal(param1);
   });
 });

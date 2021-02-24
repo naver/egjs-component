@@ -1,8 +1,12 @@
+import assert from "static-type-assert";
+
 import Component from "../../src/Component";
+import ComponentEvent from "../../src/ComponentEvent";
+import { EventProps } from "../../src/types";
 
-const test = (testName: string, func: (...args: any[]) => any) => {}
+import { test } from "./type-utils";
 
-class TestClass extends Component<{
+interface TestEventDefinitions {
   evt1: {
     a: number;
   };
@@ -13,19 +17,16 @@ class TestClass extends Component<{
     c: boolean;
   }) => any;
   evt4: void;
-  evt5: {
-    a: 1;
-    stop(): void;
-  }
-}> {
-  testMethod() {}
-};
+  evt5: EventProps;
+  evt6: EventProps<{ a: number; b: string }>;
+}
+
+class TestClass extends Component<TestEventDefinitions> {}
 
 const component = new TestClass();
 
 // ✅
 test("Correct event definitions", () => {
-  // $ExpectType SomeCorrectClass
   class SomeCorrectClass extends Component<{
     evt1: {
       prop0: number;
@@ -47,307 +48,213 @@ test("Correct event definitions", () => {
     evt5: null;
     evt6: undefined;
     evt7: never;
-    evt8: {
-      a: 1,
-      stop(): void,
-    }
-  }> {};
+    evt8: EventProps<{ a: number }>;
+  }> {}
+
+  assert<SomeCorrectClass>(new SomeCorrectClass());
 });
 
-test("Can make component with no event definitions", () => {
-  // $ExpectType SomeCorrectClass
-  class SomeCorrectClass extends Component {
-    // NOTHING
+test("Can receive interface as event types", () => {
+  interface SubEventInterface {
+    a: string;
+    b: number;
   }
+
+  interface TestEventInterface {
+    evt1: string;
+    evt2: EventProps<{ b: number }>;
+    evt3: SubEventInterface;
+    evt4: { a: number; b: string };
+  }
+
+  class SomeCorrectClass3 extends Component<TestEventInterface> {}
+
+  assert<SomeCorrectClass3>(new SomeCorrectClass3());
 });
 
-test("Can make component with no event definitions and call methods of it", () => {
-  class SomeCorrectClass2 extends Component {};
+test("Can make component with event definitions and call methods of it", () => {
+  class SomeCorrectClass extends Component<{
+    a: any;
+  }> {}
 
-  // $ExpectType boolean
-  new SomeCorrectClass2().trigger("a");
-
-  // $ExpectType SomeCorrectClass2
-  new SomeCorrectClass2().on("a", e => {});
-
-  // $ExpectType SomeCorrectClass2
-  new SomeCorrectClass2().once("a", e => {});
-
-  // $ExpectType SomeCorrectClass2
-  new SomeCorrectClass2().off("a", e => {});
+  assert<SomeCorrectClass>(new SomeCorrectClass().trigger("a"));
+  assert<SomeCorrectClass>(new SomeCorrectClass().on("a", () => {}));
+  assert<SomeCorrectClass>(new SomeCorrectClass().once("a", () => {}));
+  assert<SomeCorrectClass>(new SomeCorrectClass().off("a", () => {}));
 });
 
 test("Correct trigger() usage", () => {
-  // $ExpectType boolean
-  component.trigger("evt1", { a : 1 });
-
-  // $ExpectType boolean
-  component.trigger("evt2", { b : "" }, true);
-
-  // $ExpectType boolean
-  component.trigger("evt3", { c : true });
-
-  // $ExpectType boolean
-  component.trigger("evt4");
-
-  // $ExpectType boolean
-  component.trigger("evt4", {});
-
-  // skip stop function
-  // $ExpectType boolean
-  component.trigger("evt5", {
-    a: 1,
-  });
+  assert<TestClass>(component.trigger("evt1", { a : 1 }));
+  assert<TestClass>(component.trigger("evt2", { b : "" }, true));
+  assert<TestClass>(component.trigger("evt3", { c : true }));
+  assert<TestClass>(component.trigger("evt4"));
+  assert<TestClass>(component.trigger(new ComponentEvent("evt5")));
+  assert<TestClass>(component.trigger(new ComponentEvent("evt6", { a: 1, b: "" })));
 });
-test("Even if the event type is not set, there is no type error.", () => {
-  const defaultComponent = new Component();
 
-  // Any event passes.
-  defaultComponent.on("a", e => {
-    // $ExpectType any
-    e.a;
-    // $ExpectType any
-    e.b;
-    // $ExpectType Component<DefaultEventMap>
-    e.currentTarget
-    // $ExpectType string
-    e.eventType
-    // $ExpectType () => void
-    e.stop
-  });
-
-  // Any parameters passes.
-  // $ExpectType boolean
-  defaultComponent.trigger("a");
-  // $ExpectType boolean
-  defaultComponent.trigger("a", {});
-  // $ExpectType boolean
-  defaultComponent.trigger("a", { a: 1 });
-  // $ExpectType boolean
-  defaultComponent.trigger("a", { a: 1 }, 1);
-});
 test("Correct on, once usage", () => {
-  ["on", "once"].forEach((method: "on" | "once") => {
-    // $ExpectType TestClass
-    component[method]("evt1", e => {
-      // $ExpectType number
-      e.a;
-    });
+  (["on", "once"] as const).forEach((method: "on" | "once") => {
+    assert<TestClass>(component[method]("evt1", e => {
+      assert<number>(e.a);
+    }));
 
-    // $ExpectType TestClass
-    component[method]("evt2", (arg0, arg1) => {
-      // $ExpectType string
-      arg0.b
+    assert<TestClass>(component[method]("evt2", (arg0, arg1) => {
+      assert<string>(arg0.b);
+      assert<boolean>(arg1);
+    }));
 
-      // $ExpectType boolean
-      arg1
-    });
+    assert<TestClass>(component[method]("evt3", e => {
+      assert<boolean>(e.c);
+    }));
 
-    // $ExpectType TestClass
-    component[method]("evt3", e => {
-      // $ExpectType boolean
-      e.c
-    });
-
-    // $ExpectType TestClass
-    component[method]({
+    assert<TestClass>(component[method]({
       evt1: e => {
-        // $ExpectType number
-        e.a;
+        assert<number>(e.a);
       },
       evt2: (arg0, arg1) => {
-        // $ExpectType string
-        arg0.b
-
-        // $ExpectType boolean
-        arg1
-      },
-    })
+        assert<string>(arg0.b);
+        assert<boolean>(arg1);
+      }
+    }));
   });
 });
 
 test("Correct off() usage", () => {
-  // $ExpectType TestClass
-  component.off();
+  assert<TestClass>(component.off());
+  assert<TestClass>(component.off("evt1"));
+  assert<TestClass>(component.off("evt1", e => {
+    assert<number>(e.a);
+  }));
 
-  // $ExpectType TestClass
-  component.off("evt1");
-
-  // $ExpectType TestClass
-  component.off("evt1", e => {
-    // $ExpectType number
-    e.a;
-  });
-
-  // $ExpectType TestClass
-  component.off({
-    evt1: e => {
-      // $ExpectType number
-      e.a;
-    },
-    evt2: (arg0, arg1) => {
-      // $ExpectType string
-      arg0.b
-
-      // $ExpectType boolean
-      arg1
-    },
-  })
+  assert<TestClass>(
+    component.off({
+      evt1: e => {
+        assert<number>(e.a);
+      },
+      evt2: (arg0, arg1) => {
+        assert<string>(arg0.b);
+        assert<boolean>(arg1);
+      }
+    })
+  );
 });
 
-test("Default props check", () => {
-  ["on", "once"].forEach((method: "on" | "once") => {
-    // $ExpectType TestClass
-    component[method]("evt1", () => {});
+test("Default props check for ComponentEvent", () => {
+  (["on", "once"] as const).forEach((method: "on" | "once") => {
+    assert<TestClass>(component[method]("evt5", e => {
+      assert<TestClass>(e.currentTarget);
+      assert<"evt5">(e.eventType);
+      assert<() => void>(e.stop);
+    }));
+  });
+});
 
-    // $ExpectType TestClass
-    component[method]("evt1", e => {
-      // $ExpectType TestClass
-      e.currentTarget
-
-      // $ExpectType string
-      e.eventType
-
-      // $ExpectType () => void
-      e.stop
-    });
-
-    // $ExpectType TestClass
-    component[method]("evt2", (arg0) => {});
-
-    // $ExpectType TestClass
-    component[method]("evt2", (arg0, arg1) => {
-      // $ExpectType TestClass
-      arg0.currentTarget
-
-      // $ExpectType string
-      arg0.eventType
-
-      // $ExpectType () => void
-      arg0.stop
-    });
-
-    // $ExpectType TestClass
-    component[method]("evt3", () => {});
-
-    // $ExpectType TestClass
-    component[method]("evt3", e => {
-      // $ExpectType TestClass
-      e.currentTarget
-
-      // $ExpectType string
-      e.eventType
-
-      // $ExpectType () => void
-      e.stop
-
-      return false;
-    });
-
-    // $ExpectType TestClass
-    component[method]("evt4", e => {
-      // $ExpectType TestClass
-      e.currentTarget
-    });
+test("Custom props check for ComponentEvent", () => {
+  (["on", "once"] as const).forEach((method: "on" | "once") => {
+    assert<TestClass>(component[method]("evt6", e => {
+      assert<TestClass>(e.currentTarget);
+      assert<"evt6">(e.eventType);
+      assert<() => void>(e.stop);
+      assert<number>(e.a);
+      assert<string>(e.b);
+    }));
   });
 });
 
 test("hasOn has correct type", () => {
-  // $ExpectType boolean
-  component.hasOn("evt1");
-
-  // $ExpectType boolean
-  component.hasOn("evt2");
-
-  // $ExpectType boolean
-  component.hasOn("evt3");
+  assert<boolean>(component.hasOn("evt1"));
+  assert<boolean>(component.hasOn("evt2"));
+  assert<boolean>(component.hasOn("evt3"));
 });
 
 // ❌
-test("Wrong event definitions", () => {
-  // $ExpectError
-  class SomeWrongClass extends Component<{
-    evt1: number;
-  }> {};
-
-  // $ExpectError
-  class SomeWrongClass2 extends Component<{
-    evt1: (arg0: number) => void;
-  }> {};
+test("Cannot create component without event definitions", () => {
+  // @ts-expect-error
+  class SomeWrongClass3 extends Component {
+    // NOTHING
+  }
 });
 
 test("Should show error when calling method with not defined event name", () => {
-  class NotDefinedClass extends Component<{ b: { prop: number } }> {};
+  class NotDefinedClass extends Component<{ b: { prop: number } }> {}
 
-  // $ExpectError
+  // @ts-expect-error
   new NotDefinedClass().trigger("a");
 
-  // $ExpectError
+  // @ts-expect-error
   new NotDefinedClass().on("a", e => {});
 
-  // $ExpectError
+  // @ts-expect-error
   new NotDefinedClass().once("a", e => {});
 
-  // $ExpectError
+  // @ts-expect-error
   new NotDefinedClass().off("a", e => {});
 });
 
 test("Wrong trigger() usage", () => {
-  // $ExpectError
+  // @ts-expect-error
   component.trigger();
 
-  // $ExpectError
+  // @ts-expect-error
   component.trigger("evt1");
 
-  // $ExpectError
+  // @ts-expect-error
   component.trigger("evt1", 1);
 
-  // $ExpectError
+  // @ts-expect-error
   component.trigger("evt2", { b: "" });
 
-  // $ExpectError
+  // @ts-expect-error
   component.trigger("evt3", { c: true }, 123);
 
-  // $ExpectError
+  // @ts-expect-error
   component.trigger("evt4", { a : 1 });
 
-  // $ExpectError
+  // @ts-expect-error
   component.trigger("evt4", 1);
+
+  // @ts-expect-error
+  component.trigger("evt5", { a: 1 });
+
+  // @ts-expect-error
+  component.trigger("evt6");
 });
 
 test("Wrong on, once usage", () => {
-  ["on", "once"].forEach((method: "on" | "once") => {
-    // $ExpectError
-    component[method]();
+  ["on", "once"].forEach((method: string) => {
+    const onOnce = method as "on" | "once";
 
-    component[method]("evt1", e => {
-      // $ExpectError
+    // @ts-expect-error
+    component[onOnce]();
+
+    component[onOnce]("evt1", e => {
+      // @ts-expect-error
       e.propThatNotExist;
     });
 
-    // $ExpectError
-    component[method]("evt1", (e, argThatNotExist) => {});
+    // @ts-expect-error
+    component[onOnce]("evt1", (e, argThatNotExist) => {});
 
-    // $ExpectError
-    component[method]("evt2", (arg0, arg1, argThatNotExist) => {});
+    // @ts-expect-error
+    component[onOnce]("evt2", (arg0, arg1, argThatNotExist) => {});
 
-    // $ExpectError
-    component[method]("evt3");
+    // @ts-expect-error
+    component[onOnce]("evt3");
   });
 });
 
 test("Wrong off usage", () => {
-  // $ExpectError
+  // @ts-expect-error
   component.off("event-that-not-exist");
 
-  // $ExpectError
+  // @ts-expect-error
   component.off("evt1", (e, argThatNotExist) => {});
 });
 
 test("Wrong hasOn() usage", () => {
-  // $ExpectError
+  // @ts-expect-error
   component.hasOn();
 
-  // $ExpectError
+  // @ts-expect-error
   component.hasOn("evt-that-dont-exist");
 });

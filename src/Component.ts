@@ -3,7 +3,7 @@
  * egjs projects are licensed under the MIT license
  */
 import { isUndefined } from "./utils";
-import { EventCallback, EventHash, EventKey, EventMap, EventProps, EventTriggerParams } from "./types";
+import { EventCallback, EventHash, EventKey, EventMap, EventTriggerParams } from "./types";
 import { _ComponentEvent } from "./ComponentEvent";
 
 /**
@@ -32,7 +32,7 @@ class Component<T extends EventMap> {
     this._eventHandler = {};
   }
 
-  public trigger<K extends EventKey<T>>(event: EventProps<T[K]>): this;
+  public trigger<K extends EventKey<T>>(event: _ComponentEvent<T[K], K, this> & T[K]): this;
   public trigger<K extends EventKey<T>>(eventName: K, ...params: EventTriggerParams<T, K>): this;
   /**
    * Triggers a custom event.

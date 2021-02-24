@@ -11,8 +11,8 @@
 		"printsizes": "print-sizes ./dist --exclude=\\.map",
 		"test": "karma start",
 		"test:chrome": "karma start --chrome",
-		"test:types": "npm run declaration && cp 'declaration/Component.d.ts' 'test/types/index.d.ts' && dtslint --localTs node_modules/typescript/lib test/types",
-		"lint": "tslint -c tslint.json 'src/**/*.ts'",
+		"test:types": "tsc ./test/types/*.test-d.ts --noEmit",
+		"lint": "eslint 'src/**/*.ts'",
 		"jsdoc": "rm -rf ./doc && jsdoc -c jsdoc.json",
 		"release": "release-helper upstream",
 		"coverage": "karma start --coverage",
@@ -50,6 +50,7 @@
 		"@types/chai": "^4.2.12",
 		"@types/karma-chai": "^0.1.2",
 		"@types/mocha": "^8.0.3",
+		"@types/sinon": "^9.0.10",
 		"@typescript-eslint/eslint-plugin": "^4.15.2",
 		"@typescript-eslint/eslint-plugin-tslint": "^4.15.2",
 		"@typescript-eslint/parser": "^4.15.2",
@@ -82,8 +83,26 @@
 		"print-sizes": "^0.1.0",
 		"rollup": "^0.66.4",
 		"sinon": "^3.3.0",
+		"static-type-assert": "^4.0.1",
+		"tsd": "^0.14.0",
 		"tslint": "^6.1.3",
 		"tslint-consistent-codestyle": "^1.16.0",
 		"typescript": "^3.9.7"
+	},
+	"tsd": {
+		"directory": "test/types",
+		"compilerOptions": {
+			"sourceMap": true,
+			"strictNullChecks": true,
+			"noImplicitAny": false,
+			"noImplicitThis": false,
+			"strictFunctionTypes": false,
+			"downlevelIteration": true,
+			"experimentalDecorators": true,
+			"esModuleInterop": true,
+			"include": [
+				"./test/types/**/*.test-d.ts"
+			]
+		}
 	}
 }
