@@ -75,7 +75,7 @@ some.trigger("hi");
 You can use [Typescript Generics](https://www.typescriptlang.org/docs/handbook/generics.html) to define events that component can emit.
 
 ```ts
-import Component, { ComponentEvent, EventProps } from "@egjs/component";
+import Component, { ComponentEvent } from "@egjs/component";
 
 interface Events {
   event1: {
@@ -87,8 +87,8 @@ interface Events {
   // If there're no event props
   event3: void;
   // If you want additional properties like `currentTarget`, `eventType`, `stop`
-  // You can use EventProps
-  event4: EventProps<{ a: number; b: string }>;
+  // You can use ComponentEvent with additional properties
+  event4: ComponentEvent<{ a: number; b: string }>;
 }
 
 class SomeClass extends Component<Events> {
@@ -105,7 +105,7 @@ class SomeClass extends Component<Events> {
   }
 }
 
-// You can trigger ComponentEvent to trigger type of EventProps
+// You can also trigger ComponentEvent
 const component = new SomeClass();
 component.trigger(new ComponentEvent("event4", { a: 123, b: "abcd" }));
 ```

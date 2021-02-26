@@ -2,7 +2,6 @@ import assert from "static-type-assert";
 
 import Component from "../../src/Component";
 import ComponentEvent from "../../src/ComponentEvent";
-import { EventProps } from "../../src/types";
 
 import { test } from "./type-utils";
 
@@ -17,8 +16,8 @@ interface TestEventDefinitions {
     c: boolean;
   }) => any;
   evt4: void;
-  evt5: EventProps;
-  evt6: EventProps<{ a: number; b: string }>;
+  evt5: ComponentEvent;
+  evt6: ComponentEvent<{ a: number; b: string }>;
 }
 
 class TestClass extends Component<TestEventDefinitions> {}
@@ -48,7 +47,7 @@ test("Correct event definitions", () => {
     evt5: null;
     evt6: undefined;
     evt7: never;
-    evt8: EventProps<{ a: number }>;
+    evt8: ComponentEvent<{ a: number }>;
   }> {}
 
   assert<SomeCorrectClass>(new SomeCorrectClass());
@@ -62,7 +61,7 @@ test("Can receive interface as event types", () => {
 
   interface TestEventInterface {
     evt1: string;
-    evt2: EventProps<{ b: number }>;
+    evt2: ComponentEvent<{ b: number }>;
     evt3: SubEventInterface;
     evt4: { a: number; b: string };
   }
@@ -214,10 +213,16 @@ test("Wrong trigger() usage", () => {
   component.trigger("evt4", 1);
 
   // @ts-expect-error
-  component.trigger("evt5", { a: 1 });
+  component.trigger("evt5");
 
   // @ts-expect-error
-  component.trigger("evt6");
+  component.trigger(new ComponentEvent("evt6"));
+
+  // @ts-expect-error
+  component.trigger(new ComponentEvent("evt6", { a: 1 }));
+
+  // @ts-expect-error
+  component.trigger(new ComponentEvent("not-defined-event"));
 });
 
 test("Wrong on, once usage", () => {
@@ -257,4 +262,35 @@ test("Wrong hasOn() usage", () => {
 
   // @ts-expect-error
   component.hasOn("evt-that-dont-exist");
+});
+
+test("Parameters of ComponentEvent at on/once", () => {
+  ["on", "once"].forEach((method: string) => {
+    const onOnce = method as "on" | "once";
+
+    component[onOnce]("evt5", e => {
+      // @ts-expect-error
+      e.propThatNotExist;
+
+      // @ts-expect-error
+      e.a;
+
+      assert<TestClass>(e.currentTarget);
+      assert<"evt5">(e.eventType);
+      assert<boolean>(e.isCanceled());
+      assert<void>(e.stop());
+    });
+
+    component[onOnce]("evt6", e => {
+      // @ts-expect-error
+      e.propThatNotExist;
+
+      assert<TestClass>(e.currentTarget);
+      assert<"evt6">(e.eventType);
+      assert<boolean>(e.isCanceled());
+      assert<void>(e.stop());
+      assert<number>(e.a);
+      assert<string>(e.b);
+    });
+  });
 });

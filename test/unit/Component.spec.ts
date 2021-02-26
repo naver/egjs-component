@@ -3,7 +3,6 @@ import { expect } from "chai";
 
 import Component from "../../src/Component";
 import ComponentEvent from "../../src/ComponentEvent";
-import { EventProps } from "../../src/types";
 
 class TestClass extends Component<any> {
   public options: any;
@@ -268,7 +267,7 @@ describe("trigger method", () => {
 
   it("should insert property 'currentTarget' in event if event type is ComponentEvent", () => {
     // Given
-    const component = new Component<{ test: EventProps<{ a: number; b: number }> }>();
+    const component = new Component<{ test: ComponentEvent<{ a: number; b: number }> }>();
 
     // When
     const spy = sinon.spy();

@@ -23,7 +23,7 @@
  * ```
  */
 
-import { _ComponentEvent } from "./ComponentEvent";
+import ComponentEvent from "./ComponentEvent";
 
 export type AnyFunction = (...args: any[]) => any;
 export type NoArguments = undefined | null | void | never;
@@ -36,8 +36,8 @@ export type EventCallback<T extends EventMap, K extends EventKey<T>, THIS>
     ? () => any
     : T[K] extends AnyFunction
       ? T[K]
-      : T[K] extends EventProps<infer PROPS>
-        ? (event: _ComponentEvent<PROPS, K, THIS> & PROPS) => any
+      : T[K] extends ComponentEvent<infer PROPS>
+        ? (event: ComponentEvent<PROPS, K, THIS>) => any
         : (event: T[K]) => any;
 
 export type EventTriggerParams<T, K extends EventKey<T>>
@@ -48,9 +48,13 @@ export type EventTriggerParams<T, K extends EventKey<T>>
       : [T[K]];
 
 export interface ComponentEventConstructor {
-  new<PROPS extends Record<string, any>, TYPE extends string = string, THIS = any>(eventType: TYPE, props: PROPS): _ComponentEvent<PROPS, TYPE, THIS> & PROPS;
-  new<TYPE extends string = string, THIS = any>(eventType: TYPE): _ComponentEvent<Record<string, never>, TYPE, THIS>;
+  new<PROPS extends Record<string, any>, TYPE extends string = string, THIS = any>(eventType: TYPE, props: PROPS): DefaultProps<TYPE, THIS> & PROPS;
+  new<TYPE extends string = string, THIS = any>(eventType: TYPE): DefaultProps<TYPE, THIS>;
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type EventProps<PROPS extends Record<string, any> = {}> = _ComponentEvent<PROPS> & PROPS;
+export interface DefaultProps<TYPE extends string, THIS> {
+  eventType: TYPE;
+  currentTarget: THIS;
+  stop(): void;
+  isCanceled(): boolean;
+}

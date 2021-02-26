@@ -4,7 +4,8 @@
  */
 import { isUndefined } from "./utils";
 import { EventCallback, EventHash, EventKey, EventMap, EventTriggerParams } from "./types";
-import { _ComponentEvent } from "./ComponentEvent";
+import ComponentEvent from "./ComponentEvent";
+import ActualComponentEvent from "./ActualComponentEvent";
 
 /**
  * A class used to manage events in a component
@@ -32,7 +33,7 @@ class Component<T extends EventMap> {
     this._eventHandler = {};
   }
 
-  public trigger<K extends EventKey<T>>(event: _ComponentEvent<T[K], K, this> & T[K]): this;
+  public trigger<K extends EventKey<T>>(event: ComponentEvent<T[K], K, this> & T[K]): this;
   public trigger<K extends EventKey<T>>(eventName: K, ...params: EventTriggerParams<T, K>): this;
   /**
    * Triggers a custom event.
@@ -65,10 +66,10 @@ class Component<T extends EventMap> {
    * // https://github.com/naver/egjs-component/wiki/How-to-make-Component-event-design%3F
    * ```
    */
-  public trigger<K extends EventKey<T>>(event: K | _ComponentEvent<T[K], K>, ...params: EventTriggerParams<T, K> | void[]): this {
-    const eventName = event instanceof _ComponentEvent
-      ? event.eventType
-      : event;
+  public trigger<K extends EventKey<T>>(event: K | ComponentEvent<T[K], K, this>, ...params: EventTriggerParams<T, K> | void[]): this {
+    const eventName = (event as any) instanceof ActualComponentEvent
+      ? (event as ActualComponentEvent<T[K]>).eventType
+      : event as K;
 
     const handlers = this._eventHandler[eventName] || [];
 
@@ -76,11 +77,11 @@ class Component<T extends EventMap> {
       return this;
     }
 
-    if (event instanceof _ComponentEvent) {
-      event.currentTarget = this;
+    if ((event as any) instanceof ActualComponentEvent) {
+      (event as ActualComponentEvent<T[K]>).currentTarget = this;
 
-      handlers.forEach((handler: (event: _ComponentEvent<T[K], K, this>) => any) => {
-        handler(event);
+      handlers.forEach((handler: (event: ComponentEvent<T[K], K, this>) => any) => {
+        handler(event as ComponentEvent<T[K], K, this>);
       });
     } else {
       handlers.forEach(handler => {
