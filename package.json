@@ -11,7 +11,7 @@
 		"printsizes": "print-sizes ./dist --exclude=\\.map",
 		"test": "karma start",
 		"test:chrome": "karma start --chrome",
-		"test:types": "tsc ./test/types/*.test-d.ts --noEmit",
+		"test:types": "npm run declaration && tsc ./test/types/*.test-d.ts --noEmit",
 		"lint": "eslint 'src/**/*.ts'",
 		"jsdoc": "rm -rf ./doc && jsdoc -c jsdoc.json",
 		"release": "release-helper upstream",
@@ -85,21 +85,5 @@
 		"static-type-assert": "^4.0.1",
 		"tslint": "^6.1.3",
 		"typescript": "^3.9.7"
-	},
-	"tsd": {
-		"directory": "test/types",
-		"compilerOptions": {
-			"sourceMap": true,
-			"strictNullChecks": true,
-			"noImplicitAny": false,
-			"noImplicitThis": false,
-			"strictFunctionTypes": false,
-			"downlevelIteration": true,
-			"experimentalDecorators": true,
-			"esModuleInterop": true,
-			"include": [
-				"./test/types/**/*.test-d.ts"
-			]
-		}
 	}
 }

@@ -19,9 +19,9 @@ IE 7+ (possibly 9 also), latest of Chrome/FF/Safari, iOS 7+ and Android 2.3+ (ex
 import Component, { ComponentEvent } from "@egjs/component";
 
 class Some extends Component{
-	foo() {
-		this.trigger("hi"); // fire hi event.
-	}
+  foo() {
+    this.trigger("hi"); // fire hi event.
+  }
 
   bar() {
     this.trigger(new ComponentEvent("bye", { foo: 1, bar: "bye" })) // Fire bye event with the additional properties
@@ -30,7 +30,7 @@ class Some extends Component{
 
 const some = new Some();
 some.on("hi", () => {
-	console.log("fire hi event");
+  console.log("fire hi event");
 });
 
 some.on("bye", e => {
@@ -56,11 +56,11 @@ function Some(){
 Some.prototype = new Component(); //extends
 Some.prototype.constructor = Some;
 Some.prototype.foo = function() {
-	this.trigger("hi"); // fire hi event.
+  this.trigger("hi"); // fire hi event.
 }
 
 var some = new Some();
 some.on("hi", function() {
-	console.log("fire hi event");
+  console.log("fire hi event");
 });
 ```
