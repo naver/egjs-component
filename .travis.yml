@@ -6,13 +6,13 @@ sudo: false
 before_install:
   - npm install -g npm@latest
 install:
-  - npm install
+  - npm ci
 sudo: required
 addons:
   chrome: stable
 cache:
   directories:
-    - "node_modules"
+    - $HOME/.npm
 before_script:
   - npm run lint
 script:
