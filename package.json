@@ -4,7 +4,7 @@
 	"description": "A base class utility that manages events and options in modules.",
 	"main": "dist/component.js",
 	"module": "dist/component.esm.js",
-	"types": "declaration/Component.d.ts",
+	"types": "declaration/index.d.ts",
 	"scripts": {
 		"build": "rm -rf ./dist ./declaration && rollup -c && npm run declaration && npm run printsizes",
 		"declaration": "rm -rf declaration && tsc -p tsconfig.declaration.json",

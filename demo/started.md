@@ -15,17 +15,34 @@ IE 7+ (possibly 9 also), latest of Chrome/FF/Safari, iOS 7+ and Android 2.3+ (ex
 
 #### Use Component(ES6)
 
-``` javascript
-// es6 style
-class Some extends eg.Component{
-	foo(){
-		this.trigger("hi");// fire hi event.
+```js
+import Component, { ComponentEvent } from "@egjs/component";
+
+class Some extends Component{
+	foo() {
+		this.trigger("hi"); // fire hi event.
 	}
+
+  bar() {
+    this.trigger(new ComponentEvent("bye", { foo: 1, bar: "bye" })) // Fire bye event with the additional properties
+  }
 }
 
-var some = new Some();
-some.on("hi",()=>{
+const some = new Some();
+some.on("hi", () => {
 	console.log("fire hi event");
+});
+
+some.on("bye", e => {
+  // These properties are supported additionally by using ComponentEvent
+  e.eventType; // string
+  e.currentTarget; // some(instance of the class Some)
+  e.stop();
+  e.isCanceled();
+
+  // Additional event parameters
+  e.foo; // 1
+  e.bar; // "bye"
 });
 ```
 
@@ -34,16 +51,16 @@ some.on("hi",()=>{
 ``` javascript
 //es5 style
 function Some(){
-	
+
 }
-Some.prototype = new eg.Component(); //extends
+Some.prototype = new Component(); //extends
 Some.prototype.constructor = Some;
-Some.prototype.foo = function(){
-	this.trigger("hi");// fire hi event.
+Some.prototype.foo = function() {
+	this.trigger("hi"); // fire hi event.
 }
 
 var some = new Some();
-some.on("hi",function(){
+some.on("hi", function() {
 	console.log("fire hi event");
 });
 ```

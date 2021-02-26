@@ -1,7 +1,7 @@
 /* eslint-disable */
 const buildHelper = require("@egjs/build-helper");
 
-const name = "eg.Component";
+const name = "Component";
 
 export default buildHelper([
   {

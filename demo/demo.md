@@ -3,15 +3,32 @@
 {% include_relative assets/html/demo.html %}
 
 ```js
-// es6 style
-class Some extends eg.Component{
-	foo(){
-		this.trigger("hi");// fire hi event.
+import Component, { ComponentEvent } from "@egjs/component";
+
+class Some extends Component{
+	foo() {
+		this.trigger("hi"); // fire hi event.
 	}
+
+  bar() {
+    this.trigger(new ComponentEvent("bye", { foo: 1, bar: "bye" })) // Fire bye event with the additional properties
+  }
 }
 
-var some = new Some();
-some.on("hi",()=>{
+const some = new Some();
+some.on("hi", () => {
 	console.log("fire hi event");
+});
+
+some.on("bye", e => {
+  // These properties are supported additionally by using ComponentEvent
+  e.eventType; // string
+  e.currentTarget; // some(instance of the class Some)
+  e.stop();
+  e.isCanceled();
+
+  // Additional event parameters
+  e.foo; // 1
+  e.bar; // "bye"
 });
 ```

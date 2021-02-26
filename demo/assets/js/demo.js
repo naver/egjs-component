@@ -3,7 +3,7 @@ window.onload = function(){
 	function Some(){
 
 	}
-	Some.prototype = new eg.Component(); //extends
+	Some.prototype = new Component(); //extends
 	Some.prototype.constructor = Some;
 	Some.prototype.foo = function(){
 		this.trigger("hi");// fire hi event.
