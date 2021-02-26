@@ -3,11 +3,11 @@ home: //naver.github.io/egjs
 desc: A class used to manage events and options in a component.
 dist:
 - release/latest/dist/component.min.js
-hashtag: "#eventemitter #options"
+hashtag: "#eventemitter #options #typescript"
 GA: UA-70842526-14
 github:
   user: naver
-  repo: egjs-component 
+  repo: egjs-component
 js:
 - assets/js/demo.js
 css:

@@ -10,7 +10,6 @@ import ActualComponentEvent from "./ActualComponentEvent";
 /**
  * A class used to manage events in a component
  * @ko 컴포넌트의 이벤트을 관리할 수 있게 하는 클래스
- * @alias Component
  */
 class Component<T extends EventMap> {
   /**
@@ -234,7 +233,7 @@ class Component<T extends EventMap> {
    * @param {function?} handlerToDetach The handler function of the event to be detached <ko>해제할 이벤트의 핸들러 함수</ko>
    * @return An instance of a component itself <ko>컴포넌트 자신의 인스턴스</ko>
    * @example
-   * ```
+   * ```ts
    * import Component, { ComponentEvent } from "@egjs/component";
    *
    * class Some extends Component<{

@@ -5,14 +5,13 @@ dist: trusty
 sudo: false
 before_install:
   - npm install -g npm@latest
+  - npm cache verify
+  - npm cache clean --force
+  - rm -rf package-lock.json
 install:
-  - npm ci
-sudo: required
+  - npm i
 addons:
   chrome: stable
-cache:
-  directories:
-    - $HOME/.npm
 before_script:
   - npm run lint
 script:
