@@ -52,9 +52,11 @@ The following are the supported browsers.
 <script src="../dist/component.js"></script>
 ```
 
-### 2. Use eg.Component
+### 2. Use Component
 ```javascript
-class Some extends eg.Component {
+import Component from "@egjs/component";
+
+class Some extends Component {
   hi() {
     alert("hi");
   }
@@ -105,8 +107,12 @@ class SomeClass extends Component<Events> {
   }
 }
 
-// You can also trigger ComponentEvent
+// You can trigger events like this
 const component = new SomeClass();
+component.trigger("event1", {
+  prop1: 1,
+  prop2: "abc"
+});
 component.trigger(new ComponentEvent("event4", { a: 123, b: "abcd" }));
 ```
 
@@ -116,7 +122,7 @@ If you find a bug, please report it to us using the [Issues](https://github.com/
 
 
 ## License
-eg.Component is released under the [MIT license](http://naver.github.io/egjs/license.txt).
+@egjs/component is released under the [MIT license](http://naver.github.io/egjs/license.txt).
 
 ```
 Copyright (c) 2015 NAVER Corp.

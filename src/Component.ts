@@ -10,7 +10,7 @@ import ActualComponentEvent from "./ActualComponentEvent";
 /**
  * A class used to manage events in a component
  * @ko 컴포넌트의 이벤트을 관리할 수 있게 하는 클래스
- * @alias eg.Component
+ * @alias Component
  */
 class Component<T extends EventMap> {
   /**
@@ -19,8 +19,8 @@ class Component<T extends EventMap> {
    * @name VERSION
    * @static
    * @example
-   * eg.Component.VERSION;  // ex) 3.0.0
-   * @memberof eg.Component
+   * Component.VERSION;  // ex) 3.0.0
+   * @memberof Component
    */
   public static VERSION: string = "#__VERSION__#";
 
@@ -34,17 +34,23 @@ class Component<T extends EventMap> {
   }
 
   public trigger<K extends EventKey<T>>(event: ComponentEvent<T[K], K, this> & T[K]): this;
-  public trigger<K extends EventKey<T>>(eventName: K, ...params: EventTriggerParams<T, K>): this;
+  public trigger<K extends EventKey<T>>(event: K, ...params: EventTriggerParams<T, K>): this;
   /**
-   * Triggers a custom event.
+   * Trigger a custom event.
    * @ko 커스텀 이벤트를 발생시킨다
-   * @param {string} eventName The name of the custom event to be triggered <ko>발생할 커스텀 이벤트의 이름</ko>
-   * @param {object} customEvent Event data to be sent when triggering a custom event <ko>커스텀 이벤트가 발생할 때 전달할 데이터</ko>
-   * @param {any[]} restParam Additional parameters when triggering a custom event <ko>커스텀 이벤트가 발생할 때 필요시 추가적으로 전달할 데이터</ko>
-   * @return Indicates whether the event has occurred. If the stop() method is called by a custom event handler, it will return false and prevent the event from occurring. <a href="https://github.com/naver/egjs-component/wiki/How-to-make-Component-event-design%3F">Ref</a> <ko>이벤트 발생 여부. 커스텀 이벤트 핸들러에서 stop() 메서드를 호출하면 'false'를 반환하고 이벤트 발생을 중단한다. <a href="https://github.com/naver/egjs-component/wiki/How-to-make-Component-event-design%3F">참고</a></ko>
+   * @param {string | ComponentEvent} event The name of the custom event to be triggered or an instance of the ComponentEvent<ko>발생할 커스텀 이벤트의 이름 또는 ComponentEvent의 인스턴스</ko>
+   * @param {any[]} params Event data to be sent when triggering a custom event <ko>커스텀 이벤트가 발생할 때 전달할 데이터</ko>
+   * @return An instance of the component itself<ko>컴포넌트 자신의 인스턴스</ko>
    * @example
-   * ```
-   * class Some extends eg.Component {
+   * ```ts
+   * import Component, { ComponentEvent } from "@egjs/component";
+   *
+   * class Some extends Component<{
+   *   beforeHi: ComponentEvent<{ foo: number; bar: string }>;
+   *   hi: { foo: { a: number; b: boolean } };
+   *   someEvent: (foo: number, bar: string) => void;
+   *   someOtherEvent: void; // When there's no event argument
+   * }> {
    *   some(){
    *     if(this.trigger("beforeHi")){ // When event call to stop return false.
    *       this.trigger("hi");// fire hi event.
@@ -53,14 +59,18 @@ class Component<T extends EventMap> {
    * }
    *
    * const some = new Some();
-   * some.on("beforeHi", (e) => {
+   * some.on("beforeHi", e => {
    *   if(condition){
    *     e.stop(); // When event call to stop, `hi` event not call.
    *   }
-   * });
-   * some.on("hi", (e) => {
    *   // `currentTarget` is component instance.
    *   console.log(some === e.currentTarget); // true
+   *
+   *   typeof e.foo; // number
+   *   typeof e.bar; // string
+   * });
+   * some.on("hi", e => {
+   *   typeof e.foo.b; // boolean
    * });
    * // If you want to more know event design. You can see article.
    * // https://github.com/naver/egjs-component/wiki/How-to-make-Component-event-design%3F
@@ -98,24 +108,29 @@ class Component<T extends EventMap> {
   /**
    * Executed event just one time.
    * @ko 이벤트가 한번만 실행된다.
-   * @param {string} eventName The name of the event to be attached <ko>등록할 이벤트의 이름</ko>
+   * @param {string} eventName The name of the event to be attached or an event name - event handler mapped object.<ko>등록할 이벤트의 이름 또는 이벤트 이름-핸들러 오브젝트</ko>
    * @param {function} handlerToAttach The handler function of the event to be attached <ko>등록할 이벤트의 핸들러 함수</ko>
-   * @return An instance of a component itself<ko>컴포넌트 자신의 인스턴스</ko>
+   * @return An instance of the component itself<ko>컴포넌트 자신의 인스턴스</ko>
    * @example
-   * ```
-   * class Some extends eg.Component {
-   * hi() {
-   *   alert("hi");
-   * }
-   * thing() {
-   *   this.once("hi", this.hi);
+   * ```ts
+   * import Component, { ComponentEvent } from "@egjs/component";
+   *
+   * class Some extends Component<{
+   *   hi: ComponentEvent;
+   * }> {
+   *   hi() {
+   *     alert("hi");
+   *   }
+   *   thing() {
+   *     this.once("hi", this.hi);
+   *   }
    * }
    *
    * var some = new Some();
    * some.thing();
-   * some.trigger("hi");
+   * some.trigger(new ComponentEvent("hi"));
    * // fire alert("hi");
-   * some.trigger("hi");
+   * some.trigger(new ComponentEvent("hi"));
    * // Nothing happens
    * ```
    */
@@ -146,8 +161,12 @@ class Component<T extends EventMap> {
    * @param {string} eventName The name of the event to be attached <ko>등록 여부를 확인할 이벤트의 이름</ko>
    * @return {boolean} Indicates whether the event is attached. <ko>이벤트 등록 여부</ko>
    * @example
-   * ```
-   * class Some extends eg.Component {
+   * ```ts
+   * import Component from "@egjs/component";
+   *
+   * class Some extends Component<{
+   *   hi: void;
+   * }> {
    *   some() {
    *     this.hasOn("hi");// check hi event.
    *   }
@@ -163,12 +182,16 @@ class Component<T extends EventMap> {
   /**
    * Attaches an event to a component.
    * @ko 컴포넌트에 이벤트를 등록한다.
-   * @param {string} eventName The name of the event to be attached <ko>등록할 이벤트의 이름</ko>
+   * @param {string} eventName The name of the event to be attached or an event name - event handler mapped object.<ko>등록할 이벤트의 이름 또는 이벤트 이름-핸들러 오브젝트</ko>
    * @param {function} handlerToAttach The handler function of the event to be attached <ko>등록할 이벤트의 핸들러 함수</ko>
    * @return An instance of a component itself<ko>컴포넌트 자신의 인스턴스</ko>
    * @example
-   * ```
-   * class Some extends eg.Component {
+   * ```ts
+   * import Component, { ComponentEvent } from "@egjs/component";
+   *
+   * class Some extends Component<{
+   *   hi: void;
+   * }> {
    *   hi() {
    *     console.log("hi");
    *   }
@@ -205,14 +228,18 @@ class Component<T extends EventMap> {
   public off(eventHash?: EventHash<T, this>): this;
   public off<K extends EventKey<T>>(eventName: K, handlerToDetach?: EventCallback<T, K, this>): this;
   /**
-   * Detaches an event from the component.
-   * @ko 컴포넌트에 등록된 이벤트를 해제한다
-   * @param {string} eventName The name of the event to be detached <ko>해제할 이벤트의 이름</ko>
-   * @param {function} handlerToDetach The handler function of the event to be detached <ko>해제할 이벤트의 핸들러 함수</ko>
+   * Detaches an event from the component.<br/>If the `eventName` is not given this will detach all event handlers attached.<br/>If the `handlerToDetach` is not given, this will detach all event handlers for `eventName`.
+   * @ko 컴포넌트에 등록된 이벤트를 해제한다.<br/>`eventName`이 주어지지 않았을 경우 모든 이벤트 핸들러를 제거한다.<br/>`handlerToAttach`가 주어지지 않았을 경우 `eventName`에 해당하는 모든 이벤트 핸들러를 제거한다.
+   * @param {string?} eventName The name of the event to be detached <ko>해제할 이벤트의 이름</ko>
+   * @param {function?} handlerToDetach The handler function of the event to be detached <ko>해제할 이벤트의 핸들러 함수</ko>
    * @return An instance of a component itself <ko>컴포넌트 자신의 인스턴스</ko>
    * @example
    * ```
-   * class Some extends eg.Component {
+   * import Component, { ComponentEvent } from "@egjs/component";
+   *
+   * class Some extends Component<{
+   *   hi: void;
+   * }> {
    *   hi() {
    *     console.log("hi");
    *   }

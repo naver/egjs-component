@@ -52,6 +52,9 @@ export interface ComponentEventConstructor {
   new<TYPE extends string = string, THIS = any>(eventType: TYPE): DefaultProps<TYPE, THIS>;
 }
 
+/**
+ * Indicates whether the event has occurred. If the stop() method is called by a custom event handler, it will return false and prevent the event from occurring. <a href="https://github.com/naver/egjs-component/wiki/How-to-make-Component-event-design%3F">Ref</a> <ko>이벤트 발생 여부. 커스텀 이벤트 핸들러에서 stop() 메서드를 호출하면 'false'를 반환하고 이벤트 발생을 중단한다. <a href="https://github.com/naver/egjs-component/wiki/How-to-make-Component-event-design%3F">참고</a></ko>
+ */
 export interface DefaultProps<TYPE extends string, THIS> {
   eventType: TYPE;
   currentTarget: THIS;
