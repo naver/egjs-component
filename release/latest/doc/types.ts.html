@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Global | egjs::component - API</title>
+    <title>Source: types.ts | egjs::component - API</title>
     
     <meta name="description" content="A base class utility that manages events and options in modules." />
     
@@ -152,138 +152,80 @@
 </div>
 
     <div class="main">
-        <h1 class="page-title" data-filename="global.html">Global</h1>
+        <h1 class="page-title" data-filename="types.ts.html">Source: types.ts</h1>
         
 
 
-
-<section>
-
-<header>
-    <h2>
-        
-    </h2>
-    <button id="toggle">
-        
-            English
-        
-    </button>
-</header>
-
-<article>
-    <div class="container-overview">
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+ * Copyright (c) 2015 NAVER Corp.
+ * egjs projects are licensed under the MIT license
+ */
+/**
+ * Types that can be used when attaching new event definition as generic on a class
+ *
+ * @ko 클래스 타입 등록시 사용가능한 타입
+ * @example
+ * ```
+ * new SomeClass&lt;{
+ *   // Using it as object
+ *   evt0: {
+ *     param0: number;
+ *     param1: string
+ *   };
+ *   // Using it as function with other arguments
+ *   evt1: (arg0: {
+ *     param0: number;
+ *     param1: string
+ *   }, arg1: string, arg2: boolean) => boolean;
+ * }>
+ * ```
+ */
 
-    
-        
-        
-<dl class="details">
-    
+import ComponentEvent from "./ComponentEvent";
 
-    
+export type AnyFunction = (...args: any[]) => any;
+export type NoArguments = undefined | null | void | never;
+export type EventMap = Record&lt;string, any>;
+export type EventKey&lt;T extends EventMap> = string &amp; keyof T;
+export type EventHash&lt;T extends EventMap, THIS> = Partial&lt;{ [K in EventKey&lt;T>]: EventCallback&lt;T, K, THIS> }>;
 
-    
+export type EventCallback&lt;T extends EventMap, K extends EventKey&lt;T>, THIS>
+  = T[K] extends NoArguments
+    ? () => any
+    : T[K] extends AnyFunction
+      ? T[K]
+      : T[K] extends ComponentEvent&lt;infer PROPS>
+        ? (event: ComponentEvent&lt;PROPS, K, THIS>) => any
+        : (event: T[K]) => any;
 
-    
+export type EventTriggerParams&lt;T, K extends EventKey&lt;T>>
+  = T[K] extends NoArguments
+    ? void[]
+    : T[K] extends AnyFunction
+      ? Parameters&lt;T[K]>
+      : [T[K]];
 
-    
+export interface ComponentEventConstructor {
+  new&lt;PROPS extends Record&lt;string, any>, TYPE extends string = string, THIS = any>(eventType: TYPE, props: PROPS): DefaultProps&lt;TYPE, THIS> &amp; PROPS;
+  new&lt;TYPE extends string = string, THIS = any>(eventType: TYPE): DefaultProps&lt;TYPE, THIS>;
+}
 
-    
+/**
+ * Indicates whether the event has occurred. If the stop() method is called by a custom event handler, it will return false and prevent the event from occurring. &lt;a href="https://github.com/naver/egjs-component/wiki/How-to-make-Component-event-design%3F">Ref&lt;/a> &lt;ko>이벤트 발생 여부. 커스텀 이벤트 핸들러에서 stop() 메서드를 호출하면 'false'를 반환하고 이벤트 발생을 중단한다. &lt;a href="https://github.com/naver/egjs-component/wiki/How-to-make-Component-event-design%3F">참고&lt;/a>&lt;/ko>
+ */
+export interface DefaultProps&lt;TYPE extends string, THIS> {
+  eventType: TYPE;
+  currentTarget: THIS;
+  stop(): void;
+  isCanceled(): boolean;
+}
+</code></pre>
+        </article>
+    </section>
 
-    
-
-    
-
-    
-
-    
-
-    
-
-
-    <!-- if data.codepen -->
-</dl>
-
-        
-    
-    </div>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Members</h3>
-
-        <dl>
-            
-
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="DefaultProps">DefaultProps</h4>
-    </div>
-    
-</dt>
-<dd>
-    
-    <div class="description en">
-        <p>Indicates whether the event has occurred. If the stop() method is called by a custom event handler, it will return false and prevent the event from occurring. <a href="https://github.com/naver/egjs-component/wiki/How-to-make-Component-event-design%3F">Ref</a> <ko>이벤트 발생 여부. 커스텀 이벤트 핸들러에서 stop() 메서드를 호출하면 'false'를 반환하고 이벤트 발생을 중단한다. <a href="https://github.com/naver/egjs-component/wiki/How-to-make-Component-event-design%3F">참고</a></ko></p>
-    </div>
-    
-    
-
-    
-<dl class="details">
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-
-    <!-- if data.codepen -->
-</dl>
-
-
-    
-</dd>
-
-        </dl>
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
 
 
 
