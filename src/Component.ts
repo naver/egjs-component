@@ -80,7 +80,7 @@ class Component<T extends EventMap> {
       ? (event as ActualComponentEvent<T[K]>).eventType
       : event as K;
 
-    const handlers = this._eventHandler[eventName] || [];
+    const handlers = [...(this._eventHandler[eventName] || [])];
 
     if (handlers.length <= 0) {
       return this;
@@ -278,6 +278,11 @@ class Component<T extends EventMap> {
       for (const handlerFunction of handlerList) {
         if (handlerFunction === handlerToDetach) {
           handlerList.splice(idx, 1);
+
+          if (handlerList.length <= 0) {
+            delete this._eventHandler[eventName as K];
+          }
+
           break;
         }
         idx++;
