@@ -156,10 +156,9 @@ describe("off method", () => {
     oClass.on("customEvent", noop);
     // When
     const oClass2 = oClass.off("customEvent", noop);
-    const nHandlerLength = oClass._eventHandler.customEvent.length;
     // Then
     expect(oClass2).equal(oClass);
-    expect(nHandlerLength).equal(0);
+    expect(oClass.hasOn("customEvent")).to.be.false;
   });
 
   it("Remove nonexistence event handler", () => {
@@ -279,6 +278,20 @@ describe("trigger method", () => {
     expect(spy.firstCall.args[0].currentTarget).to.equal(component);
     expect(spy.firstCall.args[0].a).to.equal(1);
     expect(spy.firstCall.args[0].b).to.equal(5);
+  });
+
+  it("should call every handlers even if some of the handlers are removed while calling them", () => {
+    // Given
+    const component = new Component<{ test: ComponentEvent }>();
+
+    // When
+    const handlers = [...Array(5).keys()].map(() => sinon.spy());
+    handlers.forEach(handler => component.once("test", handler));
+    component.trigger(new ComponentEvent("test"));
+
+    // Then
+    expect(handlers.every(handler => handler.calledOnce)).to.be.true;
+    expect(component.hasOn("test")).to.be.false;
   });
 });
 
