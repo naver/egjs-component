@@ -52,15 +52,16 @@ class ComponentEvent<PROPS extends Record<string, any>, TYPE extends string = st
     eventType: TYPE,
     props: PROPS
   ) {
-    this.eventType = eventType;
     this._canceled = false;
 
-    if (!props) return;
-
-    for (const key of Object.keys(props as Record<string, any>)) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      this[key] = props[key];
+    if (props) {
+      for (const key of Object.keys(props as Record<string, any>)) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        this[key] = props[key];
+      }
     }
+
+    this.eventType = eventType;
   }
 
   /**
