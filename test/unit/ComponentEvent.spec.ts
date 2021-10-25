@@ -37,6 +37,19 @@ describe("ComponentEvent", () => {
       expect(evt.c).to.equal(props.c);
       expect(evt.d).to.equal(props.d);
     });
+
+    it("should not overwrite eventType if it's given in the props", () => {
+      // Given
+      const props = {
+        eventType: "WRONG_EVENT_NAME"
+      };
+
+      // When
+      const evt = new ComponentEvent("correct", props);
+
+      // Then
+      expect(evt.eventType).to.equal("correct");
+    });
   });
 
   describe("stop", () => {
