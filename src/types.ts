@@ -28,7 +28,7 @@ import ComponentEvent from "./ComponentEvent";
 export type AnyFunction = (...args: any[]) => any;
 export type NoArguments = undefined | null | void | never;
 export type EventMap = Record<string, any>;
-export type EventKey<T extends EventMap> = string & keyof T;
+export type EventKey<T> = string & keyof T;
 export type EventHash<T extends EventMap, THIS> = Partial<{ [K in EventKey<T>]: EventCallback<T, K, THIS> }>;
 
 export type EventCallback<T extends EventMap, K extends EventKey<T>, THIS>
