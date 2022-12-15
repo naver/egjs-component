@@ -2,7 +2,7 @@
 	"name": "@egjs/component",
 	"version": "3.0.3-snapshot",
 	"description": "A base class utility that manages events and options in modules.",
-	"main": "dist/component.js",
+	"main": "dist/component.cjs.js",
 	"module": "dist/component.esm.js",
 	"types": "declaration/index.d.ts",
 	"scripts": {
