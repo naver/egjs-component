@@ -42,6 +42,11 @@
 		"url": "https://github.com/naver/egjs-component/issues"
 	},
 	"homepage": "https://naver.github.io/egjs-component",
+	"files": [
+		"./*",
+		"declaration/*",
+		"dist/*"
+	],
 	"devDependencies": {
 		"@daybrush/jsdoc": "^0.3.8",
 		"@egjs/build-helper": "^0.1.2",
