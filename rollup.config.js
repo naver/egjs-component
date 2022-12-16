@@ -23,4 +23,10 @@ export default buildHelper([
     format: "esm",
     exports: "named",
   },
+  {
+    input: "./src/index.cjs.ts",
+    output: "./dist/component.cjs.js",
+    format: "cjs",
+    exports: "named",
+  },
 ]);
