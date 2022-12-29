@@ -6,6 +6,8 @@ author: NAVER Corp.
 repository: https://github.com/naver/egjs-component
 version: 3.0.4
 */
+'use strict';
+
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
 
@@ -410,6 +412,17 @@ var ComponentEvent$1 = ComponentEvent;
  * egjs projects are licensed under the MIT license
  */
 
-export default Component;
-export { ComponentEvent$1 as ComponentEvent };
-//# sourceMappingURL=component.esm.js.map
+var modules = ({
+    ComponentEvent: ComponentEvent$1,
+    default: Component
+});
+
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+for (var name in modules) {
+  Component[name] = modules[name];
+}
+module.exports = Component;
+
+exports.default = Component;
+exports.ComponentEvent = ComponentEvent$1;
+//# sourceMappingURL=component.cjs.js.map
