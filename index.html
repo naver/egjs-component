@@ -60,7 +60,7 @@
         <div class="hero-image" style="background-image: url(//naver.github.io/egjs/img/Component.png)">
         </div>
         <h2 class="title">
-            <span class="highlight">Component</span><a href="https://github.com/naver/egjs-component/releases/tag/3.0.4"><span class="version">v3.0.4</span></a>
+            <span class="highlight">Component</span><a href="https://github.com/naver/egjs-component/releases/tag/3.0.5"><span class="version">v3.0.5</span></a>
         </h2>
         <p class="intro">A class used to manage events and options in a component.<br/>
             <span class="hashtag">#eventemitter #options #typescript</span>
@@ -102,27 +102,27 @@
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">Component</span><span class="p">,</span> <span class="p">{</span> <span class="nx">ComponentEvent</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@egjs/component</span><span class="dl">"</span><span class="p">;</span>
 
-<span class="kd">class</span> <span class="nx">Some</span> <span class="kd">extends</span> <span class="nx">Component</span><span class="p">{</span>
-  <span class="nx">foo</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="dl">"</span><span class="s2">hi</span><span class="dl">"</span><span class="p">);</span> <span class="c1">// fire hi event.</span>
+<span class="kd">class</span> <span class="nc">Some</span> <span class="kd">extends</span> <span class="nc">Component</span><span class="p">{</span>
+  <span class="nf">foo</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nf">trigger</span><span class="p">(</span><span class="dl">"</span><span class="s2">hi</span><span class="dl">"</span><span class="p">);</span> <span class="c1">// fire hi event.</span>
   <span class="p">}</span>
 
-  <span class="nx">bar</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="k">new</span> <span class="nx">ComponentEvent</span><span class="p">(</span><span class="dl">"</span><span class="s2">bye</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span> <span class="na">foo</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">bar</span><span class="p">:</span> <span class="dl">"</span><span class="s2">bye</span><span class="dl">"</span> <span class="p">}))</span> <span class="c1">// Fire bye event with the additional properties</span>
+  <span class="nf">bar</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nf">trigger</span><span class="p">(</span><span class="k">new</span> <span class="nc">ComponentEvent</span><span class="p">(</span><span class="dl">"</span><span class="s2">bye</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span> <span class="na">foo</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">bar</span><span class="p">:</span> <span class="dl">"</span><span class="s2">bye</span><span class="dl">"</span> <span class="p">}))</span> <span class="c1">// Fire bye event with the additional properties</span>
   <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kd">const</span> <span class="nx">some</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Some</span><span class="p">();</span>
-<span class="nx">some</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">"</span><span class="s2">hi</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">fire hi event</span><span class="dl">"</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">some</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Some</span><span class="p">();</span>
+<span class="nx">some</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">"</span><span class="s2">hi</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">fire hi event</span><span class="dl">"</span><span class="p">);</span>
 <span class="p">});</span>
 
-<span class="nx">some</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">"</span><span class="s2">bye</span><span class="dl">"</span><span class="p">,</span> <span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">some</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">"</span><span class="s2">bye</span><span class="dl">"</span><span class="p">,</span> <span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="c1">// These properties are supported additionally by using ComponentEvent</span>
   <span class="nx">e</span><span class="p">.</span><span class="nx">eventType</span><span class="p">;</span> <span class="c1">// string</span>
   <span class="nx">e</span><span class="p">.</span><span class="nx">currentTarget</span><span class="p">;</span> <span class="c1">// some(instance of the class Some)</span>
-  <span class="nx">e</span><span class="p">.</span><span class="nx">stop</span><span class="p">();</span>
-  <span class="nx">e</span><span class="p">.</span><span class="nx">isCanceled</span><span class="p">();</span>
+  <span class="nx">e</span><span class="p">.</span><span class="nf">stop</span><span class="p">();</span>
+  <span class="nx">e</span><span class="p">.</span><span class="nf">isCanceled</span><span class="p">();</span>
 
   <span class="c1">// Additional event parameters</span>
   <span class="nx">e</span><span class="p">.</span><span class="nx">foo</span><span class="p">;</span> <span class="c1">// 1</span>
@@ -133,18 +133,18 @@
 <h4 id="use-componentes5">Use Component(ES5)</h4>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//es5 style</span>
-<span class="kd">function</span> <span class="nx">Some</span><span class="p">(){</span>
+<span class="kd">function</span> <span class="nf">Some</span><span class="p">(){</span>
 
 <span class="p">}</span>
-<span class="nx">Some</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Component</span><span class="p">();</span> <span class="c1">//extends</span>
+<span class="nx">Some</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Component</span><span class="p">();</span> <span class="c1">//extends</span>
 <span class="nx">Some</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="kd">constructor</span> <span class="o">=</span> <span class="nx">Some</span><span class="p">;</span>
 <span class="nx">Some</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">foo</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="k">this</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="dl">"</span><span class="s2">hi</span><span class="dl">"</span><span class="p">);</span> <span class="c1">// fire hi event.</span>
+  <span class="k">this</span><span class="p">.</span><span class="nf">trigger</span><span class="p">(</span><span class="dl">"</span><span class="s2">hi</span><span class="dl">"</span><span class="p">);</span> <span class="c1">// fire hi event.</span>
 <span class="p">}</span>
 
-<span class="kd">var</span> <span class="nx">some</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Some</span><span class="p">();</span>
-<span class="nx">some</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">"</span><span class="s2">hi</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">fire hi event</span><span class="dl">"</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">some</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Some</span><span class="p">();</span>
+<span class="nx">some</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">"</span><span class="s2">hi</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">fire hi event</span><span class="dl">"</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
@@ -172,19 +172,19 @@
 
 <div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">Component</span><span class="p">,</span> <span class="p">{</span> <span class="nx">ComponentEvent</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@egjs/component</span><span class="dl">"</span><span class="p">;</span>
 
-<span class="kd">class</span> <span class="nx">Some</span> <span class="kd">extends</span> <span class="nx">Component</span><span class="o">&lt;</span><span class="p">{</span>
+<span class="kd">class</span> <span class="nc">Some</span> <span class="kd">extends</span> <span class="nc">Component</span><span class="o">&lt;</span><span class="p">{</span>
   <span class="na">hi</span><span class="p">:</span> <span class="nx">ComponentEvent</span><span class="p">;</span>
 <span class="p">}</span><span class="o">&gt;</span> <span class="p">{</span>
-  <span class="nx">foo</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="k">new</span> <span class="nx">ComponentEvent</span><span class="p">(</span><span class="dl">"</span><span class="s2">hi</span><span class="dl">"</span><span class="p">));</span> <span class="c1">// fire hi event.</span>
+  <span class="nf">foo</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nf">trigger</span><span class="p">(</span><span class="k">new</span> <span class="nc">ComponentEvent</span><span class="p">(</span><span class="dl">"</span><span class="s2">hi</span><span class="dl">"</span><span class="p">));</span> <span class="c1">// fire hi event.</span>
   <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kd">const</span> <span class="nx">some</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Some</span><span class="p">();</span>
-<span class="nx">some</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">"</span><span class="s2">hi</span><span class="dl">"</span><span class="p">,</span> <span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">hi event fired</span><span class="dl">"</span><span class="p">);</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">eventType</span><span class="p">);</span> <span class="c1">// "hi"</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">currentTarget</span><span class="p">);</span> <span class="c1">// some</span>
+<span class="kd">const</span> <span class="nx">some</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Some</span><span class="p">();</span>
+<span class="nx">some</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">"</span><span class="s2">hi</span><span class="dl">"</span><span class="p">,</span> <span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">hi event fired</span><span class="dl">"</span><span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">eventType</span><span class="p">);</span> <span class="c1">// "hi"</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">currentTarget</span><span class="p">);</span> <span class="c1">// some</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
