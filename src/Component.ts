@@ -274,18 +274,18 @@ class Component<T extends EventMap> {
     const handlerList = this._eventHandler[eventName as K];
 
     if (handlerList) {
-      let idx = 0;
-      for (const handlerFunction of handlerList) {
-        if (handlerFunction === handlerToDetach) {
-          handlerList.splice(idx, 1);
+      const length = handlerList.length;
 
-          if (handlerList.length <= 0) {
+      for (let i = 0; i < length; ++i) {
+        if (handlerList[i] === handlerToDetach) {
+          handlerList.splice(i, 1);
+
+          if (length <= 1) {
             delete this._eventHandler[eventName as K];
           }
 
           break;
         }
-        idx++;
       }
     }
 
